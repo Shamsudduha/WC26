@@ -48,7 +48,7 @@
 
     .groups-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
       gap: 10px;
       margin-bottom: 18px;
       text-align: left;
@@ -56,7 +56,7 @@
 
     @media (max-width: 480px) {
       .groups-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
       }
     }
 
@@ -110,44 +110,64 @@
       gap: 6px;
     }
 
-    .flag {
-      font-size: 1.2rem;
-      display: inline-block;
+    .flag-img {
+      width: 18px;
+      height: 14px;
+      border-radius: 2px;
+      vertical-align: middle;
       margin-right: 4px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
     
     .team-name {
       display: inline-flex;
       align-items: center;
       gap: 4px;
+      white-space: nowrap;
     }
     
     .match-text {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
     
     .group-card {
       background: rgba(255,255,255,0.03);
       border-radius: 8px;
-      padding: 8px 10px;
+      padding: 10px 12px;
     }
     
     .group-team {
       font-size: 11px;
       color: #cddead;
-      padding: 3px 0;
+      padding: 4px 0;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
     
-    @media (max-width: 450px) {
+    .group-team img {
+      width: 20px;
+      height: 15px;
+      border-radius: 2px;
+    }
+    
+    b {
+      color: #c5a028;
+      font-weight: 500;
+      margin: 0 2px;
+    }
+    
+    @media (max-width: 480px) {
+      .team-name {
+        white-space: normal;
+        word-break: keep-all;
+      }
       .match-text {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 4px;
       }
     }
   </style>
@@ -156,37 +176,53 @@
 <div id="root"></div>
 
 <script>
-  // ============================================================
-  // COMPLETE FLAG MAP - Using standard emoji flags (no hidden Unicode)
-  // ============================================================
+  // ================= FLAG MAP (ISO CODES) =================
   const flagMap = {
-    // Group A
-    "Mexico": "🇲🇽", "South Africa": "🇿🇦", "South Korea": "🇰🇷", "Czech Republic": "🇨🇿",
-    // Group B
-    "Canada": "🇨🇦", "Bosnia & Herzegovina": "🇧🇦", "Bosnia & Herz.": "🇧🇦", "Qatar": "🇶🇦", "Switzerland": "🇨🇭",
-    // Group C
-    "Brazil": "🇧🇷", "Morocco": "🇲🇦", "Haiti": "🇭🇹", "Scotland": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
-    // Group D
-    "USA": "🇺🇸", "Paraguay": "🇵🇾", "Australia": "🇦🇺", "Turkey": "🇹🇷",
-    // Group E
-    "Germany": "🇩🇪", "Curaçao": "🇨🇼", "Ivory Coast": "🇨🇮", "Ecuador": "🇪🇨",
-    // Group F
-    "Netherlands": "🇳🇱", "Japan": "🇯🇵", "Sweden": "🇸🇪", "Tunisia": "🇹🇳",
-    // Group G
-    "Belgium": "🇧🇪", "Egypt": "🇪🇬", "Iran": "🇮🇷", "New Zealand": "🇳🇿",
-    // Group H
-    "Spain": "🇪🇸", "Cape Verde": "🇨🇻", "Saudi Arabia": "🇸🇦", "Uruguay": "🇺🇾",
-    // Group I
-    "France": "🇫🇷", "Senegal": "🇸🇳", "Iraq": "🇮🇶", "Norway": "🇳🇴",
-    // Group J
-    "Argentina": "🇦🇷", "Algeria": "🇩🇿", "Austria": "🇦🇹", "Jordan": "🇯🇴",
-    // Group K
-    "Portugal": "🇵🇹", "Congo": "🇨🇬", "Uzbekistan": "🇺🇿", "Colombia": "🇨🇴",
-    // Group L
-    "England": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Croatia": "🇭🇷", "Ghana": "🇬🇭", "Panama": "🇵🇦"
+    Mexico:"mx", "South Africa":"za", "South Korea":"kr", "Czech Republic":"cz",
+    Canada:"ca", "Bosnia & Herzegovina":"ba", "Bosnia & Herz.":"ba", "Qatar":"qa", "Switzerland":"ch",
+    Brazil:"br", "Morocco":"ma", "Haiti":"ht", "Scotland":"gb-sct",
+    USA:"us", "Paraguay":"py", "Australia":"au", "Turkey":"tr",
+    Germany:"de", "Curaçao":"cw", "Ivory Coast":"ci", "Ecuador":"ec",
+    Netherlands:"nl", "Japan":"jp", "Sweden":"se", "Tunisia":"tn",
+    Belgium:"be", "Egypt":"eg", "Iran":"ir", "New Zealand":"nz",
+    Spain:"es", "Cape Verde":"cv", "Saudi Arabia":"sa", "Uruguay":"uy",
+    France:"fr", "Senegal":"sn", "Iraq":"iq", "Norway":"no",
+    Argentina:"ar", "Algeria":"dz", "Austria":"at", "Jordan":"jo",
+    Portugal:"pt", "Congo":"cg", "Uzbekistan":"uz", "Colombia":"co",
+    England:"gb-eng", "Croatia":"hr", "Ghana":"gh", "Panama":"pa"
   };
 
-  // Groups with flags - for display in groups panel
+  // ================= GET REAL FLAG IMAGE =================
+  function getFlag(country){
+    const code = flagMap[country];
+    if(!code) return "🏳️";
+    return `<img src="https://flagcdn.com/24x18/${code}.png"
+                 class="flag-img"
+                 alt="${country} flag"
+                 loading="lazy">`;
+  }
+
+  // ================= FORMAT MATCH WITH FLAGS =================
+  function addFlagsToMatch(match){
+    if(!match) return "";
+    if(match.includes("WORLD CUP FINAL")) return "🏆 WORLD CUP FINAL";
+
+    if(match.includes(" vs ")){
+      const [a, b] = match.split(" vs ");
+      return `
+        <span class="team-name">
+          ${getFlag(a.trim())} ${a.trim()}
+        </span>
+        <b>vs</b>
+        <span class="team-name">
+          ${getFlag(b.trim())} ${b.trim()}
+        </span>
+      `;
+    }
+    return match;
+  }
+
+  // Groups with team names
   const groupsList = {
     A: ["Mexico", "South Africa", "South Korea", "Czech Republic"],
     B: ["Canada", "Bosnia & Herzegovina", "Qatar", "Switzerland"],
@@ -317,23 +353,6 @@
     { date:"2026-07-20", time:"01:00", match:"WORLD CUP FINAL", venue:"MetLife Stadium, New York–New Jersey", stage:"Final" }
   ];
 
-  // Helper function to add flags to match text
-  function addFlagsToMatch(matchStr) {
-    if (!matchStr) return matchStr;
-    if (matchStr.includes("WORLD CUP FINAL")) return "🏆 WORLD CUP FINAL";
-    if (matchStr.includes(" vs ")) {
-      const parts = matchStr.split(" vs ");
-      if (parts.length === 2) {
-        const left = parts[0].trim();
-        const right = parts[1].trim();
-        const leftFlag = flagMap[left] || "🏁";
-        const rightFlag = flagMap[right] || "🏁";
-        return `<span class="team-name"><span class="flag">${leftFlag}</span> ${left}</span> vs <span class="team-name"><span class="flag">${rightFlag}</span> ${right}</span>`;
-      }
-    }
-    return matchStr;
-  }
-
   function parseMatchDateTime(dateStr, timeStr) {
     const [h, m] = timeStr.split(":").map(Number);
     const [y, mo, d] = dateStr.split("-").map(Number);
@@ -375,11 +394,6 @@
   
   let intervalId = null;
 
-  function updateNow() {
-    currentState.now = new Date();
-    renderApp();
-  }
-  
   function setStage(stage) { 
     currentState.selectedStage = stage; 
     currentState.searchQuery = ""; 
@@ -431,12 +445,11 @@
     let groupsPanelHtml = "";
     if (currentState.showGroups) {
       groupsPanelHtml = `<div class="groups-grid">${Object.entries(groupsList).map(([g, teams]) => `
-        <div class="group-card" style="border-left: 3px solid ${groupColors[g]}; border-radius: 8px;">
+        <div class="group-card" style="border-left: 3px solid ${groupColors[g]};">
           <div style="font-size: 12px; font-weight: bold; color: ${groupColors[g]}; margin-bottom: 6px;">GROUP ${g}</div>
           ${teams.map(team => `
             <div class="group-team">
-              <span class="flag">${flagMap[team] || "🏁"}</span>
-              <span>${team}</span>
+              ${getFlag(team)} ${team}
             </div>
           `).join('')}
         </div>
@@ -459,7 +472,7 @@
           
           return `
             <div style="background: ${isNextFlag ? 'rgba(197,160,40,0.12)' : isPast ? 'rgba(255,255,255,0.015)' : 'rgba(255,255,255,0.04)'}; border-left: 3px solid ${groupCol}; border-radius: 12px; padding: 12px; margin-bottom: 10px; position: relative; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-              ${isNextFlag ? `<div style="position: absolute; top: -9px; right: 10px; background: #c5a028; color: #041226; font-size: 8px; font-weight: bold; padding: 2px 12px; border-radius: 40px; letter-spacing: 1px;">NEXT</div>` : ''}
+              ${isNextFlag ? `<div style="position: absolute; top: -9px; right: 10px; background: #c5a028; color: #041226; font-size: 8px; font-weight: bold; padding: 2px 12px; border-radius: 40px;">NEXT</div>` : ''}
               <div style="min-width: 65px; background: rgba(0,0,0,0.4); border-radius: 28px; padding: 5px 6px; text-align: center;">
                 <div style="font-weight: bold; font-size: 12px; color: #f3e5ab;">${formatTime12(m.time)}</div>
                 <div style="font-size: 7px; color: #7a9abf;">BST</div>
@@ -488,22 +501,21 @@
 
     const nextMatchFlagged = nextMatch ? addFlagsToMatch(nextMatch.match) : "";
     
-    // Countdown section with new color
     const countdownHtml = nextMatch ? `
       <div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px 16px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 8px 32px rgba(0,0,0,0.4);">
-        <div style="font-size: 9px; letter-spacing: 3px; color: #FFD700; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">NEXT MATCH - BANGLADESH STANDARD TIME</div>
-        <div style="font-size: clamp(14px, 4vw, 20px); font-weight: bold; color: #FFD700; margin-top: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">${nextMatchFlagged}</div>
-        <div style="font-size: 10px; color: #FFD700; margin-bottom: 12px; opacity: 0.9;">${formatDateHeader(nextMatch.date)} · ${formatTime12(nextMatch.time)} BST · 📍 ${nextMatch.venue}</div>
+        <div style="font-size: 9px; letter-spacing: 3px; color: #FFD700;">⚽ NEXT MATCH - BANGLADESH STANDARD TIME</div>
+        <div style="font-size: clamp(14px, 4vw, 20px); font-weight: bold; color: #FFD700; margin-top: 5px;">${nextMatchFlagged}</div>
+        <div style="font-size: 10px; color: #FFD700; margin-bottom: 12px;">${formatDateHeader(nextMatch.date)} · ${formatTime12(nextMatch.time)} BST · 📍 ${nextMatch.venue}</div>
         <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
           ${[["DAYS", cd.d], ["HRS", cd.h], ["MIN", cd.m], ["SEC", cd.s]].map(([lbl, val]) => `
-            <div style="background: rgba(0,0,0,0.5); border: 1px solid #FFD700; border-radius: 12px; padding: 8px 12px; min-width: 60px; text-align: center; backdrop-filter: blur(4px);">
-              <div style="font-size: 22px; font-weight: bold; color: #FFD700; line-height: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">${pad(val)}</div>
-              <div style="font-size: 8px; color: #FFD700; letter-spacing: 1px;">${lbl}</div>
+            <div style="background: rgba(0,0,0,0.5); border: 1px solid #FFD700; border-radius: 12px; padding: 8px 12px; min-width: 60px; text-align: center;">
+              <div style="font-size: 22px; font-weight: bold; color: #FFD700; line-height: 1;">${pad(val)}</div>
+              <div style="font-size: 8px; color: #FFD700;">${lbl}</div>
             </div>
           `).join('')}
         </div>
       </div>
-    ` : `<div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px; text-align: center; color: #FFD700; font-size: 18px;">Tournament Complete!</div>`;
+    ` : `<div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px; text-align: center; color: #FFD700; font-size: 18px;">🏆 Tournament Complete!</div>`;
 
     const fullHtml = `
       <div style="min-height: 100vh;">
@@ -512,9 +524,9 @@
           <div style="font-size: 8px; letter-spacing: 3px; color: #c5a028;">FIFA WORLD CUP 2026 · CANADA · MEXICO · USA</div>
           <h1 style="font-size: clamp(16px, 5vw, 24px); margin: 4px 0; color: #fff;">🇧🇩 Full Fixture — Bangladesh Time</h1>
           <div style="font-size: 9px; color: #2e5570;">ALL TIMES BST (UTC+6) · 104 MATCHES · 48 TEAMS</div>
-          <button id="toggleGroupsBtn" class="group-tag-btn" style="margin-top: 12px;">📋 ${currentState.showGroups ? "Hide Groups" : "Show All Groups"}</button>
+          <button id="toggleGroupsBtn" class="group-tag-btn" style="margin-top: 12px;">📋 ${currentState.showGroups ? "▲ Hide Groups" : "▼ Show All Groups"}</button>
           <div id="groupsPanel" style="margin-top: 8px;">${groupsPanelHtml}</div>
-          <input id="searchInput" class="search-input" type="text" placeholder="Search team, venue or group..." value="${currentState.searchQuery.replace(/"/g, '&quot;')}" style="margin: 14px auto 12px auto; max-width: 340px;">
+          <input id="searchInput" class="search-input" type="text" placeholder="🔍 Search team, venue or group…" value="${currentState.searchQuery.replace(/"/g, '&quot;')}" style="margin: 14px auto 12px auto; max-width: 340px;">
           <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 4px;">
             ${stageList.map(s => `<button data-stage="${s}" class="stage-btn ${currentState.selectedStage === s ? 'active' : ''}">${s}</button>`).join('')}
           </div>
@@ -524,7 +536,7 @@
           <span style="font-size: 10px; color: rgba(255,255,255,0.3);">— ${stageMatches.length} matches</span>
         </div>
         <div class="fixture-container">${fixturesHtml}</div>
-        <div style="border-top: 1px solid rgba(197,160,40,0.1); padding: 20px; text-align: center; font-size: 9px; color: #1e3a54;">🇧🇩 BST (UTC+6) · Flags displayed · Official FIFA draw · 48 teams</div>
+        <div style="border-top: 1px solid rgba(197,160,40,0.1); padding: 20px; text-align: center; font-size: 9px; color: #1e3a54;">🇧🇩 BST (UTC+6) · Real flag images from flagcdn.com · Official FIFA draw · 48 teams</div>
       </div>
     `;
     
@@ -549,56 +561,6 @@
       renderApp(); 
     }, 1000);
   }
-  const flagMap = {
-  "Mexico": "mx",
-  "South Africa": "za",
-  "South Korea": "kr",
-  "Czech Republic": "cz",
-  "Canada": "ca",
-  "Bosnia & Herzegovina": "ba",
-  "Qatar": "qa",
-  "Switzerland": "ch",
-  "Brazil": "br",
-  "Morocco": "ma",
-  "Haiti": "ht",
-  "Scotland": "gb-sct",
-  "USA": "us",
-  "Paraguay": "py",
-  "Australia": "au",
-  "Turkey": "tr",
-  "Germany": "de",
-  "Curaçao": "cw",
-  "Ivory Coast": "ci",
-  "Ecuador": "ec",
-  "Netherlands": "nl",
-  "Japan": "jp",
-  "Sweden": "se",
-  "Tunisia": "tn",
-  "Belgium": "be",
-  "Egypt": "eg",
-  "Iran": "ir",
-  "New Zealand": "nz",
-  "Spain": "es",
-  "Cape Verde": "cv",
-  "Saudi Arabia": "sa",
-  "Uruguay": "uy",
-  "France": "fr",
-  "Senegal": "sn",
-  "Iraq": "iq",
-  "Norway": "no",
-  "Argentina": "ar",
-  "Algeria": "dz",
-  "Austria": "at",
-  "Jordan": "jo",
-  "Portugal": "pt",
-  "Congo": "cg",
-  "Uzbekistan": "uz",
-  "Colombia": "co",
-  "England": "gb-eng",
-  "Croatia": "hr",
-  "Ghana": "gh",
-  "Panama": "pa"
-};
   
   init();
 </script>
