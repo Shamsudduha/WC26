@@ -4,15 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <title>ফিফা বিশ্বকাপ ২০২৬ · বাংলাদেশ সময় | সম্পূর্ণ সূচি</title>
-  <!-- Nitor Bangla Font (popular Bengali font) -->
   <link href="https://fonts.maateen.me/nitor-bangla/font.css" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       background: linear-gradient(145deg, #020b18 0%, #041226 60%, #071c38 100%);
       font-family: 'Nitor Bangla', 'Segoe UI', 'Roboto', sans-serif;
@@ -20,48 +14,20 @@
       min-height: 100vh;
       -webkit-tap-highlight-color: transparent;
     }
-
-    ::-webkit-scrollbar {
-      width: 4px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #041226;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #c5a028;
-      border-radius: 6px;
-    }
-
-    button, input {
-      transition: all 0.2s ease;
-      font-family: 'Nitor Bangla', 'Segoe UI', sans-serif;
-    }
-
-    button:active {
-      transform: scale(0.96);
-      opacity: 0.8;
-    }
-
-    .fixture-container {
-      padding: 16px 12px 56px;
-      max-width: 720px;
-      margin: 0 auto;
-    }
-
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #041226; }
+    ::-webkit-scrollbar-thumb { background: #c5a028; border-radius: 6px; }
+    button { transition: all 0.2s ease; font-family: 'Nitor Bangla', 'Segoe UI', sans-serif; }
+    button:active { transform: scale(0.96); opacity: 0.8; }
+    .fixture-container { padding: 16px 12px 56px; max-width: 720px; margin: 0 auto; }
     .groups-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
       gap: 10px;
       margin-bottom: 18px;
       text-align: left;
     }
-
-    @media (max-width: 480px) {
-      .groups-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      }
-    }
-
+    @media (max-width: 480px) { .groups-grid { grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); } }
     .stage-btn {
       background: rgba(255,255,255,0.04);
       border: 1px solid #18304a;
@@ -71,7 +37,6 @@
       font-size: 12px;
       font-weight: 500;
       cursor: pointer;
-      letter-spacing: 0.3px;
     }
     .stage-btn.active {
       background: #c5a028;
@@ -80,23 +45,6 @@
       font-weight: bold;
       box-shadow: 0 2px 8px rgba(197,160,40,0.3);
     }
-
-    .search-input {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid #253f5e;
-      border-radius: 40px;
-      padding: 10px 18px;
-      color: #f5ecce;
-      font-size: 14px;
-      width: 100%;
-      outline: none;
-      backdrop-filter: blur(4px);
-    }
-    .search-input:focus {
-      border-color: #c5a028;
-      background: rgba(0,0,0,0.4);
-    }
-
     .group-tag-btn {
       background: rgba(197,160,40,0.1);
       border: 1px solid rgba(197,160,40,0.4);
@@ -111,107 +59,71 @@
       align-items: center;
       gap: 6px;
     }
-
-    .flag-img {
-      width: 18px;
-      height: 14px;
-      border-radius: 2px;
-      vertical-align: middle;
-      margin-right: 4px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-    }
-    
-    .team-name {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      white-space: nowrap;
-    }
-    
-    .group-card {
-      background: rgba(255,255,255,0.03);
-      border-radius: 8px;
-      padding: 10px 12px;
-    }
-    
-    .group-team {
-      font-size: 11px;
-      color: #cddead;
-      padding: 4px 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .group-team img {
-      width: 20px;
-      height: 15px;
-      border-radius: 2px;
-    }
-    
-    b {
-      color: #c5a028;
-      font-weight: 500;
-      margin: 0 2px;
-    }
-    
+    .flag-img { width: 18px; height: 14px; border-radius: 2px; vertical-align: middle; margin-right: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+    .team-name { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+    .group-card { background: rgba(255,255,255,0.03); border-radius: 8px; padding: 10px 12px; }
+    .group-team { font-size: 11px; color: #cddead; padding: 4px 0; display: flex; align-items: center; gap: 8px; }
+    .group-team img { width: 20px; height: 15px; border-radius: 2px; }
+    b { color: #c5a028; font-weight: 500; margin: 0 2px; }
     .time-badge {
       background: rgba(0,0,0,0.5);
       border-radius: 28px;
-      padding: 6px 10px;
+      padding: 6px 8px;
       text-align: center;
-      min-width: 75px;
+      min-width: 70px;
     }
-    
-    .time-hour {
-      font-weight: bold;
-      font-size: 13px;
-      color: #f3e5ab;
-      letter-spacing: 0.5px;
-    }
-    
-    .time-ampm {
-      font-size: 8px;
-      color: #FFD700;
-      margin-left: 2px;
-      font-weight: bold;
-    }
-    
-    .time-label {
-      font-size: 7px;
-      color: #7a9abf;
-      margin-top: 2px;
-    }
-    
+    .time-hour { font-weight: bold; font-size: 12px; color: #f3e5ab; }
+    .time-ampm { font-size: 7px; color: #FFD700; margin-left: 2px; font-weight: bold; }
+    .time-label { font-size: 6px; color: #7a9abf; margin-top: 2px; }
     @media (max-width: 480px) {
-      .team-name {
-        white-space: normal;
-        word-break: keep-all;
-      }
-      .time-badge {
-        min-width: 65px;
-        padding: 4px 8px;
-      }
+      .team-name { white-space: normal; word-break: keep-all; }
+      .time-badge { min-width: 60px; padding: 4px 6px; }
     }
+    .countdown-box {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid #FFD700;
+      border-radius: 12px;
+      padding: 8px 12px;
+      min-width: 60px;
+      text-align: center;
+    }
+    .countdown-number { font-size: 22px; font-weight: bold; color: #FFD700; line-height: 1; }
+    .countdown-label { font-size: 8px; color: #FFD700; }
   </style>
 </head>
 <body>
 <div id="root"></div>
 
 <script>
-  // ================= FLAG MAP (ISO CODES) =================
+  // ================= দেশের নাম বাংলায় =================
+  const countryBn = {
+    "Mexico": "মেক্সিকো", "South Africa": "দক্ষিণ আফ্রিকা", "Korea Republic": "দক্ষিণ কোরিয়া", "Czechia": "চেকিয়া",
+    "Canada": "কানাডা", "Bosnia and Herzegovina": "বসনিয়া", "Qatar": "কাতার", "Switzerland": "সুইজারল্যান্ড",
+    "Brazil": "ব্রাজিল", "Morocco": "মরক্কো", "Haiti": "হাইতি", "Scotland": "স্কটল্যান্ড",
+    "USA": "মার্কিন যুক্তরাষ্ট্র", "Paraguay": "প্যারাগুয়ে", "Australia": "অস্ট্রেলিয়া", "Türkiye": "তুরস্ক", "Turkey": "তুরস্ক",
+    "Germany": "জার্মানি", "Curaçao": "কুরাসাও", "Côte d'Ivoire": "আইভরি কোস্ট", "Ecuador": "ইকুয়েডর",
+    "Netherlands": "নেদারল্যান্ডস", "Japan": "জাপান", "Sweden": "সুইডেন", "Tunisia": "তিউনিসিয়া",
+    "Belgium": "বেলজিয়াম", "Egypt": "মিশর", "IR Iran": "ইরান", "Iran": "ইরান", "New Zealand": "নিউজিল্যান্ড",
+    "Spain": "স্পেন", "Cabo Verde": "কেপ ভার্দে", "Saudi Arabia": "সৌদি আরব", "Uruguay": "উরুগুয়ে",
+    "France": "ফ্রান্স", "Senegal": "সেনেগাল", "Iraq": "ইরাক", "Norway": "নরওয়ে",
+    "Argentina": "আর্জেন্টিনা", "Algeria": "আলজেরিয়া", "Austria": "অস্ট্রিয়া", "Jordan": "জর্ডান",
+    "Portugal": "পর্তুগাল", "Congo DR": "কঙ্গো", "Uzbekistan": "উজবেকিস্তান", "Colombia": "কলম্বিয়া",
+    "England": "ইংল্যান্ড", "Croatia": "ক্রোয়েশিয়া", "Ghana": "ঘানা", "Panama": "পানামা"
+  };
+
+  // ================= ফ্লাগ ম্যাপ =================
   const flagMap = {
-    "Mexico":"mx", "South Africa":"za", "Korea Republic":"kr", "Czechia":"cz", "Czech Republic":"cz",
+    "Mexico":"mx", "South Africa":"za", "Korea Republic":"kr", "Czechia":"cz",
     "Canada":"ca", "Bosnia and Herzegovina":"ba", "Qatar":"qa", "Switzerland":"ch",
     "Brazil":"br", "Morocco":"ma", "Haiti":"ht", "Scotland":"gb-sct",
     "USA":"us", "Paraguay":"py", "Australia":"au", "Türkiye":"tr", "Turkey":"tr",
-    "Germany":"de", "Curaçao":"cw", "Côte d’Ivoire":"ci", "Côte d'Ivoire":"ci", "Ecuador":"ec",
+    "Germany":"de", "Curaçao":"cw", "Côte d'Ivoire":"ci", "Ecuador":"ec",
     "Netherlands":"nl", "Japan":"jp", "Sweden":"se", "Tunisia":"tn",
-    "Belgium":"be", "Egypt":"eg", "IR Iran":"ir", "Iran":"ir", "New Zealand":"nz",
+    "Belgium":"be", "Egypt":"eg", "IR Iran":"ir", "New Zealand":"nz",
     "Spain":"es", "Cabo Verde":"cv", "Saudi Arabia":"sa", "Uruguay":"uy",
     "France":"fr", "Senegal":"sn", "Iraq":"iq", "Norway":"no",
     "Argentina":"ar", "Algeria":"dz", "Austria":"at", "Jordan":"jo",
-    "Portugal":"pt", "Congo DR":"cg", "Congo":"cg", "Uzbekistan":"uz", "Colombia":"co",
+    "Portugal":"pt", "Congo DR":"cg", "Uzbekistan":"uz", "Colombia":"co",
     "England":"gb-eng", "Croatia":"hr", "Ghana":"gh", "Panama":"pa"
   };
 
@@ -221,176 +133,167 @@
     return `<img src="https://flagcdn.com/24x18/${code}.png" class="flag-img" alt="${country} flag" loading="lazy">`;
   }
 
-  function addFlagsToMatch(match){
-    if(!match) return "";
-    if(match.includes("Match") || match.includes("W") || match.includes("QF") || match.includes("SF") || match.includes("RU") || match.includes("Final")) return match;
-    if(match.includes(" vs ")){
-      const [a, b] = match.split(" vs ");
-      return `<span class="team-name">${getFlag(a.trim())} ${a.trim()}</span> <b>vs</b> <span class="team-name">${getFlag(b.trim())} ${b.trim()}</span>`;
+  // বাংলায় ম্যাচ ফরম্যাট
+  function formatMatchWithBn(matchStr){
+    if(!matchStr) return "";
+    if(matchStr.includes("Match") || matchStr.includes("W") || matchStr.includes("QF") || matchStr.includes("SF") || matchStr.includes("RU") || matchStr.includes("বনাম")) return matchStr;
+    if(matchStr.includes(" vs ")){
+      const parts = matchStr.split(" vs ");
+      if(parts.length === 2){
+        const left = parts[0].trim();
+        const right = parts[1].trim();
+        const leftBn = countryBn[left] || left;
+        const rightBn = countryBn[right] || right;
+        return `<span class="team-name">${getFlag(left)} ${leftBn}</span> <b>বনাম</b> <span class="team-name">${getFlag(right)} ${rightBn}</span>`;
+      }
     }
-    return match;
+    return matchStr;
   }
 
-  // Groups with team names
-  const groupsList = {
-    A: ["Mexico", "South Africa", "Korea Republic", "Czechia"],
-    B: ["Canada", "Bosnia and Herzegovina", "Qatar", "Switzerland"],
-    C: ["Brazil", "Morocco", "Haiti", "Scotland"],
-    D: ["USA", "Paraguay", "Australia", "Türkiye"],
-    E: ["Germany", "Curaçao", "Côte d’Ivoire", "Ecuador"],
-    F: ["Netherlands", "Japan", "Sweden", "Tunisia"],
-    G: ["Belgium", "Egypt", "IR Iran", "New Zealand"],
-    H: ["Spain", "Cabo Verde", "Saudi Arabia", "Uruguay"],
-    I: ["France", "Senegal", "Iraq", "Norway"],
-    J: ["Argentina", "Algeria", "Austria", "Jordan"],
-    K: ["Portugal", "Congo DR", "Uzbekistan", "Colombia"],
-    L: ["England", "Croatia", "Ghana", "Panama"]
+  // গ্রুপের নাম বাংলায় (এ, বি, সি, ডি, ই, এফ, জি, এইচ, আই, জে, কে, এল)
+  const groupNamesBn = {
+    "A": "এ", "B": "বি", "C": "সি", "D": "ডি", "E": "ই", "F": "এফ",
+    "G": "জি", "H": "এইচ", "I": "আই", "J": "জে", "K": "কে", "L": "এল"
+  };
+
+  // গ্রুপের দলগুলো (ইংরেজি কী রাখলাম, প্রদর্শনে বাংলা হবে)
+  const groupsData = {
+    "এ": ["Mexico", "South Africa", "Korea Republic", "Czechia"],
+    "বি": ["Canada", "Bosnia and Herzegovina", "Qatar", "Switzerland"],
+    "সি": ["Brazil", "Morocco", "Haiti", "Scotland"],
+    "ডি": ["USA", "Paraguay", "Australia", "Türkiye"],
+    "ই": ["Germany", "Curaçao", "Côte d'Ivoire", "Ecuador"],
+    "এফ": ["Netherlands", "Japan", "Sweden", "Tunisia"],
+    "জি": ["Belgium", "Egypt", "IR Iran", "New Zealand"],
+    "এইচ": ["Spain", "Cabo Verde", "Saudi Arabia", "Uruguay"],
+    "আই": ["France", "Senegal", "Iraq", "Norway"],
+    "জে": ["Argentina", "Algeria", "Austria", "Jordan"],
+    "কে": ["Portugal", "Congo DR", "Uzbekistan", "Colombia"],
+    "এল": ["England", "Croatia", "Ghana", "Panama"]
   };
 
   const groupColors = {
-    A:"#FF6B35", B:"#e8a838", C:"#44BBA4", D:"#E94F37",
-    E:"#3BCEAC", F:"#0EAD69", G:"#a07850", H:"#D4A017",
-    I:"#3A86FF", J:"#FF006E", K:"#8338EC", L:"#FB5607"
+    "এ":"#FF6B35", "বি":"#e8a838", "সি":"#44BBA4", "ডি":"#E94F37",
+    "ই":"#3BCEAC", "এফ":"#0EAD69", "জি":"#a07850", "এইচ":"#D4A017",
+    "আই":"#3A86FF", "জে":"#FF006E", "কে":"#8338EC", "এল":"#FB5607"
   };
 
-  const stageListBengali = ["গ্রুপ পর্ব","৩২ দলের পর্ব","১৬ দলের পর্ব","কোয়ার্টার-ফাইনাল","সেমি-ফাইনাল","৩য় স্থান","ফাইনাল"];
-  const stageListEnglish = ["Group Stage","Round of 32","Round of 16","Quarterfinals","Semifinals","3rd Place","Final"];
+  // বাংলায় স্টেজের নাম
+  const stageListBn = ["গ্রুপ পর্ব","৩২ দলের পর্ব","১৬ দলের পর্ব","কোয়ার্টার-ফাইনাল","সেমি-ফাইনাল","৩য় স্থান","ফাইনাল"];
+  const stageListEn = ["Group Stage","Round of 32","Round of 16","Quarterfinals","Semifinals","3rd Place","Final"];
 
-  // ================= COMPLETE CORRECTED FIXTURES FROM PROVIDED TEXT =================
+  // ফিক্সচার ডাটা (ইংরেজি গ্রুপ কী রাখলাম, পরে রেন্ডারে বাংলায় রূপান্তর)
   const fixturesRaw = [
-    // Group Stage - Friday 12 June 2026
     { date:"2026-06-12", time:"01:00", group:"A", match:"Mexico vs South Africa", venue:"মেক্সিকো সিটি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-12", time:"08:00", group:"A", match:"Korea Republic vs Czechia", venue:"গুয়াদালাজারা স্টেডিয়াম", stage:"Group Stage" },
-    // Saturday 13 June
     { date:"2026-06-13", time:"01:00", group:"B", match:"Canada vs Bosnia and Herzegovina", venue:"টরন্টো স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-13", time:"07:00", group:"D", match:"USA vs Paraguay", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Group Stage" },
-    // Sunday 14 June
     { date:"2026-06-14", time:"01:00", group:"B", match:"Qatar vs Switzerland", venue:"সান ফ্রান্সিসকো বে এরিয়া স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-14", time:"04:00", group:"C", match:"Brazil vs Morocco", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-14", time:"07:00", group:"C", match:"Haiti vs Scotland", venue:"বোস্টন স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-14", time:"10:00", group:"D", match:"Australia vs Türkiye", venue:"বিসি প্লেস ভ্যাঙ্কুভার", stage:"Group Stage" },
     { date:"2026-06-14", time:"23:00", group:"E", match:"Germany vs Curaçao", venue:"হিউস্টন স্টেডিয়াম", stage:"Group Stage" },
-    // Monday 15 June
     { date:"2026-06-15", time:"02:00", group:"F", match:"Netherlands vs Japan", venue:"ডালাস স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-15", time:"05:00", group:"E", match:"Côte d'Ivoire vs Ecuador", venue:"ফিলাডেলফিয়া স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-15", time:"08:00", group:"F", match:"Sweden vs Tunisia", venue:"মন্টেররে স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-15", time:"22:00", group:"H", match:"Spain vs Cabo Verde", venue:"আটলান্টা স্টেডিয়াম", stage:"Group Stage" },
-    // Tuesday 16 June
     { date:"2026-06-16", time:"01:00", group:"G", match:"Belgium vs Egypt", venue:"সিয়াটল স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-16", time:"04:00", group:"H", match:"Saudi Arabia vs Uruguay", venue:"মিয়ামি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-16", time:"07:00", group:"G", match:"IR Iran vs New Zealand", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Group Stage" },
-    // Wednesday 17 June
     { date:"2026-06-17", time:"01:00", group:"I", match:"France vs Senegal", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-17", time:"04:00", group:"I", match:"Iraq vs Norway", venue:"বোস্টন স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-17", time:"07:00", group:"J", match:"Argentina vs Algeria", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-17", time:"10:00", group:"J", match:"Austria vs Jordan", venue:"সান ফ্রান্সিসকো বে এরিয়া স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-17", time:"23:00", group:"K", match:"Portugal vs Congo DR", venue:"হিউস্টন স্টেডিয়াম", stage:"Group Stage" },
-    // Thursday 18 June
     { date:"2026-06-18", time:"02:00", group:"L", match:"England vs Croatia", venue:"ডালাস স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-18", time:"05:00", group:"L", match:"Ghana vs Panama", venue:"টরন্টো স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-18", time:"08:00", group:"K", match:"Uzbekistan vs Colombia", venue:"মেক্সিকো সিটি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-18", time:"22:00", group:"A", match:"Czechia vs South Africa", venue:"আটলান্টা স্টেডিয়াম", stage:"Group Stage" },
-    // Friday 19 June
     { date:"2026-06-19", time:"01:00", group:"B", match:"Switzerland vs Bosnia and Herzegovina", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-19", time:"04:00", group:"B", match:"Canada vs Qatar", venue:"বিসি প্লেস ভ্যাঙ্কুভার", stage:"Group Stage" },
     { date:"2026-06-19", time:"07:00", group:"A", match:"Mexico vs Korea Republic", venue:"গুয়াদালাজারা স্টেডিয়াম", stage:"Group Stage" },
-    // Saturday 20 June
     { date:"2026-06-20", time:"01:00", group:"D", match:"USA vs Australia", venue:"সিয়াটল স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-20", time:"04:00", group:"C", match:"Scotland vs Morocco", venue:"বোস্টন স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-20", time:"06:30", group:"C", match:"Brazil vs Haiti", venue:"ফিলাডেলফিয়া স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-20", time:"09:00", group:"D", match:"Türkiye vs Paraguay", venue:"সান ফ্রান্সিসকো বে এরিয়া স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-20", time:"23:00", group:"F", match:"Netherlands vs Sweden", venue:"হিউস্টন স্টেডিয়াম", stage:"Group Stage" },
-    // Sunday 21 June
     { date:"2026-06-21", time:"02:00", group:"E", match:"Germany vs Côte d'Ivoire", venue:"টরন্টো স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-21", time:"06:00", group:"E", match:"Ecuador vs Curaçao", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-21", time:"10:00", group:"F", match:"Tunisia vs Japan", venue:"মন্টেররে স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-21", time:"22:00", group:"H", match:"Spain vs Saudi Arabia", venue:"আটলান্টা স্টেডিয়াম", stage:"Group Stage" },
-    // Monday 22 June
     { date:"2026-06-22", time:"01:00", group:"G", match:"Belgium vs IR Iran", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-22", time:"04:00", group:"H", match:"Uruguay vs Cabo Verde", venue:"মিয়ামি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-22", time:"07:00", group:"G", match:"New Zealand vs Egypt", venue:"বিসি প্লেস ভ্যাঙ্কুভার", stage:"Group Stage" },
     { date:"2026-06-22", time:"23:00", group:"J", match:"Argentina vs Austria", venue:"ডালাস স্টেডিয়াম", stage:"Group Stage" },
-    // Tuesday 23 June
     { date:"2026-06-23", time:"03:00", group:"I", match:"France vs Iraq", venue:"ফিলাডেলফিয়া স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-23", time:"06:00", group:"I", match:"Norway vs Senegal", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-23", time:"09:00", group:"J", match:"Jordan vs Algeria", venue:"সান ফ্রান্সিসকো বে এরিয়া স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-23", time:"23:00", group:"K", match:"Portugal vs Uzbekistan", venue:"হিউস্টন স্টেডিয়াম", stage:"Group Stage" },
-    // Wednesday 24 June
     { date:"2026-06-24", time:"02:00", group:"L", match:"England vs Ghana", venue:"বোস্টন স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-24", time:"05:00", group:"L", match:"Panama vs Croatia", venue:"টরন্টো স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-24", time:"08:00", group:"K", match:"Colombia vs Congo DR", venue:"গুয়াদালাজারা স্টেডিয়াম", stage:"Group Stage" },
-    // Thursday 25 June
     { date:"2026-06-25", time:"01:00", group:"B", match:"Switzerland vs Canada", venue:"বিসি প্লেস ভ্যাঙ্কুভার", stage:"Group Stage" },
     { date:"2026-06-25", time:"01:00", group:"B", match:"Bosnia and Herzegovina vs Qatar", venue:"সিয়াটল স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-25", time:"04:00", group:"C", match:"Scotland vs Brazil", venue:"মিয়ামি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-25", time:"04:00", group:"C", match:"Morocco vs Haiti", venue:"আটলান্টা স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-25", time:"07:00", group:"A", match:"Czechia vs Mexico", venue:"মেক্সিকো সিটি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-25", time:"07:00", group:"A", match:"South Africa vs Korea Republic", venue:"মন্টেররে স্টেডিয়াম", stage:"Group Stage" },
-    // Friday 26 June
     { date:"2026-06-26", time:"02:00", group:"E", match:"Curaçao vs Côte d'Ivoire", venue:"ফিলাডেলফিয়া স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-26", time:"02:00", group:"E", match:"Ecuador vs Germany", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-26", time:"05:00", group:"F", match:"Japan vs Sweden", venue:"ডালাস স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-26", time:"05:00", group:"F", match:"Tunisia vs Netherlands", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-26", time:"08:00", group:"D", match:"Türkiye vs USA", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-26", time:"08:00", group:"D", match:"Paraguay vs Australia", venue:"সান ফ্রান্সিসকো বে এরিয়া স্টেডিয়াম", stage:"Group Stage" },
-    // Saturday 27 June
     { date:"2026-06-27", time:"01:00", group:"I", match:"Norway vs France", venue:"বোস্টন স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-27", time:"01:00", group:"I", match:"Senegal vs Iraq", venue:"টরন্টো স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-27", time:"06:00", group:"H", match:"Cabo Verde vs Saudi Arabia", venue:"হিউস্টন স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-27", time:"06:00", group:"H", match:"Uruguay vs Spain", venue:"গুয়াদালাজারা স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-27", time:"09:00", group:"G", match:"Egypt vs IR Iran", venue:"সিয়াটল স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-27", time:"09:00", group:"G", match:"New Zealand vs Belgium", venue:"বিসি প্লেস ভ্যাঙ্কুভার", stage:"Group Stage" },
-    // Sunday 28 June
     { date:"2026-06-28", time:"03:00", group:"L", match:"Panama vs England", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-28", time:"03:00", group:"L", match:"Croatia vs Ghana", venue:"ফিলাডেলফিয়া স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-28", time:"05:30", group:"K", match:"Colombia vs Portugal", venue:"মিয়ামি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-28", time:"05:30", group:"K", match:"Congo DR vs Uzbekistan", venue:"আটলান্টা স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-28", time:"08:00", group:"J", match:"Algeria vs Austria", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-28", time:"08:00", group:"J", match:"Jordan vs Argentina", venue:"ডালাস স্টেডিয়াম", stage:"Group Stage" },
-    
-    // Knockout Stage - Round of 32
-    { date:"2026-06-29", time:"01:00", match:"2A vs 2B", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-06-29", time:"23:00", match:"1C vs 2F", venue:"হিউস্টন স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-06-30", time:"02:30", match:"1E vs 3ABCDF", venue:"বোস্টন স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-06-30", time:"07:00", match:"1F vs 2C", venue:"মন্টেররে স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-06-30", time:"23:00", match:"2E vs 2I", venue:"ডালাস স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-01", time:"03:00", match:"1I vs 3CDFGH", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-01", time:"07:00", match:"1A vs 3CEFHI", venue:"মেক্সিকো সিটি স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-01", time:"22:00", match:"1L vs 3EHIJK", venue:"আটলান্টা স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-02", time:"02:00", match:"1G vs 3AEHIJ", venue:"সিয়াটল স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-02", time:"06:00", match:"1D vs 3BEFIJ", venue:"সান ফ্রান্সিসকো বে এরিয়া স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-03", time:"01:00", match:"1H vs 2J", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-03", time:"05:00", match:"2K vs 2L", venue:"টরন্টো স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-03", time:"09:00", match:"1B vs 3EFGIJ", venue:"বিসি প্লেস ভ্যাঙ্কুভার", stage:"Round of 32" },
-    { date:"2026-07-04", time:"00:00", match:"2D vs 2G", venue:"ডালাস স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-04", time:"04:00", match:"1J vs 2H", venue:"মিয়ামি স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-04", time:"07:30", match:"1K vs 3DEIJL", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Round of 32" },
-    
-    // Round of 16
-    { date:"2026-07-04", time:"23:00", match:"W73 vs W75", venue:"হিউস্টন স্টেডিয়াম", stage:"Round of 16" },
-    { date:"2026-07-05", time:"03:00", match:"W74 vs W77", venue:"ফিলাডেলফিয়া স্টেডিয়াম", stage:"Round of 16" },
-    { date:"2026-07-06", time:"02:00", match:"W76 vs W78", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Round of 16" },
-    { date:"2026-07-06", time:"06:00", match:"W79 vs W80", venue:"মেক্সিকো সিটি স্টেডিয়াম", stage:"Round of 16" },
-    { date:"2026-07-07", time:"01:00", match:"W83 vs W84", venue:"ডালাস স্টেডিয়াম", stage:"Round of 16" },
-    { date:"2026-07-07", time:"06:00", match:"W81 vs W82", venue:"সিয়াটল স্টেডিয়াম", stage:"Round of 16" },
-    { date:"2026-07-07", time:"22:00", match:"W86 vs W88", venue:"আটলান্টা স্টেডিয়াম", stage:"Round of 16" },
-    { date:"2026-07-08", time:"02:00", match:"W85 vs W87", venue:"বিসি প্লেস ভ্যাঙ্কুভার", stage:"Round of 16" },
-    
-    // Quarterfinals
-    { date:"2026-07-10", time:"02:00", match:"W89 vs W90", venue:"বোস্টন স্টেডিয়াম", stage:"Quarterfinals" },
-    { date:"2026-07-11", time:"01:00", match:"W93 vs W94", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Quarterfinals" },
-    { date:"2026-07-12", time:"03:00", match:"W91 vs W92", venue:"মিয়ামি স্টেডিয়াম", stage:"Quarterfinals" },
-    { date:"2026-07-12", time:"07:00", match:"W95 vs W96", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Quarterfinals" },
-    
-    // Semifinals
-    { date:"2026-07-15", time:"01:00", match:"W97 vs W98", venue:"ডালাস স্টেডিয়াম", stage:"Semifinals" },
-    { date:"2026-07-16", time:"01:00", match:"W99 vs W100", venue:"আটলান্টা স্টেডিয়াম", stage:"Semifinals" },
-    
-    // Third Place
-    { date:"2026-07-19", time:"03:00", match:"RU101 vs RU102", venue:"মিয়ামি স্টেডিয়াম", stage:"3rd Place" },
-    
-    // Final
-    { date:"2026-07-20", time:"01:00", match:"W101 vs W102", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Final" }
+    // নকআউট পর্ব
+    { date:"2026-06-29", time:"01:00", match:"২এ বনাম ২বি", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-06-29", time:"23:00", match:"১সি বনাম ২এফ", venue:"হিউস্টন স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-06-30", time:"02:30", match:"১ই বনাম ৩এবিসিডিএফ", venue:"বোস্টন স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-06-30", time:"07:00", match:"১এফ বনাম ২সি", venue:"মন্টেররে স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-06-30", time:"23:00", match:"২ই বনাম ২আই", venue:"ডালাস স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-01", time:"03:00", match:"১আই বনাম ৩সিডিএফজিএইচ", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-01", time:"07:00", match:"১এ বনাম ৩সিইএফএইচআই", venue:"মেক্সিকো সিটি স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-01", time:"22:00", match:"১এল বনাম ৩ইএইচআইজেকে", venue:"আটলান্টা স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-02", time:"02:00", match:"১জি বনাম ৩এইএইচআইজে", venue:"সিয়াটল স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-02", time:"06:00", match:"১ডি বনাম ৩বিইএফআইজে", venue:"সান ফ্রান্সিসকো বে এরিয়া স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-03", time:"01:00", match:"১এইচ বনাম ২জে", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-03", time:"05:00", match:"২কে বনাম ২এল", venue:"টরন্টো স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-03", time:"09:00", match:"১বি বনাম ৩ইএফজিআইজে", venue:"বিসি প্লেস ভ্যাঙ্কুভার", stage:"Round of 32" },
+    { date:"2026-07-04", time:"00:00", match:"২ডি বনাম ২জি", venue:"ডালাস স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-04", time:"04:00", match:"১জে বনাম ২এইচ", venue:"মিয়ামি স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-04", time:"07:30", match:"১কে বনাম ৩ডিইআইজেএল", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Round of 32" },
+    // ১৬ দলের পর্ব
+    { date:"2026-07-04", time:"23:00", match:"ডাব্লিউ৭৩ বনাম ডাব্লিউ৭৫", venue:"হিউস্টন স্টেডিয়াম", stage:"Round of 16" },
+    { date:"2026-07-05", time:"03:00", match:"ডাব্লিউ৭৪ বনাম ডাব্লিউ৭৭", venue:"ফিলাডেলফিয়া স্টেডিয়াম", stage:"Round of 16" },
+    { date:"2026-07-06", time:"02:00", match:"ডাব্লিউ৭৬ বনাম ডাব্লিউ৭৮", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Round of 16" },
+    { date:"2026-07-06", time:"06:00", match:"ডাব্লিউ৭৯ বনাম ডাব্লিউ৮০", venue:"মেক্সিকো সিটি স্টেডিয়াম", stage:"Round of 16" },
+    { date:"2026-07-07", time:"01:00", match:"ডাব্লিউ৮৩ বনাম ডাব্লিউ৮৪", venue:"ডালাস স্টেডিয়াম", stage:"Round of 16" },
+    { date:"2026-07-07", time:"06:00", match:"ডাব্লিউ৮১ বনাম ডাব্লিউ৮২", venue:"সিয়াটল স্টেডিয়াম", stage:"Round of 16" },
+    { date:"2026-07-07", time:"22:00", match:"ডাব্লিউ৮৬ বনাম ডাব্লিউ৮৮", venue:"আটলান্টা স্টেডিয়াম", stage:"Round of 16" },
+    { date:"2026-07-08", time:"02:00", match:"ডাব্লিউ৮৫ বনাম ডাব্লিউ৮৭", venue:"বিসি প্লেস ভ্যাঙ্কুভার", stage:"Round of 16" },
+    // কোয়ার্টার-ফাইনাল
+    { date:"2026-07-10", time:"02:00", match:"ডাব্লিউ৮৯ বনাম ডাব্লিউ৯০", venue:"বোস্টন স্টেডিয়াম", stage:"Quarterfinals" },
+    { date:"2026-07-11", time:"01:00", match:"ডাব্লিউ৯৩ বনাম ডাব্লিউ৯৪", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Quarterfinals" },
+    { date:"2026-07-12", time:"03:00", match:"ডাব্লিউ৯১ বনাম ডাব্লিউ৯২", venue:"মিয়ামি স্টেডিয়াম", stage:"Quarterfinals" },
+    { date:"2026-07-12", time:"07:00", match:"ডাব্লিউ৯৫ বনাম ডাব্লিউ৯৬", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Quarterfinals" },
+    // সেমি-ফাইনাল
+    { date:"2026-07-15", time:"01:00", match:"ডাব্লিউ৯৭ বনাম ডাব্লিউ৯৮", venue:"ডালাস স্টেডিয়াম", stage:"Semifinals" },
+    { date:"2026-07-16", time:"01:00", match:"ডাব্লিউ৯৯ বনাম ডাব্লিউ১০০", venue:"আটলান্টা স্টেডিয়াম", stage:"Semifinals" },
+    // ৩য় স্থান
+    { date:"2026-07-19", time:"03:00", match:"আরইউ১০১ বনাম আরইউ১০২", venue:"মিয়ামি স্টেডিয়াম", stage:"3rd Place" },
+    // ফাইনাল
+    { date:"2026-07-20", time:"01:00", match:"ডাব্লিউ১০১ বনাম ডাব্লিউ১০২", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Final" }
   ];
 
   function parseMatchDateTime(dateStr, timeStr) {
@@ -419,11 +322,10 @@
     return d.toLocaleDateString("bn-BD", { weekday:"short", month:"short", day:"numeric" }).toUpperCase();
   }
 
-  let currentState = { now: new Date(), selectedStage: "Group Stage", searchQuery: "", showGroups: false };
+  let currentState = { now: new Date(), selectedStage: "Group Stage", showGroups: false };
   let intervalId = null;
 
-  function setStage(stage) { currentState.selectedStage = stage; currentState.searchQuery = ""; renderApp(); }
-  function setSearchQuery(q) { currentState.searchQuery = q; renderApp(); }
+  function setStage(stage) { currentState.selectedStage = stage; renderApp(); }
   function toggleGroups() { currentState.showGroups = !currentState.showGroups; renderApp(); }
   function getNextMatch(fixturesWithDT) { return fixturesWithDT.filter(f => f.dt > currentState.now).sort((a,b) => a.dt - b.dt)[0] || null; }
 
@@ -434,21 +336,23 @@
     const nextMatch = getNextMatch(enriched);
     const cd = nextMatch ? formatCountdown(nextMatch.dt - currentState.now) : null;
     let stageMatches = fixturesRaw.filter(f => f.stage === currentState.selectedStage);
-    const searchLow = currentState.searchQuery.toLowerCase();
-    if (searchLow) {
-      stageMatches = stageMatches.filter(f => (f.match || "").toLowerCase().includes(searchLow) || (f.venue || "").toLowerCase().includes(searchLow) || (f.group || "").toLowerCase().includes(searchLow));
-    }
     const byDate = {};
     stageMatches.forEach(f => { byDate[f.date] = byDate[f.date] || []; byDate[f.date].push(f); });
     
+    // গ্রুপ প্যানেল (বাংলায় গ্রুপের নাম)
     let groupsPanelHtml = "";
     if (currentState.showGroups) {
-      groupsPanelHtml = `<div class="groups-grid">${Object.entries(groupsList).map(([g, teams]) => `<div class="group-card" style="border-left: 3px solid ${groupColors[g]};"><div style="font-size: 12px; font-weight: bold; color: ${groupColors[g]}; margin-bottom: 6px;">গ্রুপ ${g}</div>${teams.map(team => `<div class="group-team">${getFlag(team)} ${team}</div>`).join('')}</div>`).join('')}</div>`;
+      groupsPanelHtml = `<div class="groups-grid">${Object.entries(groupsData).map(([gBn, teams]) => `
+        <div class="group-card" style="border-left: 3px solid ${groupColors[gBn]};">
+          <div style="font-size: 12px; font-weight: bold; color: ${groupColors[gBn]}; margin-bottom: 6px;">গ্রুপ ${gBn}</div>
+          ${teams.map(team => `<div class="group-team">${getFlag(team)} ${countryBn[team] || team}</div>`).join('')}
+        </div>
+      `).join('')}</div>`;
     }
     
     let fixturesHtml = "";
     if (Object.keys(byDate).length === 0) {
-      fixturesHtml = `<div style="text-align:center; color:#2a4a6a; padding:40px 0;">🚫 কোন ম্যাচ পাওয়া যায়নি${searchLow ? ` "${currentState.searchQuery}"` : ""}.</div>`;
+      fixturesHtml = `<div style="text-align:center; color:#2a4a6a; padding:40px 0;">🚫 কোন ম্যাচ পাওয়া যায়নি</div>`;
     } else {
       fixturesHtml = Object.entries(byDate).map(([date, matches]) => {
         const dateHeader = formatDateHeader(date);
@@ -456,23 +360,59 @@
           const mDT = parseMatchDateTime(m.date, m.time);
           const isPast = mDT < currentState.now;
           const isNextFlag = nextMatch && nextMatch.match === m.match && nextMatch.date === m.date && nextMatch.time === m.time;
-          const groupCol = m.group ? groupColors[m.group] : (isNextFlag ? "#c5a028" : "#2a4a6a");
-          const matchWithFlags = m.match.includes(" vs ") ? addFlagsToMatch(m.match) : m.match;
+          const groupBn = m.group ? groupNamesBn[m.group] : null;
+          const groupCol = groupBn ? groupColors[groupBn] : (isNextFlag ? "#c5a028" : "#2a4a6a");
+          let matchWithFlags = m.match;
+          if (m.match && m.match.includes(" vs ") && !m.match.includes("বনাম")) {
+            matchWithFlags = formatMatchWithBn(m.match);
+          } else if (m.match && (m.match.includes("বনাম") || m.match.includes("ডাব্লিউ") || m.match.includes("আরইউ"))) {
+            matchWithFlags = m.match;
+          } else if (m.match && m.match.includes(" vs ")) {
+            matchWithFlags = formatMatchWithBn(m.match);
+          }
           const timeObj = formatTime12(m.time);
-          return `<div style="background: ${isNextFlag ? 'rgba(197,160,40,0.12)' : isPast ? 'rgba(255,255,255,0.015)' : 'rgba(255,255,255,0.04)'}; border-left: 3px solid ${groupCol}; border-radius: 12px; padding: 12px; margin-bottom: 10px; position: relative; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">${isNextFlag ? `<div style="position: absolute; top: -9px; right: 10px; background: #c5a028; color: #041226; font-size: 8px; font-weight: bold; padding: 2px 12px; border-radius: 40px;">পরবর্তী</div>` : ''}<div class="time-badge"><div><span class="time-hour">${timeObj.hour}:${timeObj.minute}</span><span class="time-ampm">${timeObj.ampm}</span></div><div class="time-label">বিএসটি</div></div>${m.group ? `<div style="width: 30px; height: 30px; border-radius: 50%; background: ${groupColors[m.group]}; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #fff;">${m.group}</div>` : `<div style="width: 30px;"></div>`}<div style="flex: 1; min-width: 150px;"><div style="font-size: 14px; font-weight: 600; color: ${isPast ? '#809cb0' : '#fdf6e3'}; line-height: 1.4;">${matchWithFlags}</div><div style="font-size: 10px; color: #6f8faa; margin-top: 5px;">📍 ${m.venue}</div></div>${isPast ? `<span style="font-size: 9px; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 25px;">সমাপ্ত</span>` : ''}</div>`;
+          const groupDisplay = groupBn ? `<div style="width: 30px; height: 30px; border-radius: 50%; background: ${groupColors[groupBn]}; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #fff;">${groupBn}</div>` : `<div style="width: 30px;"></div>`;
+          
+          return `<div style="background: ${isNextFlag ? 'rgba(197,160,40,0.12)' : isPast ? 'rgba(255,255,255,0.015)' : 'rgba(255,255,255,0.04)'}; border-left: 3px solid ${groupCol}; border-radius: 12px; padding: 12px; margin-bottom: 10px; position: relative; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            ${isNextFlag ? `<div style="position: absolute; top: -9px; right: 10px; background: #c5a028; color: #041226; font-size: 8px; font-weight: bold; padding: 2px 12px; border-radius: 40px;">পরবর্তী</div>` : ''}
+            <div class="time-badge"><div><span class="time-hour">${timeObj.hour}:${timeObj.minute}</span><span class="time-ampm">${timeObj.ampm}</span></div><div class="time-label">বিএসটি</div></div>
+            ${groupDisplay}
+            <div style="flex: 1; min-width: 150px;"><div style="font-size: 14px; font-weight: 600; color: ${isPast ? '#809cb0' : '#fdf6e3'}; line-height: 1.4;">${matchWithFlags}</div><div style="font-size: 10px; color: #6f8faa; margin-top: 5px;">📍 ${m.venue}</div></div>
+            ${isPast ? `<span style="font-size: 9px; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 25px;">সমাপ্ত</span>` : ''}
+          </div>`;
         }).join('');
         return `<div style="margin-bottom: 28px;"><div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;"><div style="background: linear-gradient(135deg, #c5a028, #e6cf6e); color: #041226; font-weight: bold; font-size: 10px; padding: 4px 16px; border-radius: 40px;">${dateHeader}</div><div style="flex: 1; height: 1px; background: radial-gradient(circle, rgba(197,160,40,0.4), transparent);"></div></div>${matchesHtml}</div>`;
       }).join('');
     }
     
-    const nextMatchFlagged = nextMatch ? (nextMatch.match.includes(" vs ") ? addFlagsToMatch(nextMatch.match) : nextMatch.match) : "";
+    const nextMatchFlagged = nextMatch ? (nextMatch.match.includes(" vs ") && !nextMatch.match.includes("বনাম") ? formatMatchWithBn(nextMatch.match) : nextMatch.match) : "";
     const timeObjNext = nextMatch ? formatTime12(nextMatch.time) : null;
-    const countdownHtml = nextMatch ? `<div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px 16px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 8px 32px rgba(0,0,0,0.4);"><div style="font-size: 9px; letter-spacing: 3px; color: #FFD700;">⚽ পরবর্তী ম্যাচ - বাংলাদেশ মান সময়</div><div style="font-size: clamp(14px, 4vw, 20px); font-weight: bold; color: #FFD700; margin-top: 5px;">${nextMatchFlagged}</div><div style="font-size: 10px; color: #FFD700; margin-bottom: 12px;">${formatDateHeader(nextMatch.date)} · ${timeObjNext.hour}:${timeObjNext.minute} ${timeObjNext.ampm} বিএসটি · 📍 ${nextMatch.venue}</div><div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">${[["দিন", cd.d], ["ঘণ্টা", cd.h], ["মিনিট", cd.m], ["সেকেন্ড", cd.s]].map(([lbl, val]) => `<div style="background: rgba(0,0,0,0.5); border: 1px solid #FFD700; border-radius: 12px; padding: 8px 12px; min-width: 60px; text-align: center;"><div style="font-size: 22px; font-weight: bold; color: #FFD700; line-height: 1;">${pad(val)}</div><div style="font-size: 8px; color: #FFD700;">${lbl}</div></div>`).join('')}</div></div>` : `<div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px; text-align: center; color: #FFD700; font-size: 18px;">🏆 প্রতিযোগিতা সমাপ্ত!</div>`;
+    const countdownHtml = nextMatch && cd ? `<div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px 16px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 8px 32px rgba(0,0,0,0.4);">
+      <div style="font-size: 9px; letter-spacing: 3px; color: #FFD700;">⚽ পরবর্তী ম্যাচ - বাংলাদেশ মান সময়</div>
+      <div style="font-size: clamp(14px, 4vw, 20px); font-weight: bold; color: #FFD700; margin-top: 5px;">${nextMatchFlagged}</div>
+      <div style="font-size: 10px; color: #FFD700; margin-bottom: 12px;">${formatDateHeader(nextMatch.date)} · ${timeObjNext.hour}:${timeObjNext.minute} ${timeObjNext.ampm} বিএসটি · 📍 ${nextMatch.venue}</div>
+      <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+        <div class="countdown-box"><div class="countdown-number">${pad(cd.d)}</div><div class="countdown-label">দিন</div></div>
+        <div class="countdown-box"><div class="countdown-number">${pad(cd.h)}</div><div class="countdown-label">ঘণ্টা</div></div>
+        <div class="countdown-box"><div class="countdown-number">${pad(cd.m)}</div><div class="countdown-label">মিনিট</div></div>
+        <div class="countdown-box"><div class="countdown-number">${pad(cd.s)}</div><div class="countdown-label">সেকেন্ড</div></div>
+      </div>
+    </div>` : `<div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px; text-align: center; color: #FFD700; font-size: 18px;">🏆 প্রতিযোগিতা সমাপ্ত!</div>`;
     
-    const fullHtml = `<div style="min-height: 100vh;">${countdownHtml}<div style="background: rgba(4,18,38,0.96); padding: 14px 16px; text-align: center; border-bottom: 1px solid rgba(197,160,40,0.15);"><div style="font-size: 8px; letter-spacing: 3px; color: #c5a028;">ফিফা বিশ্বকাপ ২০২৬ · কানাডা · মেক্সিকো · ইউএসএ</div><h1 style="font-size: clamp(16px, 5vw, 24px); margin: 4px 0; color: #fff;">🇧🇩 সম্পূর্ণ সূচি — বাংলাদেশ সময়</h1><div style="font-size: 9px; color: #2e5570;">সময় বিএসটি (ইউটিসি+৬) · ১০৪ ম্যাচ · ৪৮ দল</div><button id="toggleGroupsBtn" class="group-tag-btn" style="margin-top: 12px;">📋 ${currentState.showGroups ? "▲ গ্রুপ লুকান" : "▼ সব গ্রুপ দেখুন"}</button><div id="groupsPanel" style="margin-top: 8px;">${groupsPanelHtml}</div><input id="searchInput" class="search-input" type="text" placeholder="🔍 দল, ভেন্যু বা গ্রুপ অনুসন্ধান করুন..." value="${currentState.searchQuery.replace(/"/g, '&quot;')}" style="margin: 14px auto 12px auto; max-width: 340px;"><div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 4px;">${stageListEnglish.map((s, idx) => `<button data-stage="${s}" class="stage-btn ${currentState.selectedStage === s ? 'active' : ''}">${stageListBengali[idx]}</button>`).join('')}</div></div><div style="background: rgba(10,30,58,0.6); padding: 6px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; align-items: center;"><span style="font-size: 10px; font-weight: bold; color: #c5a028;">${stageListBengali[stageListEnglish.indexOf(currentState.selectedStage)]}</span><span style="font-size: 10px; color: rgba(255,255,255,0.3);">— ${stageMatches.length} ম্যাচ</span></div><div class="fixture-container">${fixturesHtml}</div><div style="border-top: 1px solid rgba(197,160,40,0.1); padding: 20px; text-align: center; font-size: 9px; color: #1e3a54;">🇧🇩 বিএসটি (ইউটিসি+৬) · অফিসিয়াল ফিফা ২০২৬ সূচি · ৪৮ দল</div></div>`;
+    const fullHtml = `<div style="min-height: 100vh;">${countdownHtml}<div style="background: rgba(4,18,38,0.96); padding: 14px 16px; text-align: center; border-bottom: 1px solid rgba(197,160,40,0.15);">
+      <div style="font-size: 8px; letter-spacing: 3px; color: #c5a028;">ফিফা বিশ্বকাপ ২০২৬ · কানাডা · মেক্সিকো · মার্কিন যুক্তরাষ্ট্র</div>
+      <h1 style="font-size: clamp(16px, 5vw, 24px); margin: 4px 0; color: #fff; line-height: 1.2;">🇧🇩 সম্পূর্ণ সূচি — বাংলাদেশ সময়</h1>
+      <div style="font-size: 9px; color: #2e5570;">সময় বিএসটি (ইউটিসি+৬) · ১০৪ ম্যাচ · ৪৮ দল</div>
+      <button id="toggleGroupsBtn" class="group-tag-btn" style="margin-top: 12px;">📋 ${currentState.showGroups ? "▲ গ্রুপ লুকান" : "▼ সব গ্রুপ দেখুন"}</button>
+      <div id="groupsPanel" style="margin-top: 8px;">${groupsPanelHtml}</div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 12px;">${stageListEn.map((s, idx) => `<button data-stage="${s}" class="stage-btn ${currentState.selectedStage === s ? 'active' : ''}">${stageListBn[idx]}</button>`).join('')}</div>
+    </div>
+    <div style="background: rgba(10,30,58,0.6); padding: 6px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; align-items: center;"><span style="font-size: 10px; font-weight: bold; color: #c5a028;">${stageListBn[stageListEn.indexOf(currentState.selectedStage)]}</span><span style="font-size: 10px; color: rgba(255,255,255,0.3);">— ${stageMatches.length} ম্যাচ</span></div>
+    <div class="fixture-container">${fixturesHtml}</div>
+    <div style="border-top: 1px solid rgba(197,160,40,0.1); padding: 20px; text-align: center; font-size: 9px; color: #1e3a54;">🇧🇩 বিএসটি (ইউটিসি+৬) · অফিসিয়াল ফিফা ২০২৬ সূচি · ৪৮ দল</div>
+    </div>`;
     root.innerHTML = fullHtml;
     document.getElementById("toggleGroupsBtn")?.addEventListener("click", toggleGroups);
-    document.getElementById("searchInput")?.addEventListener("input", (e) => setSearchQuery(e.target.value));
     document.querySelectorAll("[data-stage]").forEach(btn => btn.addEventListener("click", (e) => { const stage = btn.getAttribute("data-stage"); if(stage) setStage(stage); }));
   }
   
