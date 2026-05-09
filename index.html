@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>FIFA World Cup 2026 · Bangladesh Time | Full Fixtures</title>
+  <title>FIFA World Cup 2026 · Official Fixtures | Bangladesh Time</title>
   <style>
     * {
       margin: 0;
@@ -126,13 +126,6 @@
       white-space: nowrap;
     }
     
-    .match-text {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-    }
-    
     .group-card {
       background: rgba(255,255,255,0.03);
       border-radius: 8px;
@@ -160,14 +153,42 @@
       margin: 0 2px;
     }
     
+    .time-badge {
+      background: rgba(0,0,0,0.5);
+      border-radius: 28px;
+      padding: 6px 10px;
+      text-align: center;
+      min-width: 75px;
+    }
+    
+    .time-hour {
+      font-weight: bold;
+      font-size: 13px;
+      color: #f3e5ab;
+      letter-spacing: 0.5px;
+    }
+    
+    .time-ampm {
+      font-size: 8px;
+      color: #FFD700;
+      margin-left: 2px;
+      font-weight: bold;
+    }
+    
+    .time-label {
+      font-size: 7px;
+      color: #7a9abf;
+      margin-top: 2px;
+    }
+    
     @media (max-width: 480px) {
       .team-name {
         white-space: normal;
         word-break: keep-all;
       }
-      .match-text {
-        flex-wrap: wrap;
-        gap: 4px;
+      .time-badge {
+        min-width: 65px;
+        padding: 4px 8px;
       }
     }
   </style>
@@ -178,63 +199,49 @@
 <script>
   // ================= FLAG MAP (ISO CODES) =================
   const flagMap = {
-    Mexico:"mx", "South Africa":"za", "South Korea":"kr", "Czech Republic":"cz",
-    Canada:"ca", "Bosnia & Herzegovina":"ba", "Bosnia & Herz.":"ba", "Qatar":"qa", "Switzerland":"ch",
+    Mexico:"mx", "South Africa":"za", "Korea Republic":"kr", "Czech Republic":"cz", "Czechia":"cz",
+    Canada:"ca", "Bosnia and Herzegovina":"ba", "Bosnia & Herzegovina":"ba", "Qatar":"qa", "Switzerland":"ch",
     Brazil:"br", "Morocco":"ma", "Haiti":"ht", "Scotland":"gb-sct",
-    USA:"us", "Paraguay":"py", "Australia":"au", "Turkey":"tr",
-    Germany:"de", "Curaçao":"cw", "Ivory Coast":"ci", "Ecuador":"ec",
+    USA:"us", "Paraguay":"py", "Australia":"au", "Turkey":"tr", "Türkiye":"tr",
+    Germany:"de", "Curaçao":"cw", "Côte d'Ivoire":"ci", "Ivory Coast":"ci", "Ecuador":"ec",
     Netherlands:"nl", "Japan":"jp", "Sweden":"se", "Tunisia":"tn",
-    Belgium:"be", "Egypt":"eg", "Iran":"ir", "New Zealand":"nz",
-    Spain:"es", "Cape Verde":"cv", "Saudi Arabia":"sa", "Uruguay":"uy",
+    Belgium:"be", "Egypt":"eg", "IR Iran":"ir", "Iran":"ir", "New Zealand":"nz",
+    Spain:"es", "Cabo Verde":"cv", "Cape Verde":"cv", "Saudi Arabia":"sa", "Uruguay":"uy",
     France:"fr", "Senegal":"sn", "Iraq":"iq", "Norway":"no",
     Argentina:"ar", "Algeria":"dz", "Austria":"at", "Jordan":"jo",
-    Portugal:"pt", "Congo":"cg", "Uzbekistan":"uz", "Colombia":"co",
+    Portugal:"pt", "Congo DR":"cg", "Congo":"cg", "Uzbekistan":"uz", "Colombia":"co",
     England:"gb-eng", "Croatia":"hr", "Ghana":"gh", "Panama":"pa"
   };
 
-  // ================= GET REAL FLAG IMAGE =================
   function getFlag(country){
     const code = flagMap[country];
     if(!code) return "🏳️";
-    return `<img src="https://flagcdn.com/24x18/${code}.png"
-                 class="flag-img"
-                 alt="${country} flag"
-                 loading="lazy">`;
+    return `<img src="https://flagcdn.com/24x18/${code}.png" class="flag-img" alt="${country} flag" loading="lazy">`;
   }
 
-  // ================= FORMAT MATCH WITH FLAGS =================
   function addFlagsToMatch(match){
     if(!match) return "";
-    if(match.includes("WORLD CUP FINAL")) return "🏆 WORLD CUP FINAL";
-
+    if(match.includes("FINAL") || match.includes("Quarter") || match.includes("Semi") || match.includes("Round of")) return match;
     if(match.includes(" vs ")){
       const [a, b] = match.split(" vs ");
-      return `
-        <span class="team-name">
-          ${getFlag(a.trim())} ${a.trim()}
-        </span>
-        <b>vs</b>
-        <span class="team-name">
-          ${getFlag(b.trim())} ${b.trim()}
-        </span>
-      `;
+      return `<span class="team-name">${getFlag(a.trim())} ${a.trim()}</span> <b>vs</b> <span class="team-name">${getFlag(b.trim())} ${b.trim()}</span>`;
     }
     return match;
   }
 
-  // Groups with team names
+  // Groups
   const groupsList = {
-    A: ["Mexico", "South Africa", "South Korea", "Czech Republic"],
-    B: ["Canada", "Bosnia & Herzegovina", "Qatar", "Switzerland"],
+    A: ["Mexico", "South Africa", "Korea Republic", "Czech Republic"],
+    B: ["Canada", "Bosnia and Herzegovina", "Qatar", "Switzerland"],
     C: ["Brazil", "Morocco", "Haiti", "Scotland"],
     D: ["USA", "Paraguay", "Australia", "Turkey"],
-    E: ["Germany", "Curaçao", "Ivory Coast", "Ecuador"],
+    E: ["Germany", "Curaçao", "Côte d'Ivoire", "Ecuador"],
     F: ["Netherlands", "Japan", "Sweden", "Tunisia"],
-    G: ["Belgium", "Egypt", "Iran", "New Zealand"],
-    H: ["Spain", "Cape Verde", "Saudi Arabia", "Uruguay"],
+    G: ["Belgium", "Egypt", "IR Iran", "New Zealand"],
+    H: ["Spain", "Cabo Verde", "Saudi Arabia", "Uruguay"],
     I: ["France", "Senegal", "Iraq", "Norway"],
     J: ["Argentina", "Algeria", "Austria", "Jordan"],
-    K: ["Portugal", "Congo", "Uzbekistan", "Colombia"],
+    K: ["Portugal", "Congo DR", "Uzbekistan", "Colombia"],
     L: ["England", "Croatia", "Ghana", "Panama"]
   };
 
@@ -246,111 +253,157 @@
 
   const stageList = ["Group Stage","Round of 32","Round of 16","Quarterfinals","Semifinals","3rd Place","Final"];
 
-  // Full fixtures data
+  // ================= CORRECTED FIXTURES FROM OFFICIAL IMAGES =================
   const fixturesRaw = [
-    { date:"2026-06-11", time:"13:00", group:"A", match:"Mexico vs South Africa", venue:"Mexico City", stage:"Group Stage" },
-    { date:"2026-06-12", time:"01:00", group:"B", match:"Canada vs Bosnia & Herzegovina", venue:"Toronto", stage:"Group Stage" },
-    { date:"2026-06-12", time:"08:00", group:"A", match:"South Korea vs Czech Republic", venue:"Guadalajara", stage:"Group Stage" },
-    { date:"2026-06-13", time:"01:00", group:"B", match:"Qatar vs Switzerland", venue:"San Francisco", stage:"Group Stage" },
-    { date:"2026-06-13", time:"07:00", group:"D", match:"USA vs Paraguay", venue:"Los Angeles", stage:"Group Stage" },
-    { date:"2026-06-13", time:"10:00", group:"D", match:"Australia vs Turkey", venue:"Vancouver", stage:"Group Stage" },
-    { date:"2026-06-14", time:"02:00", group:"F", match:"Netherlands vs Japan", venue:"Dallas", stage:"Group Stage" },
-    { date:"2026-06-14", time:"04:00", group:"C", match:"Brazil vs Morocco", venue:"New York–New Jersey", stage:"Group Stage" },
-    { date:"2026-06-14", time:"07:00", group:"C", match:"Haiti vs Scotland", venue:"Boston", stage:"Group Stage" },
-    { date:"2026-06-14", time:"23:00", group:"E", match:"Germany vs Curaçao", venue:"Houston", stage:"Group Stage" },
-    { date:"2026-06-15", time:"01:00", group:"G", match:"Belgium vs Egypt", venue:"Seattle", stage:"Group Stage" },
-    { date:"2026-06-15", time:"05:00", group:"E", match:"Ivory Coast vs Ecuador", venue:"Philadelphia", stage:"Group Stage" },
-    { date:"2026-06-15", time:"08:00", group:"F", match:"Sweden vs Tunisia", venue:"Monterrey", stage:"Group Stage" },
-    { date:"2026-06-15", time:"22:00", group:"H", match:"Spain vs Cape Verde", venue:"Atlanta", stage:"Group Stage" },
-    { date:"2026-06-16", time:"01:00", group:"I", match:"France vs Senegal", venue:"New York–New Jersey", stage:"Group Stage" },
-    { date:"2026-06-16", time:"04:00", group:"H", match:"Saudi Arabia vs Uruguay", venue:"Miami", stage:"Group Stage" },
-    { date:"2026-06-16", time:"07:00", group:"G", match:"Iran vs New Zealand", venue:"Los Angeles", stage:"Group Stage" },
-    { date:"2026-06-16", time:"10:00", group:"J", match:"Austria vs Jordan", venue:"San Francisco", stage:"Group Stage" },
-    { date:"2026-06-17", time:"02:00", group:"L", match:"England vs Croatia", venue:"Dallas", stage:"Group Stage" },
-    { date:"2026-06-17", time:"04:00", group:"I", match:"Iraq vs Norway", venue:"Boston", stage:"Group Stage" },
-    { date:"2026-06-17", time:"07:00", group:"J", match:"Argentina vs Algeria", venue:"Kansas City", stage:"Group Stage" },
-    { date:"2026-06-17", time:"11:00", group:"K", match:"Portugal vs Congo", venue:"Houston", stage:"Group Stage" },
-    { date:"2026-06-18", time:"02:00", group:"L", match:"Ghana vs Panama", venue:"Toronto", stage:"Group Stage" },
-    { date:"2026-06-18", time:"08:00", group:"K", match:"Uzbekistan vs Colombia", venue:"Mexico City", stage:"Group Stage" },
-    { date:"2026-06-18", time:"10:00", group:"A", match:"Czech Republic vs South Africa", venue:"Atlanta", stage:"Group Stage" },
-    { date:"2026-06-19", time:"01:00", group:"B", match:"Switzerland vs Bosnia & Herz.", venue:"Los Angeles", stage:"Group Stage" },
-    { date:"2026-06-19", time:"04:00", group:"B", match:"Canada vs Qatar", venue:"Vancouver", stage:"Group Stage" },
-    { date:"2026-06-19", time:"07:00", group:"A", match:"Mexico vs South Korea", venue:"Guadalajara", stage:"Group Stage" },
-    { date:"2026-06-19", time:"10:00", group:"D", match:"Turkey vs Paraguay", venue:"San Francisco", stage:"Group Stage" },
-    { date:"2026-06-20", time:"01:00", group:"D", match:"USA vs Australia", venue:"Seattle", stage:"Group Stage" },
-    { date:"2026-06-20", time:"04:00", group:"C", match:"Scotland vs Morocco", venue:"Boston", stage:"Group Stage" },
-    { date:"2026-06-20", time:"07:00", group:"C", match:"Brazil vs Haiti", venue:"Philadelphia", stage:"Group Stage" },
-    { date:"2026-06-20", time:"10:00", group:"F", match:"Tunisia vs Japan", venue:"Monterrey", stage:"Group Stage" },
-    { date:"2026-06-20", time:"23:00", group:"F", match:"Netherlands vs Sweden", venue:"Houston", stage:"Group Stage" },
-    { date:"2026-06-21", time:"01:00", group:"G", match:"Belgium vs Iran", venue:"Los Angeles", stage:"Group Stage" },
-    { date:"2026-06-21", time:"02:00", group:"E", match:"Germany vs Ivory Coast", venue:"Toronto", stage:"Group Stage" },
-    { date:"2026-06-21", time:"06:00", group:"E", match:"Ecuador vs Curaçao", venue:"Kansas City", stage:"Group Stage" },
-    { date:"2026-06-21", time:"10:00", group:"H", match:"Spain vs Saudi Arabia", venue:"Atlanta", stage:"Group Stage" },
-    { date:"2026-06-22", time:"04:00", group:"H", match:"Uruguay vs Cape Verde", venue:"Miami", stage:"Group Stage" },
-    { date:"2026-06-22", time:"07:00", group:"G", match:"New Zealand vs Egypt", venue:"Vancouver", stage:"Group Stage" },
-    { date:"2026-06-22", time:"23:00", group:"J", match:"Argentina vs Austria", venue:"Dallas", stage:"Group Stage" },
-    { date:"2026-06-23", time:"03:00", group:"I", match:"France vs Iraq", venue:"Philadelphia", stage:"Group Stage" },
-    { date:"2026-06-23", time:"06:00", group:"I", match:"Norway vs Senegal", venue:"New York–New Jersey", stage:"Group Stage" },
-    { date:"2026-06-23", time:"09:00", group:"J", match:"Jordan vs Algeria", venue:"San Francisco", stage:"Group Stage" },
-    { date:"2026-06-23", time:"11:00", group:"K", match:"Portugal vs Uzbekistan", venue:"Houston", stage:"Group Stage" },
-    { date:"2026-06-24", time:"02:00", group:"L", match:"England vs Ghana", venue:"Boston", stage:"Group Stage" },
-    { date:"2026-06-24", time:"05:00", group:"L", match:"Panama vs Croatia", venue:"Toronto", stage:"Group Stage" },
-    { date:"2026-06-24", time:"08:00", group:"K", match:"Colombia vs Congo", venue:"Guadalajara", stage:"Group Stage" },
-    { date:"2026-06-25", time:"01:00", group:"B", match:"Canada vs Switzerland", venue:"Vancouver", stage:"Group Stage" },
-    { date:"2026-06-25", time:"01:00", group:"B", match:"Bosnia & Herz. vs Qatar", venue:"Seattle", stage:"Group Stage" },
-    { date:"2026-06-25", time:"04:00", group:"C", match:"Scotland vs Brazil", venue:"Miami", stage:"Group Stage" },
-    { date:"2026-06-25", time:"04:00", group:"C", match:"Morocco vs Haiti", venue:"Atlanta", stage:"Group Stage" },
-    { date:"2026-06-25", time:"07:00", group:"A", match:"Mexico vs Czech Republic", venue:"Mexico City", stage:"Group Stage" },
-    { date:"2026-06-25", time:"07:00", group:"A", match:"South Korea vs South Africa", venue:"Monterrey", stage:"Group Stage" },
-    { date:"2026-06-26", time:"01:00", group:"I", match:"Norway vs France", venue:"Boston", stage:"Group Stage" },
-    { date:"2026-06-26", time:"01:00", group:"I", match:"Senegal vs Iraq", venue:"Toronto", stage:"Group Stage" },
-    { date:"2026-06-26", time:"05:00", group:"F", match:"Japan vs Sweden", venue:"Dallas", stage:"Group Stage" },
-    { date:"2026-06-26", time:"05:00", group:"F", match:"Tunisia vs Netherlands", venue:"Kansas City", stage:"Group Stage" },
-    { date:"2026-06-26", time:"08:00", group:"D", match:"USA vs Turkey", venue:"Los Angeles", stage:"Group Stage" },
-    { date:"2026-06-26", time:"08:00", group:"D", match:"Paraguay vs Australia", venue:"San Francisco", stage:"Group Stage" },
-    { date:"2026-06-26", time:"14:00", group:"E", match:"Ecuador vs Germany", venue:"New York–New Jersey", stage:"Group Stage" },
-    { date:"2026-06-27", time:"03:00", group:"L", match:"Panama vs England", venue:"New York–New Jersey", stage:"Group Stage" },
-    { date:"2026-06-27", time:"03:00", group:"L", match:"Croatia vs Ghana", venue:"Philadelphia", stage:"Group Stage" },
-    { date:"2026-06-27", time:"06:00", group:"H", match:"Uruguay vs Spain", venue:"Guadalajara", stage:"Group Stage" },
-    { date:"2026-06-27", time:"06:00", group:"H", match:"Cape Verde vs Saudi Arabia", venue:"Houston", stage:"Group Stage" },
-    { date:"2026-06-27", time:"09:00", group:"G", match:"New Zealand vs Belgium", venue:"Vancouver", stage:"Group Stage" },
-    { date:"2026-06-27", time:"09:00", group:"G", match:"Egypt vs Iran", venue:"Seattle", stage:"Group Stage" },
-    { date:"2026-06-28", time:"05:00", group:"K", match:"Colombia vs Portugal", venue:"Miami", stage:"Group Stage" },
-    { date:"2026-06-28", time:"05:00", group:"K", match:"Congo vs Uzbekistan", venue:"Atlanta", stage:"Group Stage" },
-    { date:"2026-06-28", time:"08:00", group:"J", match:"Jordan vs Argentina", venue:"Dallas", stage:"Group Stage" },
-    { date:"2026-06-28", time:"08:00", group:"J", match:"Algeria vs Austria", venue:"Kansas City", stage:"Group Stage" },
-    { date:"2026-06-28", time:"15:00", match:"R32: A2 vs B2", venue:"Los Angeles", stage:"Round of 32" },
-    { date:"2026-06-29", time:"14:30", match:"R32: E1 vs Best 3rd (A/B/C/D/F)", venue:"Boston", stage:"Round of 32" },
-    { date:"2026-06-29", time:"23:00", match:"R32: C1 vs Best 3rd (F)", venue:"Houston", stage:"Round of 32" },
-    { date:"2026-06-30", time:"03:00", match:"R32: I1 vs Best 3rd (C/D/F/G/H)", venue:"New York–New Jersey", stage:"Round of 32" },
-    { date:"2026-06-30", time:"07:00", match:"R32: F1 vs C2", venue:"Monterrey", stage:"Round of 32" },
-    { date:"2026-06-30", time:"23:00", match:"R32: E2 vs I2", venue:"Dallas", stage:"Round of 32" },
-    { date:"2026-07-01", time:"02:00", match:"R32: G1 vs Best 3rd (A/E/H/I/J)", venue:"Seattle", stage:"Round of 32" },
-    { date:"2026-07-01", time:"07:00", match:"R32: A1 vs Best 3rd (C/E/F/H/I)", venue:"Mexico City", stage:"Round of 32" },
-    { date:"2026-07-01", time:"10:00", match:"R32: L1 vs Best 3rd (E/F/H/I/J/K)", venue:"Atlanta", stage:"Round of 32" },
-    { date:"2026-07-02", time:"01:00", match:"R32: H1 vs J2", venue:"Los Angeles", stage:"Round of 32" },
-    { date:"2026-07-02", time:"06:00", match:"R32: D1 vs Best 3rd (B/E/F/I/J)", venue:"San Francisco", stage:"Round of 32" },
-    { date:"2026-07-03", time:"05:00", match:"R32: K2 vs L2", venue:"Toronto", stage:"Round of 32" },
-    { date:"2026-07-03", time:"09:00", match:"R32: B1 vs Best 3rd (E/F/G/I/J)", venue:"Vancouver", stage:"Round of 32" },
-    { date:"2026-07-03", time:"12:00", match:"R32: D2 vs G2", venue:"Dallas", stage:"Round of 32" },
-    { date:"2026-07-04", time:"04:00", match:"R32: J1 vs H2", venue:"Miami", stage:"Round of 32" },
-    { date:"2026-07-04", time:"07:30", match:"R32: K1 vs Best 3rd (D/E/I/J/L)", venue:"Kansas City", stage:"Round of 32" },
-    { date:"2026-07-04", time:"03:00", match:"R16: Match 89", venue:"Philadelphia", stage:"Round of 16" },
-    { date:"2026-07-04", time:"23:00", match:"R16: Match 90", venue:"Houston", stage:"Round of 16" },
-    { date:"2026-07-05", time:"02:00", match:"R16: Match 91", venue:"New York–New Jersey", stage:"Round of 16" },
-    { date:"2026-07-06", time:"01:00", match:"R16: Match 93", venue:"Dallas", stage:"Round of 16" },
-    { date:"2026-07-06", time:"06:00", match:"R16: Match 92", venue:"Mexico City", stage:"Round of 16" },
-    { date:"2026-07-07", time:"02:00", match:"R16: Match 96", venue:"Vancouver", stage:"Round of 16" },
-    { date:"2026-07-07", time:"06:00", match:"R16: Match 94", venue:"Seattle", stage:"Round of 16" },
-    { date:"2026-07-07", time:"22:00", match:"R16: Match 95", venue:"Atlanta", stage:"Round of 16" },
-    { date:"2026-07-09", time:"02:00", match:"QF1", venue:"Boston", stage:"Quarterfinals" },
-    { date:"2026-07-10", time:"11:00", match:"QF2", venue:"Los Angeles", stage:"Quarterfinals" },
-    { date:"2026-07-11", time:"03:00", match:"QF3", venue:"Miami", stage:"Quarterfinals" },
-    { date:"2026-07-12", time:"07:00", match:"QF4", venue:"Kansas City", stage:"Quarterfinals" },
-    { date:"2026-07-14", time:"01:00", match:"SF1: Winner QF1 vs Winner QF2", venue:"Dallas", stage:"Semifinals" },
-    { date:"2026-07-15", time:"01:00", match:"SF2: Winner QF3 vs Winner QF4", venue:"Atlanta", stage:"Semifinals" },
-    { date:"2026-07-18", time:"15:00", match:"3rd Place Match", venue:"Miami", stage:"3rd Place" },
-    { date:"2026-07-20", time:"01:00", match:"WORLD CUP FINAL", venue:"MetLife Stadium, New York–New Jersey", stage:"Final" }
+    // Friday 12 June 2026
+    { date:"2026-06-12", time:"01:00", group:"B", match:"Canada vs Bosnia and Herzegovina", venue:"Toronto Stadium", stage:"Group Stage" },
+    { date:"2026-06-12", time:"08:00", group:"A", match:"Korea Republic vs Czech Republic", venue:"Guadalajara Stadium", stage:"Group Stage" },
+    
+    // Saturday 13 June 2026
+    { date:"2026-06-13", time:"01:00", group:"B", match:"Qatar vs Switzerland", venue:"San Francisco Bay Area Stadium", stage:"Group Stage" },
+    { date:"2026-06-13", time:"07:00", group:"D", match:"USA vs Paraguay", venue:"Los Angeles Stadium", stage:"Group Stage" },
+    { date:"2026-06-13", time:"10:00", group:"D", match:"Australia vs Turkey", venue:"BC Place Vancouver", stage:"Group Stage" },
+    
+    // Sunday 14 June 2026
+    { date:"2026-06-14", time:"02:00", group:"F", match:"Netherlands vs Japan", venue:"Dallas Stadium", stage:"Group Stage" },
+    { date:"2026-06-14", time:"04:00", group:"C", match:"Brazil vs Morocco", venue:"New York/New Jersey Stadium", stage:"Group Stage" },
+    { date:"2026-06-14", time:"07:00", group:"C", match:"Haiti vs Scotland", venue:"Boston Stadium", stage:"Group Stage" },
+    { date:"2026-06-14", time:"23:00", group:"E", match:"Germany vs Curaçao", venue:"Houston Stadium", stage:"Group Stage" },
+    
+    // Monday 15 June 2026
+    { date:"2026-06-15", time:"01:00", group:"G", match:"Belgium vs Egypt", venue:"Seattle Stadium", stage:"Group Stage" },
+    { date:"2026-06-15", time:"05:00", group:"E", match:"Côte d'Ivoire vs Ecuador", venue:"Philadelphia Stadium", stage:"Group Stage" },
+    { date:"2026-06-15", time:"08:00", group:"F", match:"Sweden vs Tunisia", venue:"Monterrey Stadium", stage:"Group Stage" },
+    { date:"2026-06-15", time:"22:00", group:"H", match:"Spain vs Cabo Verde", venue:"Atlanta Stadium", stage:"Group Stage" },
+    
+    // Tuesday 16 June 2026
+    { date:"2026-06-16", time:"01:00", group:"I", match:"France vs Senegal", venue:"New York/New Jersey Stadium", stage:"Group Stage" },
+    { date:"2026-06-16", time:"04:00", group:"H", match:"Saudi Arabia vs Uruguay", venue:"Miami Stadium", stage:"Group Stage" },
+    { date:"2026-06-16", time:"07:00", group:"G", match:"IR Iran vs New Zealand", venue:"Los Angeles Stadium", stage:"Group Stage" },
+    { date:"2026-06-16", time:"10:00", group:"J", match:"Austria vs Jordan", venue:"San Francisco Bay Area Stadium", stage:"Group Stage" },
+    
+    // Wednesday 17 June 2026
+    { date:"2026-06-17", time:"02:00", group:"L", match:"England vs Croatia", venue:"Dallas Stadium", stage:"Group Stage" },
+    { date:"2026-06-17", time:"04:00", group:"I", match:"Iraq vs Norway", venue:"Boston Stadium", stage:"Group Stage" },
+    { date:"2026-06-17", time:"07:00", group:"J", match:"Argentina vs Algeria", venue:"Kansas City Stadium", stage:"Group Stage" },
+    { date:"2026-06-17", time:"23:00", group:"K", match:"Portugal vs Congo DR", venue:"Houston Stadium", stage:"Group Stage" },
+    
+    // Thursday 18 June 2026
+    { date:"2026-06-18", time:"02:00", group:"L", match:"Ghana vs Panama", venue:"Toronto Stadium", stage:"Group Stage" },
+    { date:"2026-06-18", time:"08:00", group:"K", match:"Uzbekistan vs Colombia", venue:"Mexico City Stadium", stage:"Group Stage" },
+    { date:"2026-06-18", time:"22:00", group:"A", match:"Czech Republic vs South Africa", venue:"Atlanta Stadium", stage:"Group Stage" },
+    
+    // Friday 19 June 2026
+    { date:"2026-06-19", time:"01:00", group:"B", match:"Switzerland vs Bosnia and Herzegovina", venue:"Los Angeles Stadium", stage:"Group Stage" },
+    { date:"2026-06-19", time:"04:00", group:"B", match:"Canada vs Qatar", venue:"BC Place Vancouver", stage:"Group Stage" },
+    { date:"2026-06-19", time:"07:00", group:"A", match:"Mexico vs Korea Republic", venue:"Guadalajara Stadium", stage:"Group Stage" },
+    { date:"2026-06-19", time:"10:00", group:"D", match:"Turkey vs Paraguay", venue:"San Francisco Bay Area Stadium", stage:"Group Stage" },
+    
+    // Saturday 20 June 2026
+    { date:"2026-06-20", time:"01:00", group:"D", match:"USA vs Australia", venue:"Seattle Stadium", stage:"Group Stage" },
+    { date:"2026-06-20", time:"04:00", group:"C", match:"Scotland vs Morocco", venue:"Boston Stadium", stage:"Group Stage" },
+    { date:"2026-06-20", time:"06:30", group:"C", match:"Brazil vs Haiti", venue:"Philadelphia Stadium", stage:"Group Stage" },
+    { date:"2026-06-20", time:"09:00", group:"D", match:"Turkey vs Paraguay", venue:"San Francisco Bay Area Stadium", stage:"Group Stage" },
+    { date:"2026-06-20", time:"23:00", group:"F", match:"Netherlands vs Sweden", venue:"Houston Stadium", stage:"Group Stage" },
+    
+    // Sunday 21 June 2026
+    { date:"2026-06-21", time:"01:00", group:"G", match:"Belgium vs IR Iran", venue:"Los Angeles Stadium", stage:"Group Stage" },
+    { date:"2026-06-21", time:"02:00", group:"E", match:"Germany vs Côte d'Ivoire", venue:"Toronto Stadium", stage:"Group Stage" },
+    { date:"2026-06-21", time:"06:00", group:"E", match:"Ecuador vs Curaçao", venue:"Kansas City Stadium", stage:"Group Stage" },
+    { date:"2026-06-21", time:"10:00", group:"F", match:"Tunisia vs Japan", venue:"Monterrey Stadium", stage:"Group Stage" },
+    { date:"2026-06-21", time:"22:00", group:"H", match:"Spain vs Saudi Arabia", venue:"Atlanta Stadium", stage:"Group Stage" },
+    
+    // Monday 22 June 2026
+    { date:"2026-06-22", time:"04:00", group:"H", match:"Uruguay vs Cabo Verde", venue:"Miami Stadium", stage:"Group Stage" },
+    { date:"2026-06-22", time:"07:00", group:"G", match:"New Zealand vs Egypt", venue:"BC Place Vancouver", stage:"Group Stage" },
+    { date:"2026-06-22", time:"23:00", group:"J", match:"Argentina vs Austria", venue:"Dallas Stadium", stage:"Group Stage" },
+    
+    // Tuesday 23 June 2026
+    { date:"2026-06-23", time:"03:00", group:"I", match:"France vs Iraq", venue:"Philadelphia Stadium", stage:"Group Stage" },
+    { date:"2026-06-23", time:"06:00", group:"I", match:"Norway vs Senegal", venue:"New York/New Jersey Stadium", stage:"Group Stage" },
+    { date:"2026-06-23", time:"09:00", group:"J", match:"Jordan vs Algeria", venue:"San Francisco Bay Area Stadium", stage:"Group Stage" },
+    { date:"2026-06-23", time:"23:00", group:"K", match:"Portugal vs Uzbekistan", venue:"Houston Stadium", stage:"Group Stage" },
+    
+    // Wednesday 24 June 2026
+    { date:"2026-06-24", time:"02:00", group:"L", match:"England vs Ghana", venue:"Boston Stadium", stage:"Group Stage" },
+    { date:"2026-06-24", time:"05:00", group:"L", match:"Panama vs Croatia", venue:"Toronto Stadium", stage:"Group Stage" },
+    { date:"2026-06-24", time:"08:00", group:"K", match:"Colombia vs Congo DR", venue:"Guadalajara Stadium", stage:"Group Stage" },
+    
+    // Thursday 25 June 2026
+    { date:"2026-06-25", time:"01:00", group:"B", match:"Switzerland vs Canada", venue:"BC Place Vancouver", stage:"Group Stage" },
+    { date:"2026-06-25", time:"01:00", group:"B", match:"Bosnia and Herzegovina vs Qatar", venue:"Seattle Stadium", stage:"Group Stage" },
+    { date:"2026-06-25", time:"04:00", group:"C", match:"Scotland vs Brazil", venue:"Miami Stadium", stage:"Group Stage" },
+    { date:"2026-06-25", time:"04:00", group:"C", match:"Morocco vs Haiti", venue:"Atlanta Stadium", stage:"Group Stage" },
+    { date:"2026-06-25", time:"07:00", group:"A", match:"Mexico vs Czech Republic", venue:"Mexico City Stadium", stage:"Group Stage" },
+    { date:"2026-06-25", time:"07:00", group:"A", match:"South Africa vs Korea Republic", venue:"Monterrey Stadium", stage:"Group Stage" },
+    
+    // Friday 26 June 2026
+    { date:"2026-06-26", time:"02:00", group:"E", match:"Curaçao vs Côte d'Ivoire", venue:"Philadelphia Stadium", stage:"Group Stage" },
+    { date:"2026-06-26", time:"02:00", group:"E", match:"Ecuador vs Germany", venue:"New York/New Jersey Stadium", stage:"Group Stage" },
+    { date:"2026-06-26", time:"05:00", group:"F", match:"Japan vs Sweden", venue:"Dallas Stadium", stage:"Group Stage" },
+    { date:"2026-06-26", time:"05:00", group:"F", match:"Tunisia vs Netherlands", venue:"Kansas City Stadium", stage:"Group Stage" },
+    { date:"2026-06-26", time:"08:00", group:"D", match:"Turkey vs USA", venue:"Los Angeles Stadium", stage:"Group Stage" },
+    { date:"2026-06-26", time:"08:00", group:"D", match:"Paraguay vs Australia", venue:"San Francisco Bay Area Stadium", stage:"Group Stage" },
+    
+    // Saturday 27 June 2026
+    { date:"2026-06-27", time:"01:00", group:"I", match:"Norway vs France", venue:"Boston Stadium", stage:"Group Stage" },
+    { date:"2026-06-27", time:"01:00", group:"I", match:"Senegal vs Iraq", venue:"Toronto Stadium", stage:"Group Stage" },
+    { date:"2026-06-27", time:"06:00", group:"H", match:"Cabo Verde vs Saudi Arabia", venue:"Houston Stadium", stage:"Group Stage" },
+    { date:"2026-06-27", time:"06:00", group:"H", match:"Uruguay vs Spain", venue:"Guadalajara Stadium", stage:"Group Stage" },
+    { date:"2026-06-27", time:"09:00", group:"G", match:"Egypt vs IR Iran", venue:"Seattle Stadium", stage:"Group Stage" },
+    { date:"2026-06-27", time:"09:00", group:"G", match:"New Zealand vs Belgium", venue:"BC Place Vancouver", stage:"Group Stage" },
+    
+    // Sunday 28 June 2026
+    { date:"2026-06-28", time:"03:00", group:"L", match:"Panama vs England", venue:"New York/New Jersey Stadium", stage:"Group Stage" },
+    { date:"2026-06-28", time:"03:00", group:"L", match:"Croatia vs Ghana", venue:"Philadelphia Stadium", stage:"Group Stage" },
+    { date:"2026-06-28", time:"05:30", group:"K", match:"Colombia vs Portugal", venue:"Miami Stadium", stage:"Group Stage" },
+    { date:"2026-06-28", time:"05:30", group:"K", match:"Congo DR vs Uzbekistan", venue:"Atlanta Stadium", stage:"Group Stage" },
+    { date:"2026-06-28", time:"08:00", group:"J", match:"Algeria vs Austria", venue:"Kansas City Stadium", stage:"Group Stage" },
+    { date:"2026-06-28", time:"08:00", group:"J", match:"Jordan vs Argentina", venue:"Dallas Stadium", stage:"Group Stage" },
+    
+    // Round of 32
+    { date:"2026-06-29", time:"01:00", match:"2A vs 2B", venue:"Los Angeles Stadium", stage:"Round of 32" },
+    { date:"2026-06-29", time:"23:00", match:"1C vs 2F", venue:"Houston Stadium", stage:"Round of 32" },
+    { date:"2026-06-30", time:"02:30", match:"1E vs 3ABCDEF", venue:"Boston Stadium", stage:"Round of 32" },
+    { date:"2026-06-30", time:"07:00", match:"1F vs 2C", venue:"Monterrey Stadium", stage:"Round of 32" },
+    { date:"2026-06-30", time:"23:00", match:"2E vs 2I", venue:"Dallas Stadium", stage:"Round of 32" },
+    { date:"2026-07-01", time:"03:00", match:"1I vs 3CDFGH", venue:"New York/New Jersey Stadium", stage:"Round of 32" },
+    { date:"2026-07-01", time:"07:00", match:"1A vs 3CEFHI", venue:"Mexico City Stadium", stage:"Round of 32" },
+    { date:"2026-07-01", time:"22:00", match:"1L vs 3EHJK", venue:"Atlanta Stadium", stage:"Round of 32" },
+    { date:"2026-07-02", time:"02:00", match:"1G vs 3AEHIJ", venue:"Seattle Stadium", stage:"Round of 32" },
+    { date:"2026-07-02", time:"06:00", match:"1D vs 3BEFIJ", venue:"San Francisco Bay Area Stadium", stage:"Round of 32" },
+    { date:"2026-07-03", time:"01:00", match:"1H vs 2J", venue:"Los Angeles Stadium", stage:"Round of 32" },
+    { date:"2026-07-03", time:"05:00", match:"2K vs 2L", venue:"Toronto Stadium", stage:"Round of 32" },
+    { date:"2026-07-03", time:"09:00", match:"1B vs 3EFGIJ", venue:"BC Place Vancouver", stage:"Round of 32" },
+    { date:"2026-07-04", time:"00:00", match:"2D vs 2G", venue:"Dallas Stadium", stage:"Round of 32" },
+    { date:"2026-07-04", time:"04:00", match:"1J vs 2H", venue:"Miami Stadium", stage:"Round of 32" },
+    { date:"2026-07-04", time:"07:30", match:"1K vs 3DEIJL", venue:"Kansas City Stadium", stage:"Round of 32" },
+    
+    // Round of 16
+    { date:"2026-07-04", time:"23:00", match:"W73 vs W75", venue:"Houston Stadium", stage:"Round of 16" },
+    { date:"2026-07-05", time:"03:00", match:"W74 vs W77", venue:"Philadelphia Stadium", stage:"Round of 16" },
+    { date:"2026-07-06", time:"02:00", match:"W76 vs W78", venue:"New York/New Jersey Stadium", stage:"Round of 16" },
+    { date:"2026-07-06", time:"06:00", match:"W79 vs W80", venue:"Mexico City Stadium", stage:"Round of 16" },
+    { date:"2026-07-07", time:"01:00", match:"W83 vs W84", venue:"Dallas Stadium", stage:"Round of 16" },
+    { date:"2026-07-07", time:"06:00", match:"W81 vs W82", venue:"Seattle Stadium", stage:"Round of 16" },
+    { date:"2026-07-07", time:"22:00", match:"W86 vs W88", venue:"Atlanta Stadium", stage:"Round of 16" },
+    { date:"2026-07-08", time:"02:00", match:"W85 vs W87", venue:"BC Place Vancouver", stage:"Round of 16" },
+    
+    // Quarterfinals
+    { date:"2026-07-10", time:"02:00", match:"W89 vs W90", venue:"Boston Stadium", stage:"Quarterfinals" },
+    { date:"2026-07-11", time:"01:00", match:"W93 vs W94", venue:"Los Angeles Stadium", stage:"Quarterfinals" },
+    { date:"2026-07-12", time:"03:00", match:"W91 vs W92", venue:"Miami Stadium", stage:"Quarterfinals" },
+    { date:"2026-07-12", time:"07:00", match:"W95 vs W96", venue:"Kansas City Stadium", stage:"Quarterfinals" },
+    
+    // Semifinals
+    { date:"2026-07-15", time:"01:00", match:"W97 vs W98", venue:"Dallas Stadium", stage:"Semifinals" },
+    { date:"2026-07-16", time:"01:00", match:"W99 vs W100", venue:"Atlanta Stadium", stage:"Semifinals" },
+    
+    // Third Place
+    { date:"2026-07-19", time:"03:00", match:"RU101 vs RU102", venue:"Miami Stadium", stage:"3rd Place" },
+    
+    // Final
+    { date:"2026-07-20", time:"01:00", match:"W101 vs W102", venue:"New York/New Jersey Stadium", stage:"Final" }
   ];
 
   function parseMatchDateTime(dateStr, timeStr) {
@@ -376,7 +429,7 @@
     const [h, m] = timeStr.split(":").map(Number);
     const hour12 = h % 12 || 12;
     const ampm = h >= 12 ? "PM" : "AM";
-    return `${hour12}:${pad(m)} ${ampm}`;
+    return { hour: hour12, minute: pad(m), ampm: ampm };
   }
   
   function formatDateHeader(dateStr) {
@@ -384,7 +437,6 @@
     return d.toLocaleDateString("en-US", { weekday:"short", month:"short", day:"numeric" }).toUpperCase();
   }
 
-  // Application state
   let currentState = {
     now: new Date(),
     selectedStage: "Group Stage",
@@ -434,29 +486,22 @@
       );
     }
 
-    // Group by date
     const byDate = {};
     stageMatches.forEach(f => { 
       byDate[f.date] = byDate[f.date] || []; 
       byDate[f.date].push(f); 
     });
 
-    // Render groups panel
     let groupsPanelHtml = "";
     if (currentState.showGroups) {
       groupsPanelHtml = `<div class="groups-grid">${Object.entries(groupsList).map(([g, teams]) => `
         <div class="group-card" style="border-left: 3px solid ${groupColors[g]};">
           <div style="font-size: 12px; font-weight: bold; color: ${groupColors[g]}; margin-bottom: 6px;">GROUP ${g}</div>
-          ${teams.map(team => `
-            <div class="group-team">
-              ${getFlag(team)} ${team}
-            </div>
-          `).join('')}
+          ${teams.map(team => `<div class="group-team">${getFlag(team)} ${team}</div>`).join('')}
         </div>
       `).join('')}</div>`;
     }
 
-    // Render fixtures
     let fixturesHtml = "";
     if (Object.keys(byDate).length === 0) {
       fixturesHtml = `<div style="text-align:center; color:#2a4a6a; padding:40px 0;">🚫 No matches found${searchLow ? ` for "${currentState.searchQuery}"` : ""}.</div>`;
@@ -468,14 +513,15 @@
           const isPast = mDT < currentState.now;
           const isNextFlag = nextMatch && nextMatch.match === m.match && nextMatch.date === m.date && nextMatch.time === m.time;
           const groupCol = m.group ? groupColors[m.group] : (isNextFlag ? "#c5a028" : "#2a4a6a");
-          const matchWithFlags = addFlagsToMatch(m.match);
+          const matchWithFlags = m.match.includes(" vs ") ? addFlagsToMatch(m.match) : m.match;
+          const timeObj = formatTime12(m.time);
           
           return `
             <div style="background: ${isNextFlag ? 'rgba(197,160,40,0.12)' : isPast ? 'rgba(255,255,255,0.015)' : 'rgba(255,255,255,0.04)'}; border-left: 3px solid ${groupCol}; border-radius: 12px; padding: 12px; margin-bottom: 10px; position: relative; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
               ${isNextFlag ? `<div style="position: absolute; top: -9px; right: 10px; background: #c5a028; color: #041226; font-size: 8px; font-weight: bold; padding: 2px 12px; border-radius: 40px;">NEXT</div>` : ''}
-              <div style="min-width: 65px; background: rgba(0,0,0,0.4); border-radius: 28px; padding: 5px 6px; text-align: center;">
-                <div style="font-weight: bold; font-size: 12px; color: #f3e5ab;">${formatTime12(m.time)}</div>
-                <div style="font-size: 7px; color: #7a9abf;">BST</div>
+              <div class="time-badge">
+                <div><span class="time-hour">${timeObj.hour}:${timeObj.minute}</span><span class="time-ampm">${timeObj.ampm}</span></div>
+                <div class="time-label">BST</div>
               </div>
               ${m.group ? `<div style="width: 30px; height: 30px; border-radius: 50%; background: ${groupColors[m.group]}; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #fff;">${m.group}</div>` : `<div style="width: 30px;"></div>`}
               <div style="flex: 1; min-width: 150px;">
@@ -499,13 +545,13 @@
       }).join('');
     }
 
-    const nextMatchFlagged = nextMatch ? addFlagsToMatch(nextMatch.match) : "";
+    const nextMatchFlagged = nextMatch ? (nextMatch.match.includes(" vs ") ? addFlagsToMatch(nextMatch.match) : nextMatch.match) : "";
     
     const countdownHtml = nextMatch ? `
       <div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px 16px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 8px 32px rgba(0,0,0,0.4);">
         <div style="font-size: 9px; letter-spacing: 3px; color: #FFD700;">⚽ NEXT MATCH - BANGLADESH STANDARD TIME</div>
         <div style="font-size: clamp(14px, 4vw, 20px); font-weight: bold; color: #FFD700; margin-top: 5px;">${nextMatchFlagged}</div>
-        <div style="font-size: 10px; color: #FFD700; margin-bottom: 12px;">${formatDateHeader(nextMatch.date)} · ${formatTime12(nextMatch.time)} BST · 📍 ${nextMatch.venue}</div>
+        <div style="font-size: 10px; color: #FFD700; margin-bottom: 12px;">${formatDateHeader(nextMatch.date)} · ${formatTime12(nextMatch.time).hour}:${formatTime12(nextMatch.time).minute} ${formatTime12(nextMatch.time).ampm} BST · 📍 ${nextMatch.venue}</div>
         <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
           ${[["DAYS", cd.d], ["HRS", cd.h], ["MIN", cd.m], ["SEC", cd.s]].map(([lbl, val]) => `
             <div style="background: rgba(0,0,0,0.5); border: 1px solid #FFD700; border-radius: 12px; padding: 8px 12px; min-width: 60px; text-align: center;">
@@ -536,13 +582,12 @@
           <span style="font-size: 10px; color: rgba(255,255,255,0.3);">— ${stageMatches.length} matches</span>
         </div>
         <div class="fixture-container">${fixturesHtml}</div>
-        <div style="border-top: 1px solid rgba(197,160,40,0.1); padding: 20px; text-align: center; font-size: 9px; color: #1e3a54;">🇧🇩 BST (UTC+6) · Real flag images from flagcdn.com · Official FIFA draw · 48 teams</div>
+        <div style="border-top: 1px solid rgba(197,160,40,0.1); padding: 20px; text-align: center; font-size: 9px; color: #1e3a54;">🇧🇩 BST (UTC+6) · Official FIFA 2026 Schedule · Real flag images · 48 teams</div>
       </div>
     `;
     
     root.innerHTML = fullHtml;
     
-    // Attach event listeners
     document.getElementById("toggleGroupsBtn")?.addEventListener("click", toggleGroups);
     const searchEl = document.getElementById("searchInput");
     if (searchEl) searchEl.addEventListener("input", (e) => setSearchQuery(e.target.value));
