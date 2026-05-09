@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>FIFA World Cup 2026 · Bangladesh Time | Full Fixtures + Flags</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(145deg, #020b18 0%, #041226 60%, #071c38 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+      color: #e8d9b0;
+      min-height: 100vh;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #041226;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c5a028;
+      border-radius: 6px;
+    }
+
+    button, input {
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    button:active {
+      transform: scale(0.96);
+      opacity: 0.8;
+    }
+
+    .fixture-container {
+      padding: 16px 12px 56px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .groups-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+      text-align: left;
+    }
+
+    @media (max-width: 480px) {
+      .groups-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      }
+    }
+
+    .stage-btn {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid #18304a;
+      color: #5a7a9a;
+      border-radius: 40px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      letter-spacing: 0.3px;
+    }
+    .stage-btn.active {
+      background: #c5a028;
+      color: #041226;
+      border-color: #c5a028;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(197,160,40,0.3);
+    }
+
+    .search-input {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid #253f5e;
+      border-radius: 40px;
+      padding: 10px 18px;
+      color: #f5ecce;
+      font-size: 14px;
+      width: 100%;
+      outline: none;
+      backdrop-filter: blur(4px);
+    }
+    .search-input:focus {
+      border-color: #c5a028;
+      background: rgba(0,0,0,0.4);
+    }
+
+    .group-tag-btn {
+      background: rgba(197,160,40,0.1);
+      border: 1px solid rgba(197,160,40,0.4);
+      color: #e0c870;
+      border-radius: 24px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-bottom: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .flag {
+      font-size: 1.2rem;
+      display: inline-block;
+      margin-right: 4px;
+    }
+    
+    .team-name {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .match-text {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .group-card {
+      background: rgba(255,255,255,0.03);
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+    
+    .group-team {
+      font-size: 11px;
+      color: #cddead;
+      padding: 3px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    @media (max-width: 450px) {
+      .match-text {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+  // ============================================================
+  // COMPLETE FLAG MAP - Using standard emoji flags
+  // ============================================================
+  const flagMap = {
+    // Group A
+    "Mexico": "🇲🇽", "South Africa": "🇿🇦", "South Korea": "🇰🇷", "Czech Republic": "🇨🇿",
+    // Group B
+    "Canada": "🇨🇦", "Bosnia & Herzegovina": "🇧🇦", "Bosnia & Herz.": "🇧🇦", "Qatar": "🇶🇦", "Switzerland": "🇨🇭",
+    // Group C
+    "Brazil": "🇧🇷", "Morocco": "🇲🇦", "Haiti": "🇭🇹", "Scotland": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+    // Group D
+    "USA": "🇺🇸", "Paraguay": "🇵🇾", "Australia": "🇦🇺", "Turkey": "🇹🇷",
+    // Group E
+    "Germany": "🇩🇪", "Curaçao": "🇨🇼", "Ivory Coast": "🇨🇮", "Ecuador": "🇪🇨",
+    // Group F
+    "Netherlands": "🇳🇱", "Japan": "🇯🇵", "Sweden": "🇸🇪", "Tunisia": "🇹🇳",
+    // Group G
+    "Belgium": "🇧🇪", "Egypt": "🇪🇬", "Iran": "🇮🇷", "New Zealand": "🇳🇿",
+    // Group H
+    "Spain": "🇪🇸", "Cape Verde": "🇨🇻", "Saudi Arabia": "🇸🇦", "Uruguay": "🇺🇾",
+    // Group I
+    "France": "🇫🇷", "Senegal": "🇸🇳", "Iraq": "🇮🇶", "Norway": "🇳🇴",
+    // Group J
+    "Argentina": "🇦🇷", "Algeria": "🇩🇿", "Austria": "🇦🇹", "Jordan": "🇯🇴",
+    // Group K
+    "Portugal": "🇵🇹", "Congo": "🇨🇬", "Uzbekistan": "🇺🇿", "Colombia": "🇨🇴",
+    // Group L
+    "England": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Croatia": "🇭🇷", "Ghana": "🇬🇭", "Panama": "🇵🇦"
+  };
+
+  // Groups with flags - for display in groups panel
+  const groupsList = {
+    A: ["Mexico", "South Africa", "South Korea", "Czech Republic"],
+    B: ["Canada", "Bosnia & Herzegovina", "Qatar", "Switzerland"],
+    C: ["Brazil", "Morocco", "Haiti", "Scotland"],
+    D: ["USA", "Paraguay", "Australia", "Turkey"],
+    E: ["Germany", "Curaçao", "Ivory Coast", "Ecuador"],
+    F: ["Netherlands", "Japan", "Sweden", "Tunisia"],
+    G: ["Belgium", "Egypt", "Iran", "New Zealand"],
+    H: ["Spain", "Cape Verde", "Saudi Arabia", "Uruguay"],
+    I: ["France", "Senegal", "Iraq", "Norway"],
+    J: ["Argentina", "Algeria", "Austria", "Jordan"],
+    K: ["Portugal", "Congo", "Uzbekistan", "Colombia"],
+    L: ["England", "Croatia", "Ghana", "Panama"]
+  };
+
+  const groupColors = {
+    A:"#FF6B35", B:"#e8a838", C:"#44BBA4", D:"#E94F37",
+    E:"#3BCEAC", F:"#0EAD69", G:"#a07850", H:"#D4A017",
+    I:"#3A86FF", J:"#FF006E", K:"#8338EC", L:"#FB5607"
+  };
+
+  const stageList = ["Group Stage","Round of 32","Round of 16","Quarterfinals","Semifinals","3rd Place","Final"];
+
+  // Full fixtures data
+  const fixturesRaw = [
+    { date:"2026-06-11", time:"13:00", group:"A", match:"Mexico vs South Africa", venue:"Mexico City", stage:"Group Stage" },
+    { date:"2026-06-12", time:"01:00", group:"B", match:"Canada vs Bosnia & Herzegovina", venue:"Toronto", stage:"Group Stage" },
+    { date:"2026-06-12", time:"08:00", group:"A", match:"South Korea vs Czech Republic", venue:"Guadalajara", stage:"Group Stage" },
+    { date:"2026-06-13", time:"01:00", group:"B", match:"Qatar vs Switzerland", venue:"San Francisco", stage:"Group Stage" },
+    { date:"2026-06-13", time:"07:00", group:"D", match:"USA vs Paraguay", venue:"Los Angeles", stage:"Group Stage" },
+    { date:"2026-06-13", time:"10:00", group:"D", match:"Australia vs Turkey", venue:"Vancouver", stage:"Group Stage" },
+    { date:"2026-06-14", time:"02:00", group:"F", match:"Netherlands vs Japan", venue:"Dallas", stage:"Group Stage" },
+    { date:"2026-06-14", time:"04:00", group:"C", match:"Brazil vs Morocco", venue:"New York–New Jersey", stage:"Group Stage" },
+    { date:"2026-06-14", time:"07:00", group:"C", match:"Haiti vs Scotland", venue:"Boston", stage:"Group Stage" },
+    { date:"2026-06-14", time:"23:00", group:"E", match:"Germany vs Curaçao", venue:"Houston", stage:"Group Stage" },
+    { date:"2026-06-15", time:"01:00", group:"G", match:"Belgium vs Egypt", venue:"Seattle", stage:"Group Stage" },
+    { date:"2026-06-15", time:"05:00", group:"E", match:"Ivory Coast vs Ecuador", venue:"Philadelphia", stage:"Group Stage" },
+    { date:"2026-06-15", time:"08:00", group:"F", match:"Sweden vs Tunisia", venue:"Monterrey", stage:"Group Stage" },
+    { date:"2026-06-15", time:"22:00", group:"H", match:"Spain vs Cape Verde", venue:"Atlanta", stage:"Group Stage" },
+    { date:"2026-06-16", time:"01:00", group:"I", match:"France vs Senegal", venue:"New York–New Jersey", stage:"Group Stage" },
+    { date:"2026-06-16", time:"04:00", group:"H", match:"Saudi Arabia vs Uruguay", venue:"Miami", stage:"Group Stage" },
+    { date:"2026-06-16", time:"07:00", group:"G", match:"Iran vs New Zealand", venue:"Los Angeles", stage:"Group Stage" },
+    { date:"2026-06-16", time:"10:00", group:"J", match:"Austria vs Jordan", venue:"San Francisco", stage:"Group Stage" },
+    { date:"2026-06-17", time:"02:00", group:"L", match:"England vs Croatia", venue:"Dallas", stage:"Group Stage" },
+    { date:"2026-06-17", time:"04:00", group:"I", match:"Iraq vs Norway", venue:"Boston", stage:"Group Stage" },
+    { date:"2026-06-17", time:"07:00", group:"J", match:"Argentina vs Algeria", venue:"Kansas City", stage:"Group Stage" },
+    { date:"2026-06-17", time:"11:00", group:"K", match:"Portugal vs Congo", venue:"Houston", stage:"Group Stage" },
+    { date:"2026-06-18", time:"02:00", group:"L", match:"Ghana vs Panama", venue:"Toronto", stage:"Group Stage" },
+    { date:"2026-06-18", time:"08:00", group:"K", match:"Uzbekistan vs Colombia", venue:"Mexico City", stage:"Group Stage" },
+    { date:"2026-06-18", time:"10:00", group:"A", match:"Czech Republic vs South Africa", venue:"Atlanta", stage:"Group Stage" },
+    { date:"2026-06-19", time:"01:00", group:"B", match:"Switzerland vs Bosnia & Herz.", venue:"Los Angeles", stage:"Group Stage" },
+    { date:"2026-06-19", time:"04:00", group:"B", match:"Canada vs Qatar", venue:"Vancouver", stage:"Group Stage" },
+    { date:"2026-06-19", time:"07:00", group:"A", match:"Mexico vs South Korea", venue:"Guadalajara", stage:"Group Stage" },
+    { date:"2026-06-19", time:"10:00", group:"D", match:"Turkey vs Paraguay", venue:"San Francisco", stage:"Group Stage" },
+    { date:"2026-06-20", time:"01:00", group:"D", match:"USA vs Australia", venue:"Seattle", stage:"Group Stage" },
+    { date:"2026-06-20", time:"04:00", group:"C", match:"Scotland vs Morocco", venue:"Boston", stage:"Group Stage" },
+    { date:"2026-06-20", time:"07:00", group:"C", match:"Brazil vs Haiti", venue:"Philadelphia", stage:"Group Stage" },
+    { date:"2026-06-20", time:"10:00", group:"F", match:"Tunisia vs Japan", venue:"Monterrey", stage:"Group Stage" },
+    { date:"2026-06-20", time:"23:00", group:"F", match:"Netherlands vs Sweden", venue:"Houston", stage:"Group Stage" },
+    { date:"2026-06-21", time:"01:00", group:"G", match:"Belgium vs Iran", venue:"Los Angeles", stage:"Group Stage" },
+    { date:"2026-06-21", time:"02:00", group:"E", match:"Germany vs Ivory Coast", venue:"Toronto", stage:"Group Stage" },
+    { date:"2026-06-21", time:"06:00", group:"E", match:"Ecuador vs Curaçao", venue:"Kansas City", stage:"Group Stage" },
+    { date:"2026-06-21", time:"10:00", group:"H", match:"Spain vs Saudi Arabia", venue:"Atlanta", stage:"Group Stage" },
+    { date:"2026-06-22", time:"04:00", group:"H", match:"Uruguay vs Cape Verde", venue:"Miami", stage:"Group Stage" },
+    { date:"2026-06-22", time:"07:00", group:"G", match:"New Zealand vs Egypt", venue:"Vancouver", stage:"Group Stage" },
+    { date:"2026-06-22", time:"23:00", group:"J", match:"Argentina vs Austria", venue:"Dallas", stage:"Group Stage" },
+    { date:"2026-06-23", time:"03:00", group:"I", match:"France vs Iraq", venue:"Philadelphia", stage:"Group Stage" },
+    { date:"2026-06-23", time:"06:00", group:"I", match:"Norway vs Senegal", venue:"New York–New Jersey", stage:"Group Stage" },
+    { date:"2026-06-23", time:"09:00", group:"J", match:"Jordan vs Algeria", venue:"San Francisco", stage:"Group Stage" },
+    { date:"2026-06-23", time:"11:00", group:"K", match:"Portugal vs Uzbekistan", venue:"Houston", stage:"Group Stage" },
+    { date:"2026-06-24", time:"02:00", group:"L", match:"England vs Ghana", venue:"Boston", stage:"Group Stage" },
+    { date:"2026-06-24", time:"05:00", group:"L", match:"Panama vs Croatia", venue:"Toronto", stage:"Group Stage" },
+    { date:"2026-06-24", time:"08:00", group:"K", match:"Colombia vs Congo", venue:"Guadalajara", stage:"Group Stage" },
+    { date:"2026-06-25", time:"01:00", group:"B", match:"Canada vs Switzerland", venue:"Vancouver", stage:"Group Stage" },
+    { date:"2026-06-25", time:"01:00", group:"B", match:"Bosnia & Herz. vs Qatar", venue:"Seattle", stage:"Group Stage" },
+    { date:"2026-06-25", time:"04:00", group:"C", match:"Scotland vs Brazil", venue:"Miami", stage:"Group Stage" },
+    { date:"2026-06-25", time:"04:00", group:"C", match:"Morocco vs Haiti", venue:"Atlanta", stage:"Group Stage" },
+    { date:"2026-06-25", time:"07:00", group:"A", match:"Mexico vs Czech Republic", venue:"Mexico City", stage:"Group Stage" },
+    { date:"2026-06-25", time:"07:00", group:"A", match:"South Korea vs South Africa", venue:"Monterrey", stage:"Group Stage" },
+    { date:"2026-06-26", time:"01:00", group:"I", match:"Norway vs France", venue:"Boston", stage:"Group Stage" },
+    { date:"2026-06-26", time:"01:00", group:"I", match:"Senegal vs Iraq", venue:"Toronto", stage:"Group Stage" },
+    { date:"2026-06-26", time:"05:00", group:"F", match:"Japan vs Sweden", venue:"Dallas", stage:"Group Stage" },
+    { date:"2026-06-26", time:"05:00", group:"F", match:"Tunisia vs Netherlands", venue:"Kansas City", stage:"Group Stage" },
+    { date:"2026-06-26", time:"08:00", group:"D", match:"USA vs Turkey", venue:"Los Angeles", stage:"Group Stage" },
+    { date:"2026-06-26", time:"08:00", group:"D", match:"Paraguay vs Australia", venue:"San Francisco", stage:"Group Stage" },
+    { date:"2026-06-26", time:"14:00", group:"E", match:"Ecuador vs Germany", venue:"New York–New Jersey", stage:"Group Stage" },
+    { date:"2026-06-27", time:"03:00", group:"L", match:"Panama vs England", venue:"New York–New Jersey", stage:"Group Stage" },
+    { date:"2026-06-27", time:"03:00", group:"L", match:"Croatia vs Ghana", venue:"Philadelphia", stage:"Group Stage" },
+    { date:"2026-06-27", time:"06:00", group:"H", match:"Uruguay vs Spain", venue:"Guadalajara", stage:"Group Stage" },
+    { date:"2026-06-27", time:"06:00", group:"H", match:"Cape Verde vs Saudi Arabia", venue:"Houston", stage:"Group Stage" },
+    { date:"2026-06-27", time:"09:00", group:"G", match:"New Zealand vs Belgium", venue:"Vancouver", stage:"Group Stage" },
+    { date:"2026-06-27", time:"09:00", group:"G", match:"Egypt vs Iran", venue:"Seattle", stage:"Group Stage" },
+    { date:"2026-06-28", time:"05:00", group:"K", match:"Colombia vs Portugal", venue:"Miami", stage:"Group Stage" },
+    { date:"2026-06-28", time:"05:00", group:"K", match:"Congo vs Uzbekistan", venue:"Atlanta", stage:"Group Stage" },
+    { date:"2026-06-28", time:"08:00", group:"J", match:"Jordan vs Argentina", venue:"Dallas", stage:"Group Stage" },
+    { date:"2026-06-28", time:"08:00", group:"J", match:"Algeria vs Austria", venue:"Kansas City", stage:"Group Stage" },
+    { date:"2026-06-28", time:"15:00", match:"R32: A2 vs B2", venue:"Los Angeles", stage:"Round of 32" },
+    { date:"2026-06-29", time:"14:30", match:"R32: E1 vs Best 3rd (A/B/C/D/F)", venue:"Boston", stage:"Round of 32" },
+    { date:"2026-06-29", time:"23:00", match:"R32: C1 vs Best 3rd (F)", venue:"Houston", stage:"Round of 32" },
+    { date:"2026-06-30", time:"03:00", match:"R32: I1 vs Best 3rd (C/D/F/G/H)", venue:"New York–New Jersey", stage:"Round of 32" },
+    { date:"2026-06-30", time:"07:00", match:"R32: F1 vs C2", venue:"Monterrey", stage:"Round of 32" },
+    { date:"2026-06-30", time:"23:00", match:"R32: E2 vs I2", venue:"Dallas", stage:"Round of 32" },
+    { date:"2026-07-01", time:"02:00", match:"R32: G1 vs Best 3rd (A/E/H/I/J)", venue:"Seattle", stage:"Round of 32" },
+    { date:"2026-07-01", time:"07:00", match:"R32: A1 vs Best 3rd (C/E/F/H/I)", venue:"Mexico City", stage:"Round of 32" },
+    { date:"2026-07-01", time:"10:00", match:"R32: L1 vs Best 3rd (E/F/H/I/J/K)", venue:"Atlanta", stage:"Round of 32" },
+    { date:"2026-07-02", time:"01:00", match:"R32: H1 vs J2", venue:"Los Angeles", stage:"Round of 32" },
+    { date:"2026-07-02", time:"06:00", match:"R32: D1 vs Best 3rd (B/E/F/I/J)", venue:"San Francisco", stage:"Round of 32" },
+    { date:"2026-07-03", time:"05:00", match:"R32: K2 vs L2", venue:"Toronto", stage:"Round of 32" },
+    { date:"2026-07-03", time:"09:00", match:"R32: B1 vs Best 3rd (E/F/G/I/J)", venue:"Vancouver", stage:"Round of 32" },
+    { date:"2026-07-03", time:"12:00", match:"R32: D2 vs G2", venue:"Dallas", stage:"Round of 32" },
+    { date:"2026-07-04", time:"04:00", match:"R32: J1 vs H2", venue:"Miami", stage:"Round of 32" },
+    { date:"2026-07-04", time:"07:30", match:"R32: K1 vs Best 3rd (D/E/I/J/L)", venue:"Kansas City", stage:"Round of 32" },
+    { date:"2026-07-04", time:"03:00", match:"R16: Match 89", venue:"Philadelphia", stage:"Round of 16" },
+    { date:"2026-07-04", time:"23:00", match:"R16: Match 90", venue:"Houston", stage:"Round of 16" },
+    { date:"2026-07-05", time:"02:00", match:"R16: Match 91", venue:"New York–New Jersey", stage:"Round of 16" },
+    { date:"2026-07-06", time:"01:00", match:"R16: Match 93", venue:"Dallas", stage:"Round of 16" },
+    { date:"2026-07-06", time:"06:00", match:"R16: Match 92", venue:"Mexico City", stage:"Round of 16" },
+    { date:"2026-07-07", time:"02:00", match:"R16: Match 96", venue:"Vancouver", stage:"Round of 16" },
+    { date:"2026-07-07", time:"06:00", match:"R16: Match 94", venue:"Seattle", stage:"Round of 16" },
+    { date:"2026-07-07", time:"22:00", match:"R16: Match 95", venue:"Atlanta", stage:"Round of 16" },
+    { date:"2026-07-09", time:"02:00", match:"QF1", venue:"Boston", stage:"Quarterfinals" },
+    { date:"2026-07-10", time:"11:00", match:"QF2", venue:"Los Angeles", stage:"Quarterfinals" },
+    { date:"2026-07-11", time:"03:00", match:"QF3", venue:"Miami", stage:"Quarterfinals" },
+    { date:"2026-07-12", time:"07:00", match:"QF4", venue:"Kansas City", stage:"Quarterfinals" },
+    { date:"2026-07-14", time:"01:00", match:"SF1: Winner QF1 vs Winner QF2", venue:"Dallas", stage:"Semifinals" },
+    { date:"2026-07-15", time:"01:00", match:"SF2: Winner QF3 vs Winner QF4", venue:"Atlanta", stage:"Semifinals" },
+    { date:"2026-07-18", time:"15:00", match:"3rd Place Match", venue:"Miami", stage:"3rd Place" },
+    { date:"2026-07-20", time:"01:00", match:"🏆 WORLD CUP FINAL", venue:"MetLife Stadium, New York–New Jersey", stage:"Final" }
+  ];
+
+  // Helper function to add flags to match text
+  function addFlagsToMatch(matchStr) {
+    if (!matchStr) return matchStr;
+    if (matchStr.includes("WORLD CUP FINAL")) return matchStr;
+    if (matchStr.includes(" vs ")) {
+      const parts = matchStr.split(" vs ");
+      if (parts.length === 2) {
+        const left = parts[0].trim();
+        const right = parts[1].trim();
+        const leftFlag = flagMap[left] || "🏁";
+        const rightFlag = flagMap[right] || "🏁";
+        return `<span class="team-name"><span class="flag">${leftFlag}</span> ${left}</span> vs <span class="team-name"><span class="flag">${rightFlag}</span> ${right}</span>`;
+      }
+    }
+    return matchStr;
+  }
+
+  function parseMatchDateTime(dateStr, timeStr) {
+    const [h, m] = timeStr.split(":").map(Number);
+    const [y, mo, d] = dateStr.split("-").map(Number);
+    return new Date(Date.UTC(y, mo-1, d, h-6, m));
+  }
+
+  function formatCountdown(ms) {
+    if (ms <= 0) return { d:0, h:0, m:0, s:0 };
+    const totalSec = Math.floor(ms / 1000);
+    return {
+      d: Math.floor(totalSec / 86400),
+      h: Math.floor((totalSec % 86400) / 3600),
+      m: Math.floor((totalSec % 3600) / 60),
+      s: totalSec % 60
+    };
+  }
+
+  function pad(n) { return String(n).padStart(2, "0"); }
+  
+  function formatTime12(timeStr) {
+    const [h, m] = timeStr.split(":").map(Number);
+    const hour12 = h % 12 || 12;
+    const ampm = h >= 12 ? "PM" : "AM";
+    return `${hour12}:${pad(m)} ${ampm}`;
+  }
+  
+  function formatDateHeader(dateStr) {
+    const d = new Date(dateStr + "T12:00:00");
+    return d.toLocaleDateString("en-US", { weekday:"short", month:"short", day:"numeric" }).toUpperCase();
+  }
+
+  // Application state
+  let currentState = {
+    now: new Date(),
+    selectedStage: "Group Stage",
+    searchQuery: "",
+    showGroups: false
+  };
+  
+  let intervalId = null;
+
+  function updateNow() {
+    currentState.now = new Date();
+    renderApp();
+  }
+  
+  function setStage(stage) { 
+    currentState.selectedStage = stage; 
+    currentState.searchQuery = ""; 
+    renderApp(); 
+  }
+  
+  function setSearchQuery(q) { 
+    currentState.searchQuery = q; 
+    renderApp(); 
+  }
+  
+  function toggleGroups() { 
+    currentState.showGroups = !currentState.showGroups; 
+    renderApp(); 
+  }
+
+  function getNextMatch(fixturesWithDT) {
+    const future = fixturesWithDT.filter(f => f.dt > currentState.now).sort((a,b) => a.dt - b.dt);
+    return future[0] || null;
+  }
+
+  function renderApp() {
+    const root = document.getElementById("root");
+    if (!root) return;
+    
+    const enriched = fixturesRaw.map(f => ({ ...f, dt: parseMatchDateTime(f.date, f.time) }));
+    const nextMatch = getNextMatch(enriched);
+    const cd = nextMatch ? formatCountdown(nextMatch.dt - currentState.now) : null;
+
+    let stageMatches = fixturesRaw.filter(f => f.stage === currentState.selectedStage);
+    const searchLow = currentState.searchQuery.toLowerCase();
+    
+    if (searchLow) {
+      stageMatches = stageMatches.filter(f => 
+        (f.match || "").toLowerCase().includes(searchLow) ||
+        (f.venue || "").toLowerCase().includes(searchLow) ||
+        (f.group || "").toLowerCase().includes(searchLow)
+      );
+    }
+
+    // Group by date
+    const byDate = {};
+    stageMatches.forEach(f => { 
+      byDate[f.date] = byDate[f.date] || []; 
+      byDate[f.date].push(f); 
+    });
+
+    // Render groups panel
+    let groupsPanelHtml = "";
+    if (currentState.showGroups) {
+      groupsPanelHtml = `<div class="groups-grid">${Object.entries(groupsList).map(([g, teams]) => `
+        <div class="group-card" style="border-left: 3px solid ${groupColors[g]}; border-radius: 8px;">
+          <div style="font-size: 12px; font-weight: bold; color: ${groupColors[g]}; margin-bottom: 6px;">GROUP ${g}</div>
+          ${teams.map(team => `
+            <div class="group-team">
+              <span class="flag">${flagMap[team] || "🏁"}</span>
+              <span>${team}</span>
+            </div>
+          `).join('')}
+        </div>
+      `).join('')}</div>`;
+    }
+
+    // Render fixtures
+    let fixturesHtml = "";
+    if (Object.keys(byDate).length === 0) {
+      fixturesHtml = `<div style="text-align:center; color:#2a4a6a; padding:40px 0;">🚫 No matches found${searchLow ? ` for "${currentState.searchQuery}"` : ""}.</div>`;
+    } else {
+      fixturesHtml = Object.entries(byDate).map(([date, matches]) => {
+        const dateHeader = formatDateHeader(date);
+        const matchesHtml = matches.map(m => {
+          const mDT = parseMatchDateTime(m.date, m.time);
+          const isPast = mDT < currentState.now;
+          const isNextFlag = nextMatch && nextMatch.match === m.match && nextMatch.date === m.date && nextMatch.time === m.time;
+          const groupCol = m.group ? groupColors[m.group] : (isNextFlag ? "#c5a028" : "#2a4a6a");
+          const matchWithFlags = addFlagsToMatch(m.match);
+          
+          return `
+            <div style="background: ${isNextFlag ? 'rgba(197,160,40,0.12)' : isPast ? 'rgba(255,255,255,0.015)' : 'rgba(255,255,255,0.04)'}; border-left: 3px solid ${groupCol}; border-radius: 12px; padding: 12px; margin-bottom: 10px; position: relative; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+              ${isNextFlag ? `<div style="position: absolute; top: -9px; right: 10px; background: #c5a028; color: #041226; font-size: 8px; font-weight: bold; padding: 2px 12px; border-radius: 40px; letter-spacing: 1px;">▶ NEXT</div>` : ''}
+              <div style="min-width: 65px; background: rgba(0,0,0,0.4); border-radius: 28px; padding: 5px 6px; text-align: center;">
+                <div style="font-weight: bold; font-size: 12px; color: #f3e5ab;">${formatTime12(m.time)}</div>
+                <div style="font-size: 7px; color: #7a9abf;">BST</div>
+              </div>
+              ${m.group ? `<div style="width: 30px; height: 30px; border-radius: 50%; background: ${groupColors[m.group]}; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #fff;">${m.group}</div>` : `<div style="width: 30px;"></div>`}
+              <div style="flex: 1; min-width: 150px;">
+                <div style="font-size: 14px; font-weight: 600; color: ${isPast ? '#809cb0' : '#fdf6e3'}; line-height: 1.4;">${matchWithFlags}</div>
+                <div style="font-size: 10px; color: #6f8faa; margin-top: 5px;">📍 ${m.venue}</div>
+              </div>
+              ${isPast ? `<span style="font-size: 9px; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 25px;">FT</span>` : ''}
+            </div>
+          `;
+        }).join('');
+        
+        return `
+          <div style="margin-bottom: 28px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+              <div style="background: linear-gradient(135deg, #c5a028, #e6cf6e); color: #041226; font-weight: bold; font-size: 10px; padding: 4px 16px; border-radius: 40px;">${dateHeader}</div>
+              <div style="flex: 1; height: 1px; background: radial-gradient(circle, rgba(197,160,40,0.4), transparent);"></div>
+            </div>
+            ${matchesHtml}
+          </div>
+        `;
+      }).join('');
+    }
+
+    const nextMatchFlagged = nextMatch ? addFlagsToMatch(nextMatch.match) : "";
+    
+    // NEW COLOR SCHEME FOR UPPER SECTION - Rich Burgundy & Gold gradient
+    const countdownHtml = nextMatch ? `
+      <div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px 16px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 8px 32px rgba(0,0,0,0.4);">
+        <div style="font-size: 9px; letter-spacing: 3px; color: #FFD700; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">⚽ NEXT MATCH · BANGLADESH STANDARD TIME</div>
+        <div style="font-size: clamp(14px, 4vw, 20px); font-weight: bold; color: #FFD700; margin-top: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">${nextMatchFlagged}</div>
+        <div style="font-size: 10px; color: #FFD700; margin-bottom: 12px; opacity: 0.9;">${formatDateHeader(nextMatch.date)} · ${formatTime12(nextMatch.time)} BST · 📍 ${nextMatch.venue}</div>
+        <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+          ${[["DAYS", cd.d], ["HRS", cd.h], ["MIN", cd.m], ["SEC", cd.s]].map(([lbl, val]) => `
+            <div style="background: rgba(0,0,0,0.5); border: 1px solid #FFD700; border-radius: 12px; padding: 8px 12px; min-width: 60px; text-align: center; backdrop-filter: blur(4px);">
+              <div style="font-size: 22px; font-weight: bold; color: #FFD700; line-height: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">${pad(val)}</div>
+              <div style="font-size: 8px; color: #FFD700; letter-spacing: 1px;">${lbl}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    ` : `<div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px; text-align: center; color: #FFD700; font-size: 18px;">🏆 Tournament Complete!</div>`;
+
+    const fullHtml = `
+      <div style="min-height: 100vh;">
+        ${countdownHtml}
+        <div style="background: rgba(4,18,38,0.96); padding: 14px 16px; text-align: center; border-bottom: 1px solid rgba(197,160,40,0.15);">
+          <div style="font-size: 8px; letter-spacing: 3px; color: #c5a028;">FIFA WORLD CUP 2026 · CANADA · MEXICO · USA</div>
+          <h1 style="font-size: clamp(16px, 5vw, 24px); margin: 4px 0; color: #fff;">🇧🇩 Full Fixture — Bangladesh Time</h1>
+          <div style="font-size: 9px; color: #2e5570;">ALL TIMES BST (UTC+6) · 104 MATCHES · 48 TEAMS</div>
+          <button id="toggleGroupsBtn" class="group-tag-btn" style="margin-top: 12px;">📋 ${currentState.showGroups ? "▲ Hide Groups" : "▼ Show All Groups"}</button>
+          <div id="groupsPanel" style="margin-top: 8px;">${groupsPanelHtml}</div>
+          <input id="searchInput" class="search-input" type="text" placeholder="🔍 Search team, venue or group…" value="${currentState.searchQuery.replace(/"/g, '&quot;')}" style="margin: 14px auto 12px auto; max-width: 340px;">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 4px;">
+            ${stageList.map(s => `<button data-stage="${s}" class="stage-btn ${currentState.selectedStage === s ? 'active' : ''}">${s}</button>`).join('')}
+          </div>
+        </div>
+        <div style="background: rgba(10,30,58,0.6); padding: 6px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; align-items: center;">
+          <span style="font-size: 10px; font-weight: bold; color: #c5a028;">${currentState.selectedStage}</span>
+          <span style="font-size: 10px; color: rgba(255,255,255,0.3);">— ${stageMatches.length} matches</span>
+        </div>
+        <div class="fixture-container">${fixturesHtml}</div>
+        <div style="border-top: 1px solid rgba(197,160,40,0.1); padding: 20px; text-align: center; font-size: 9px; color: #1e3a54;">🇧🇩 BST (UTC+6) · Flags displayed · Official FIFA draw · 48 teams</div>
+      </div>
+    `;
+    
+    root.innerHTML = fullHtml;
+    
+    // Attach event listeners
+    document.getElementById("toggleGroupsBtn")?.addEventListener("click", toggleGroups);
+    const searchEl = document.getElementById("searchInput");
+    if (searchEl) searchEl.addEventListener("input", (e) => setSearchQuery(e.target.value));
+    document.querySelectorAll("[data-stage]").forEach(btn => {
+      btn.addEventListener("click", (e) => { 
+        const stage = btn.getAttribute("data-stage"); 
+        if(stage) setStage(stage); 
+      });
+    });
+  }
+
+  function init() { 
+    renderApp(); 
+    intervalId = setInterval(() => { 
+      currentState.now = new Date(); 
+      renderApp(); 
+    }, 1000);
+  }
+  
+  init();
+</script>
+</body>
+</html>
