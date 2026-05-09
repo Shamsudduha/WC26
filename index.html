@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>FIFA World Cup 2026 · Bangladesh Time | Full Fixtures + Flags</title>
+  <title>FIFA World Cup 2026 · Bangladesh Time | Full Fixtures</title>
   <style>
     * {
       margin: 0;
@@ -157,7 +157,7 @@
 
 <script>
   // ============================================================
-  // COMPLETE FLAG MAP - Using standard emoji flags
+  // COMPLETE FLAG MAP - Using standard emoji flags (no hidden Unicode)
   // ============================================================
   const flagMap = {
     // Group A
@@ -314,13 +314,13 @@
     { date:"2026-07-14", time:"01:00", match:"SF1: Winner QF1 vs Winner QF2", venue:"Dallas", stage:"Semifinals" },
     { date:"2026-07-15", time:"01:00", match:"SF2: Winner QF3 vs Winner QF4", venue:"Atlanta", stage:"Semifinals" },
     { date:"2026-07-18", time:"15:00", match:"3rd Place Match", venue:"Miami", stage:"3rd Place" },
-    { date:"2026-07-20", time:"01:00", match:"🏆 WORLD CUP FINAL", venue:"MetLife Stadium, New York–New Jersey", stage:"Final" }
+    { date:"2026-07-20", time:"01:00", match:"WORLD CUP FINAL", venue:"MetLife Stadium, New York–New Jersey", stage:"Final" }
   ];
 
   // Helper function to add flags to match text
   function addFlagsToMatch(matchStr) {
     if (!matchStr) return matchStr;
-    if (matchStr.includes("WORLD CUP FINAL")) return matchStr;
+    if (matchStr.includes("WORLD CUP FINAL")) return "🏆 WORLD CUP FINAL";
     if (matchStr.includes(" vs ")) {
       const parts = matchStr.split(" vs ");
       if (parts.length === 2) {
@@ -459,7 +459,7 @@
           
           return `
             <div style="background: ${isNextFlag ? 'rgba(197,160,40,0.12)' : isPast ? 'rgba(255,255,255,0.015)' : 'rgba(255,255,255,0.04)'}; border-left: 3px solid ${groupCol}; border-radius: 12px; padding: 12px; margin-bottom: 10px; position: relative; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-              ${isNextFlag ? `<div style="position: absolute; top: -9px; right: 10px; background: #c5a028; color: #041226; font-size: 8px; font-weight: bold; padding: 2px 12px; border-radius: 40px; letter-spacing: 1px;">▶ NEXT</div>` : ''}
+              ${isNextFlag ? `<div style="position: absolute; top: -9px; right: 10px; background: #c5a028; color: #041226; font-size: 8px; font-weight: bold; padding: 2px 12px; border-radius: 40px; letter-spacing: 1px;">NEXT</div>` : ''}
               <div style="min-width: 65px; background: rgba(0,0,0,0.4); border-radius: 28px; padding: 5px 6px; text-align: center;">
                 <div style="font-weight: bold; font-size: 12px; color: #f3e5ab;">${formatTime12(m.time)}</div>
                 <div style="font-size: 7px; color: #7a9abf;">BST</div>
@@ -488,10 +488,10 @@
 
     const nextMatchFlagged = nextMatch ? addFlagsToMatch(nextMatch.match) : "";
     
-    // NEW COLOR SCHEME FOR UPPER SECTION - Rich Burgundy & Gold gradient
+    // Countdown section with new color
     const countdownHtml = nextMatch ? `
       <div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px 16px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 8px 32px rgba(0,0,0,0.4);">
-        <div style="font-size: 9px; letter-spacing: 3px; color: #FFD700; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">⚽ NEXT MATCH · BANGLADESH STANDARD TIME</div>
+        <div style="font-size: 9px; letter-spacing: 3px; color: #FFD700; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">NEXT MATCH - BANGLADESH STANDARD TIME</div>
         <div style="font-size: clamp(14px, 4vw, 20px); font-weight: bold; color: #FFD700; margin-top: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">${nextMatchFlagged}</div>
         <div style="font-size: 10px; color: #FFD700; margin-bottom: 12px; opacity: 0.9;">${formatDateHeader(nextMatch.date)} · ${formatTime12(nextMatch.time)} BST · 📍 ${nextMatch.venue}</div>
         <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
@@ -503,7 +503,7 @@
           `).join('')}
         </div>
       </div>
-    ` : `<div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px; text-align: center; color: #FFD700; font-size: 18px;">🏆 Tournament Complete!</div>`;
+    ` : `<div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px; text-align: center; color: #FFD700; font-size: 18px;">Tournament Complete!</div>`;
 
     const fullHtml = `
       <div style="min-height: 100vh;">
@@ -512,9 +512,9 @@
           <div style="font-size: 8px; letter-spacing: 3px; color: #c5a028;">FIFA WORLD CUP 2026 · CANADA · MEXICO · USA</div>
           <h1 style="font-size: clamp(16px, 5vw, 24px); margin: 4px 0; color: #fff;">🇧🇩 Full Fixture — Bangladesh Time</h1>
           <div style="font-size: 9px; color: #2e5570;">ALL TIMES BST (UTC+6) · 104 MATCHES · 48 TEAMS</div>
-          <button id="toggleGroupsBtn" class="group-tag-btn" style="margin-top: 12px;">📋 ${currentState.showGroups ? "▲ Hide Groups" : "▼ Show All Groups"}</button>
+          <button id="toggleGroupsBtn" class="group-tag-btn" style="margin-top: 12px;">📋 ${currentState.showGroups ? "Hide Groups" : "Show All Groups"}</button>
           <div id="groupsPanel" style="margin-top: 8px;">${groupsPanelHtml}</div>
-          <input id="searchInput" class="search-input" type="text" placeholder="🔍 Search team, venue or group…" value="${currentState.searchQuery.replace(/"/g, '&quot;')}" style="margin: 14px auto 12px auto; max-width: 340px;">
+          <input id="searchInput" class="search-input" type="text" placeholder="Search team, venue or group..." value="${currentState.searchQuery.replace(/"/g, '&quot;')}" style="margin: 14px auto 12px auto; max-width: 340px;">
           <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 4px;">
             ${stageList.map(s => `<button data-stage="${s}" class="stage-btn ${currentState.selectedStage === s ? 'active' : ''}">${s}</button>`).join('')}
           </div>
