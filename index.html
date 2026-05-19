@@ -59,6 +59,33 @@
       align-items: center;
       gap: 6px;
     }
+    .team-filter-dropdown {
+      background: rgba(197,160,40,0.1);
+      border: 1px solid rgba(197,160,40,0.4);
+      color: #e0c870;
+      border-radius: 24px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-bottom: 12px;
+      margin-left: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Nitor Bangla', 'Segoe UI', sans-serif;
+      min-width: 180px;
+    }
+    .team-filter-dropdown:hover, .team-filter-dropdown:focus {
+      background: rgba(197,160,40,0.2);
+      outline: none;
+    }
+    .team-filter-dropdown option {
+      background: #0a1e30;
+      color: #e0c870;
+      padding: 10px;
+      font-size: 12px;
+    }
     .flag-img { width: 18px; height: 14px; border-radius: 2px; vertical-align: middle; margin-right: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
     .team-name { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
     .group-card { background: rgba(255,255,255,0.03); border-radius: 8px; padding: 10px 12px; }
@@ -78,6 +105,7 @@
     @media (max-width: 480px) {
       .team-name { white-space: normal; word-break: keep-all; }
       .time-badge { min-width: 60px; padding: 4px 6px; }
+      .team-filter-dropdown { min-width: 150px; }
     }
     .countdown-box {
       background: rgba(0,0,0,0.5);
@@ -89,6 +117,42 @@
     }
     .countdown-number { font-size: 22px; font-weight: bold; color: #FFD700; line-height: 1; }
     .countdown-label { font-size: 8px; color: #FFD700; }
+    .filter-buttons-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+      align-items: center;
+    }
+    .clear-filter-btn {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid #c5a028;
+      color: #c5a028;
+      border-radius: 24px;
+      padding: 6px 12px;
+      font-size: 10px;
+      cursor: pointer;
+      margin-left: 4px;
+    }
+    .live-pulse {
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    .live-badge {
+      background: #ff0000;
+      color: white;
+      font-size: 10px;
+      font-weight: bold;
+      padding: 2px 8px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-left: 8px;
+      letter-spacing: 1px;
+    }
   </style>
 </head>
 <body>
@@ -296,6 +360,21 @@
     { date:"2026-07-20", time:"01:00", match:"ডাব্লিউ১০১ বনাম ডাব্লিউ১০২", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Final" }
   ];
 
+  // ================= সমস্ত দলের তালিকা তৈরি =================
+  function getAllTeams() {
+    const teams = new Set();
+    fixturesRaw.forEach(fixture => {
+      if (fixture.match && fixture.match.includes(" vs ")) {
+        const parts = fixture.match.split(" vs ");
+        if (parts.length === 2) {
+          teams.add(parts[0].trim());
+          teams.add(parts[1].trim());
+        }
+      }
+    });
+    return Array.from(teams).sort();
+  }
+
   function parseMatchDateTime(dateStr, timeStr) {
     const [h, m] = timeStr.split(":").map(Number);
     const [y, mo, d] = dateStr.split("-").map(Number);
@@ -322,24 +401,57 @@
     return d.toLocaleDateString("bn-BD", { weekday:"short", month:"short", day:"numeric" }).toUpperCase();
   }
 
-  let currentState = { now: new Date(), selectedStage: "Group Stage", showGroups: false };
+  // ম্যাচ লাইভ কিনা চেক করে (ম্যাচ শুরু থেকে 105 মিনিট পর্যন্ত)
+  function isMatchLive(matchDateTime) {
+    const now = new Date();
+    const matchEndTime = new Date(matchDateTime.getTime() + 105 * 60000); // 105 minutes
+    return (matchDateTime <= now && now <= matchEndTime);
+  }
+
+  let currentState = { now: new Date(), selectedStage: "Group Stage", showGroups: false, selectedTeam: "" };
   let intervalId = null;
 
   function setStage(stage) { currentState.selectedStage = stage; renderApp(); }
   function toggleGroups() { currentState.showGroups = !currentState.showGroups; renderApp(); }
-  function getNextMatch(fixturesWithDT) { return fixturesWithDT.filter(f => f.dt > currentState.now).sort((a,b) => a.dt - b.dt)[0] || null; }
+  function setTeam(team) { 
+    currentState.selectedTeam = team; 
+    renderApp(); 
+  }
+  function clearTeamFilter() { currentState.selectedTeam = ""; renderApp(); }
+  
+  function getNextMatch(fixturesWithDT) { 
+    return fixturesWithDT.filter(f => f.dt > currentState.now).sort((a,b) => a.dt - b.dt)[0] || null; 
+  }
+  
+  function getLiveMatch(fixturesWithDT) {
+    return fixturesWithDT.filter(f => isMatchLive(f.dt)).sort((a,b) => a.dt - b.dt)[0] || null;
+  }
 
   function renderApp() {
     const root = document.getElementById("root");
     if (!root) return;
     const enriched = fixturesRaw.map(f => ({ ...f, dt: parseMatchDateTime(f.date, f.time) }));
+    const liveMatch = getLiveMatch(enriched);
     const nextMatch = getNextMatch(enriched);
     const cd = nextMatch ? formatCountdown(nextMatch.dt - currentState.now) : null;
+    
+    // ফিল্টার প্রয়োগ: স্টেজ অনুযায়ী এবং দল অনুযায়ী
     let stageMatches = fixturesRaw.filter(f => f.stage === currentState.selectedStage);
+    
+    // দল ফিল্টার
+    if (currentState.selectedTeam && currentState.selectedTeam !== "") {
+      stageMatches = stageMatches.filter(f => {
+        if (f.match && f.match.includes(" vs ")) {
+          return f.match.includes(currentState.selectedTeam);
+        }
+        return false;
+      });
+    }
+    
     const byDate = {};
     stageMatches.forEach(f => { byDate[f.date] = byDate[f.date] || []; byDate[f.date].push(f); });
     
-    // গ্রুপ প্যানেল (বাংলায় গ্রুপের নাম)
+    // গ্রুপ প্যানেল
     let groupsPanelHtml = "";
     if (currentState.showGroups) {
       groupsPanelHtml = `<div class="groups-grid">${Object.entries(groupsData).map(([gBn, teams]) => `
@@ -350,15 +462,29 @@
       `).join('')}</div>`;
     }
     
+    // দল নির্বাচনের ড্রপডাউন HTML
+    const allTeams = getAllTeams();
+    const teamOptionsHtml = allTeams.map(team => {
+      const teamBn = countryBn[team] || team;
+      const selectedAttr = currentState.selectedTeam === team ? 'selected' : '';
+      return `<option value="${team}" ${selectedAttr}>${getFlag(team)} ${teamBn}</option>`;
+    }).join('');
+    
     let fixturesHtml = "";
     if (Object.keys(byDate).length === 0) {
-      fixturesHtml = `<div style="text-align:center; color:#2a4a6a; padding:40px 0;">🚫 কোন ম্যাচ পাওয়া যায়নি</div>`;
+      let noMatchMsg = "🚫 কোন ম্যাচ পাওয়া যায়নি";
+      if (currentState.selectedTeam) {
+        const teamBn = countryBn[currentState.selectedTeam] || currentState.selectedTeam;
+        noMatchMsg = `🚫 "${teamBn}" দলের জন্য কোন ম্যাচ খুঁজে পাওয়া যায়নি`;
+      }
+      fixturesHtml = `<div style="text-align:center; color:#2a4a6a; padding:40px 0;">${noMatchMsg}</div>`;
     } else {
       fixturesHtml = Object.entries(byDate).map(([date, matches]) => {
         const dateHeader = formatDateHeader(date);
         const matchesHtml = matches.map(m => {
           const mDT = parseMatchDateTime(m.date, m.time);
-          const isPast = mDT < currentState.now;
+          const isPast = mDT < currentState.now && !isMatchLive(mDT);
+          const isThisLive = isMatchLive(mDT);
           const isNextFlag = nextMatch && nextMatch.match === m.match && nextMatch.date === m.date && nextMatch.time === m.time;
           const groupBn = m.group ? groupNamesBn[m.group] : null;
           const groupCol = groupBn ? groupColors[groupBn] : (isNextFlag ? "#c5a028" : "#2a4a6a");
@@ -373,47 +499,104 @@
           const timeObj = formatTime12(m.time);
           const groupDisplay = groupBn ? `<div style="width: 30px; height: 30px; border-radius: 50%; background: ${groupColors[groupBn]}; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #fff;">${groupBn}</div>` : `<div style="width: 30px;"></div>`;
           
-          return `<div style="background: ${isNextFlag ? 'rgba(197,160,40,0.12)' : isPast ? 'rgba(255,255,255,0.015)' : 'rgba(255,255,255,0.04)'}; border-left: 3px solid ${groupCol}; border-radius: 12px; padding: 12px; margin-bottom: 10px; position: relative; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-            ${isNextFlag ? `<div style="position: absolute; top: -9px; right: 10px; background: #c5a028; color: #041226; font-size: 8px; font-weight: bold; padding: 2px 12px; border-radius: 40px;">পরবর্তী</div>` : ''}
+          let statusBadge = "";
+          if (isThisLive) {
+            statusBadge = `<span style="background: #ff0000; color: white; font-size: 8px; font-weight: bold; padding: 2px 8px; border-radius: 20px; margin-left: 8px;" class="live-pulse">🔴 লাইভ</span>`;
+          } else if (isPast) {
+            statusBadge = `<span style="font-size: 9px; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 25px;">সমাপ্ত</span>`;
+          }
+          
+          return `<div style="background: ${isThisLive ? 'rgba(255,0,0,0.15)' : (isNextFlag ? 'rgba(197,160,40,0.12)' : isPast ? 'rgba(255,255,255,0.015)' : 'rgba(255,255,255,0.04)')}; border-left: 3px solid ${isThisLive ? '#ff0000' : groupCol}; border-radius: 12px; padding: 12px; margin-bottom: 10px; position: relative; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            ${isNextFlag && !isThisLive ? `<div style="position: absolute; top: -9px; right: 10px; background: #c5a028; color: #041226; font-size: 8px; font-weight: bold; padding: 2px 12px; border-radius: 40px;">পরবর্তী</div>` : ''}
             <div class="time-badge"><div><span class="time-hour">${timeObj.hour}:${timeObj.minute}</span><span class="time-ampm">${timeObj.ampm}</span></div><div class="time-label">বিএসটি</div></div>
             ${groupDisplay}
-            <div style="flex: 1; min-width: 150px;"><div style="font-size: 14px; font-weight: 600; color: ${isPast ? '#809cb0' : '#fdf6e3'}; line-height: 1.4;">${matchWithFlags}</div><div style="font-size: 10px; color: #6f8faa; margin-top: 5px;">📍 ${m.venue}</div></div>
-            ${isPast ? `<span style="font-size: 9px; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 25px;">সমাপ্ত</span>` : ''}
+            <div style="flex: 1; min-width: 150px;"><div style="font-size: 14px; font-weight: 600; color: ${isPast ? '#809cb0' : '#fdf6e3'}; line-height: 1.4;">${matchWithFlags} ${statusBadge}</div><div style="font-size: 10px; color: #6f8faa; margin-top: 5px;">📍 ${m.venue}</div></div>
           </div>`;
         }).join('');
         return `<div style="margin-bottom: 28px;"><div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;"><div style="background: linear-gradient(135deg, #c5a028, #e6cf6e); color: #041226; font-weight: bold; font-size: 10px; padding: 4px 16px; border-radius: 40px;">${dateHeader}</div><div style="flex: 1; height: 1px; background: radial-gradient(circle, rgba(197,160,40,0.4), transparent);"></div></div>${matchesHtml}</div>`;
       }).join('');
     }
     
-    const nextMatchFlagged = nextMatch ? (nextMatch.match.includes(" vs ") && !nextMatch.match.includes("বনাম") ? formatMatchWithBn(nextMatch.match) : nextMatch.match) : "";
-    const timeObjNext = nextMatch ? formatTime12(nextMatch.time) : null;
-    const countdownHtml = nextMatch && cd ? `<div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px 16px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 8px 32px rgba(0,0,0,0.4);">
-      <div style="font-size: 9px; letter-spacing: 3px; color: #FFD700;">⚽ পরবর্তী ম্যাচ - বাংলাদেশ মান সময়</div>
-      <div style="font-size: clamp(14px, 4vw, 20px); font-weight: bold; color: #FFD700; margin-top: 5px;">${nextMatchFlagged}</div>
-      <div style="font-size: 10px; color: #FFD700; margin-bottom: 12px;">${formatDateHeader(nextMatch.date)} · ${timeObjNext.hour}:${timeObjNext.minute} ${timeObjNext.ampm} বিএসটি · 📍 ${nextMatch.venue}</div>
-      <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
-        <div class="countdown-box"><div class="countdown-number">${pad(cd.d)}</div><div class="countdown-label">দিন</div></div>
-        <div class="countdown-box"><div class="countdown-number">${pad(cd.h)}</div><div class="countdown-label">ঘণ্টা</div></div>
-        <div class="countdown-box"><div class="countdown-number">${pad(cd.m)}</div><div class="countdown-label">মিনিট</div></div>
-        <div class="countdown-box"><div class="countdown-number">${pad(cd.s)}</div><div class="countdown-label">সেকেন্ড</div></div>
-      </div>
-    </div>` : `<div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px; text-align: center; color: #FFD700; font-size: 18px;">🏆 প্রতিযোগিতা সমাপ্ত!</div>`;
+    // লাইভ ম্যাচের জন্য HTML
+    let liveMatchHtml = "";
+    if (liveMatch) {
+      const liveMatchFormatted = liveMatch.match.includes(" vs ") && !liveMatch.match.includes("বনাম") ? formatMatchWithBn(liveMatch.match) : liveMatch.match;
+      const liveTimeObj = formatTime12(liveMatch.time);
+      liveMatchHtml = `<div style="background: linear-gradient(135deg, #8B0000 0%, #CC0000 50%, #8B0000 100%); border-bottom: 3px solid #FFD700; padding: 20px 16px; text-align: center; margin-bottom: 0;">
+        <div style="font-size: 9px; letter-spacing: 3px; color: #FFD700;">🔴 লাইভ ম্যাচ চলছে</div>
+        <div style="font-size: clamp(14px, 4vw, 20px); font-weight: bold; color: #FFD700; margin-top: 5px;">${liveMatchFormatted}</div>
+        <div style="font-size: 10px; color: #FFD700; margin-bottom: 8px;">${formatDateHeader(liveMatch.date)} · ${liveTimeObj.hour}:${liveTimeObj.minute} ${liveTimeObj.ampm} বিএসটি · 📍 ${liveMatch.venue}</div>
+        <div class="live-pulse" style="display: inline-block; background: #ff0000; color: white; font-size: 10px; font-weight: bold; padding: 4px 16px; border-radius: 30px;">⚽ ম্যাচ চলছে</div>
+      </div>`;
+    }
     
-    const fullHtml = `<div style="min-height: 100vh;">${countdownHtml}<div style="background: rgba(4,18,38,0.96); padding: 14px 16px; text-align: center; border-bottom: 1px solid rgba(197,160,40,0.15);">
+    // পরবর্তী ম্যাচের জন্য HTML (লাইভ থাকলে নিচে দেখাবে)
+    let nextMatchHtml = "";
+    if (nextMatch && !liveMatch) {
+      const nextMatchFormatted = nextMatch.match.includes(" vs ") && !nextMatch.match.includes("বনাম") ? formatMatchWithBn(nextMatch.match) : nextMatch.match;
+      const timeObjNext = formatTime12(nextMatch.time);
+      nextMatchHtml = `<div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px 16px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 8px 32px rgba(0,0,0,0.4);">
+        <div style="font-size: 9px; letter-spacing: 3px; color: #FFD700;">⚽ পরবর্তী ম্যাচ - বাংলাদেশ মান সময়</div>
+        <div style="font-size: clamp(14px, 4vw, 20px); font-weight: bold; color: #FFD700; margin-top: 5px;">${nextMatchFormatted}</div>
+        <div style="font-size: 10px; color: #FFD700; margin-bottom: 12px;">${formatDateHeader(nextMatch.date)} · ${timeObjNext.hour}:${timeObjNext.minute} ${timeObjNext.ampm} বিএসটি · 📍 ${nextMatch.venue}</div>
+        <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+          <div class="countdown-box"><div class="countdown-number">${pad(cd.d)}</div><div class="countdown-label">দিন</div></div>
+          <div class="countdown-box"><div class="countdown-number">${pad(cd.h)}</div><div class="countdown-label">ঘণ্টা</div></div>
+          <div class="countdown-box"><div class="countdown-number">${pad(cd.m)}</div><div class="countdown-label">মিনিট</div></div>
+          <div class="countdown-box"><div class="countdown-number">${pad(cd.s)}</div><div class="countdown-label">সেকেন্ড</div></div>
+        </div>
+      </div>`;
+    } else if (!liveMatch && !nextMatch) {
+      nextMatchHtml = `<div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px; text-align: center; color: #FFD700; font-size: 18px;">🏆 প্রতিযোগিতা সমাপ্ত!</div>`;
+    } else if (liveMatch && nextMatch && cd) {
+      // লাইভ থাকলে নিচে পরবর্তী ম্যাচের কাউন্টডাউন দেখাবে
+      const nextMatchFormatted = nextMatch.match.includes(" vs ") && !nextMatch.match.includes("বনাম") ? formatMatchWithBn(nextMatch.match) : nextMatch.match;
+      const timeObjNext = formatTime12(nextMatch.time);
+      nextMatchHtml = `<div style="background: linear-gradient(135deg, #1a3a5c 0%, #0e2a4a 50%, #1a3a5c 100%); border-top: 2px solid #FFD700; border-bottom: 2px solid #FFD700; padding: 16px 16px; text-align: center;">
+        <div style="font-size: 9px; letter-spacing: 2px; color: #FFD700;">⏰ পরবর্তী ম্যাচ</div>
+        <div style="font-size: clamp(12px, 3.5vw, 16px); font-weight: bold; color: #FFD700; margin-top: 4px;">${nextMatchFormatted}</div>
+        <div style="font-size: 9px; color: #FFD700; margin-bottom: 8px;">${formatDateHeader(nextMatch.date)} · ${timeObjNext.hour}:${timeObjNext.minute} ${timeObjNext.ampm} বিএসটি</div>
+        <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+          <div class="countdown-box" style="padding: 4px 8px; min-width: 45px;"><div class="countdown-number" style="font-size: 16px;">${pad(cd.d)}</div><div class="countdown-label">দিন</div></div>
+          <div class="countdown-box" style="padding: 4px 8px; min-width: 45px;"><div class="countdown-number" style="font-size: 16px;">${pad(cd.h)}</div><div class="countdown-label">ঘণ্টা</div></div>
+          <div class="countdown-box" style="padding: 4px 8px; min-width: 45px;"><div class="countdown-number" style="font-size: 16px;">${pad(cd.m)}</div><div class="countdown-label">মিনিট</div></div>
+          <div class="countdown-box" style="padding: 4px 8px; min-width: 45px;"><div class="countdown-number" style="font-size: 16px;">${pad(cd.s)}</div><div class="countdown-label">সেকেন্ড</div></div>
+        </div>
+      </div>`;
+    }
+    
+    const fullHtml = `<div style="min-height: 100vh;">${liveMatchHtml}${nextMatchHtml}<div style="background: rgba(4,18,38,0.96); padding: 14px 16px; text-align: center; border-bottom: 1px solid rgba(197,160,40,0.15);">
       <div style="font-size: 8px; letter-spacing: 3px; color: #c5a028;">ফিফা বিশ্বকাপ ২০২৬ · কানাডা · মেক্সিকো · মার্কিন যুক্তরাষ্ট্র</div>
       <h1 style="font-size: clamp(16px, 5vw, 24px); margin: 4px 0; color: #fff; line-height: 1.2;">🇧🇩 সম্পূর্ণ সূচি — বাংলাদেশ সময়</h1>
       <div style="font-size: 9px; color: #2e5570;">সময় বিএসটি (ইউটিসি+৬) · ১০৪ ম্যাচ · ৪৮ দল</div>
-      <button id="toggleGroupsBtn" class="group-tag-btn" style="margin-top: 12px;">📋 ${currentState.showGroups ? "▲ গ্রুপ লুকান" : "▼ সব গ্রুপ দেখুন"}</button>
+      <div class="filter-buttons-wrapper">
+        <button id="toggleGroupsBtn" class="group-tag-btn">📋 ${currentState.showGroups ? "▲ গ্রুপ লুকান" : "▼ সব গ্রুপ দেখুন"}</button>
+        <select id="teamFilterSelect" class="team-filter-dropdown">
+          <option value="">🔽 সব দল দেখুন</option>
+          ${teamOptionsHtml}
+        </select>
+        ${currentState.selectedTeam ? `<button id="clearFilterBtn" class="clear-filter-btn">✖ সরান</button>` : ''}
+      </div>
       <div id="groupsPanel" style="margin-top: 8px;">${groupsPanelHtml}</div>
       <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 12px;">${stageListEn.map((s, idx) => `<button data-stage="${s}" class="stage-btn ${currentState.selectedStage === s ? 'active' : ''}">${stageListBn[idx]}</button>`).join('')}</div>
     </div>
-    <div style="background: rgba(10,30,58,0.6); padding: 6px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; align-items: center;"><span style="font-size: 10px; font-weight: bold; color: #c5a028;">${stageListBn[stageListEn.indexOf(currentState.selectedStage)]}</span><span style="font-size: 10px; color: rgba(255,255,255,0.3);">— ${stageMatches.length} ম্যাচ</span></div>
+    <div style="background: rgba(10,30,58,0.6); padding: 6px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; align-items: center;"><span style="font-size: 10px; font-weight: bold; color: #c5a028;">${stageListBn[stageListEn.indexOf(currentState.selectedStage)]}</span><span style="font-size: 10px; color: rgba(255,255,255,0.3);">— ${stageMatches.length} ম্যাচ</span>${currentState.selectedTeam ? `<span style="font-size: 10px; color: #c5a028; margin-left: auto;">🔍 ${getFlag(currentState.selectedTeam)} ${countryBn[currentState.selectedTeam] || currentState.selectedTeam}</span>` : ''}</div>
     <div class="fixture-container">${fixturesHtml}</div>
-    <div style="border-top: 1px solid rgba(197,160,40,0.1); padding: 20px; text-align: center; font-size: 9px; color: #1e3a54;">MADE BY SOUAD</div>
+    <div style="border-top: 1px solid rgba(197,160,40,0.1); padding: 20px; text-align: center; font-size: 12px; color: #FFD700;"><b>MADE BY SOUAD<b></div>
     </div>`;
     root.innerHTML = fullHtml;
+    
     document.getElementById("toggleGroupsBtn")?.addEventListener("click", toggleGroups);
-    document.querySelectorAll("[data-stage]").forEach(btn => btn.addEventListener("click", (e) => { const stage = btn.getAttribute("data-stage"); if(stage) setStage(stage); }));
+    const teamSelect = document.getElementById("teamFilterSelect");
+    if (teamSelect) {
+      teamSelect.value = currentState.selectedTeam;
+      teamSelect.addEventListener("change", (e) => setTeam(e.target.value));
+    }
+    document.getElementById("clearFilterBtn")?.addEventListener("click", clearTeamFilter);
+    document.querySelectorAll("[data-stage]").forEach(btn => btn.addEventListener("click", (e) => { 
+      const stage = btn.getAttribute("data-stage"); 
+      if(stage) setStage(stage); 
+    }));
   }
   
   function init() { renderApp(); intervalId = setInterval(() => { currentState.now = new Date(); renderApp(); }, 1000); }
