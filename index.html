@@ -59,7 +59,13 @@
       align-items: center;
       gap: 6px;
     }
-    .team-filter-dropdown {
+    .team-filter-container {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 12px;
+      margin-left: 8px;
+    }
+    .team-filter-btn {
       background: rgba(197,160,40,0.1);
       border: 1px solid rgba(197,160,40,0.4);
       color: #e0c870;
@@ -68,23 +74,78 @@
       font-size: 12px;
       font-weight: 500;
       cursor: pointer;
-      margin-bottom: 12px;
-      margin-left: 8px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
       font-family: 'Nitor Bangla', 'Segoe UI', sans-serif;
-      min-width: 180px;
     }
-    .team-filter-dropdown:hover, .team-filter-dropdown:focus {
-      background: rgba(197,160,40,0.2);
-      outline: none;
+    .team-filter-btn.active {
+      background: rgba(197,160,40,0.3);
+      border-color: #c5a028;
     }
-    .team-filter-dropdown option {
+    .team-dropdown-panel {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 8px;
       background: #0a1e30;
+      border: 1px solid #c5a028;
+      border-radius: 16px;
+      padding: 12px;
+      min-width: 220px;
+      max-height: 350px;
+      overflow-y: auto;
+      z-index: 1000;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      display: none;
+    }
+    .team-dropdown-panel.show {
+      display: block;
+    }
+    .team-dropdown-panel input {
+      width: 100%;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(197,160,40,0.4);
+      border-radius: 20px;
       color: #e0c870;
-      padding: 10px;
       font-size: 12px;
+      font-family: 'Nitor Bangla', 'Segoe UI', sans-serif;
+    }
+    .team-dropdown-panel input::placeholder {
+      color: #5a7a9a;
+    }
+    .team-list {
+      max-height: 250px;
+      overflow-y: auto;
+    }
+    .team-option {
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .team-option:hover {
+      background: rgba(197,160,40,0.2);
+    }
+    .team-option.selected {
+      background: rgba(197,160,40,0.3);
+      color: #c5a028;
+    }
+    .close-dropdown-btn {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: #e0c870;
+      padding: 4px 8px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 10px;
+      margin-top: 8px;
+      width: 100%;
     }
     .flag-img { width: 18px; height: 14px; border-radius: 2px; vertical-align: middle; margin-right: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
     .team-name { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
@@ -105,7 +166,7 @@
     @media (max-width: 480px) {
       .team-name { white-space: normal; word-break: keep-all; }
       .time-badge { min-width: 60px; padding: 4px 6px; }
-      .team-filter-dropdown { min-width: 150px; }
+      .team-dropdown-panel { min-width: 200px; right: 0; left: auto; }
     }
     .countdown-box {
       background: rgba(0,0,0,0.5);
@@ -142,16 +203,16 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0.6; }
     }
-    .live-badge {
-      background: #ff0000;
-      color: white;
-      font-size: 10px;
-      font-weight: bold;
-      padding: 2px 8px;
+    .selected-team-badge {
+      background: #c5a028;
+      color: #041226;
+      padding: 4px 12px;
       border-radius: 20px;
-      display: inline-block;
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       margin-left: 8px;
-      letter-spacing: 1px;
     }
   </style>
 </head>
@@ -197,7 +258,6 @@
     return `<img src="https://flagcdn.com/24x18/${code}.png" class="flag-img" alt="${country} flag" loading="lazy">`;
   }
 
-  // বাংলায় ম্যাচ ফরম্যাট
   function formatMatchWithBn(matchStr){
     if(!matchStr) return "";
     if(matchStr.includes("Match") || matchStr.includes("W") || matchStr.includes("QF") || matchStr.includes("SF") || matchStr.includes("RU") || matchStr.includes("বনাম")) return matchStr;
@@ -214,13 +274,11 @@
     return matchStr;
   }
 
-  // গ্রুপের নাম বাংলায় (এ, বি, সি, ডি, ই, এফ, জি, এইচ, আই, জে, কে, এল)
   const groupNamesBn = {
     "A": "এ", "B": "বি", "C": "সি", "D": "ডি", "E": "ই", "F": "এফ",
     "G": "জি", "H": "এইচ", "I": "আই", "J": "জে", "K": "কে", "L": "এল"
   };
 
-  // গ্রুপের দলগুলো (ইংরেজি কী রাখলাম, প্রদর্শনে বাংলা হবে)
   const groupsData = {
     "এ": ["Mexico", "South Africa", "Korea Republic", "Czechia"],
     "বি": ["Canada", "Bosnia and Herzegovina", "Qatar", "Switzerland"],
@@ -242,11 +300,9 @@
     "আই":"#3A86FF", "জে":"#FF006E", "কে":"#8338EC", "এল":"#FB5607"
   };
 
-  // বাংলায় স্টেজের নাম
   const stageListBn = ["গ্রুপ পর্ব","৩২ দলের পর্ব","১৬ দলের পর্ব","কোয়ার্টার-ফাইনাল","সেমি-ফাইনাল","৩য় স্থান","ফাইনাল"];
   const stageListEn = ["Group Stage","Round of 32","Round of 16","Quarterfinals","Semifinals","3rd Place","Final"];
 
-  // ফিক্সচার ডাটা (ইংরেজি গ্রুপ কী রাখলাম, পরে রেন্ডারে বাংলায় রূপান্তর)
   const fixturesRaw = [
     { date:"2026-06-12", time:"01:00", group:"A", match:"Mexico vs South Africa", venue:"মেক্সিকো সিটি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-12", time:"08:00", group:"A", match:"Korea Republic vs Czechia", venue:"গুয়াদালাজারা স্টেডিয়াম", stage:"Group Stage" },
@@ -320,7 +376,6 @@
     { date:"2026-06-28", time:"05:30", group:"K", match:"Congo DR vs Uzbekistan", venue:"আটলান্টা স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-28", time:"08:00", group:"J", match:"Algeria vs Austria", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-28", time:"08:00", group:"J", match:"Jordan vs Argentina", venue:"ডালাস স্টেডিয়াম", stage:"Group Stage" },
-    // নকআউট পর্ব
     { date:"2026-06-29", time:"01:00", match:"২এ বনাম ২বি", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Round of 32" },
     { date:"2026-06-29", time:"23:00", match:"১সি বনাম ২এফ", venue:"হিউস্টন স্টেডিয়াম", stage:"Round of 32" },
     { date:"2026-06-30", time:"02:30", match:"১ই বনাম ৩এবিসিডিএফ", venue:"বোস্টন স্টেডিয়াম", stage:"Round of 32" },
@@ -337,7 +392,6 @@
     { date:"2026-07-04", time:"00:00", match:"২ডি বনাম ২জি", venue:"ডালাস স্টেডিয়াম", stage:"Round of 32" },
     { date:"2026-07-04", time:"04:00", match:"১জে বনাম ২এইচ", venue:"মিয়ামি স্টেডিয়াম", stage:"Round of 32" },
     { date:"2026-07-04", time:"07:30", match:"১কে বনাম ৩ডিইআইজেএল", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Round of 32" },
-    // ১৬ দলের পর্ব
     { date:"2026-07-04", time:"23:00", match:"ডাব্লিউ৭৩ বনাম ডাব্লিউ৭৫", venue:"হিউস্টন স্টেডিয়াম", stage:"Round of 16" },
     { date:"2026-07-05", time:"03:00", match:"ডাব্লিউ৭৪ বনাম ডাব্লিউ৭৭", venue:"ফিলাডেলফিয়া স্টেডিয়াম", stage:"Round of 16" },
     { date:"2026-07-06", time:"02:00", match:"ডাব্লিউ৭৬ বনাম ডাব্লিউ৭৮", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Round of 16" },
@@ -346,21 +400,16 @@
     { date:"2026-07-07", time:"06:00", match:"ডাব্লিউ৮১ বনাম ডাব্লিউ৮২", venue:"সিয়াটল স্টেডিয়াম", stage:"Round of 16" },
     { date:"2026-07-07", time:"22:00", match:"ডাব্লিউ৮৬ বনাম ডাব্লিউ৮৮", venue:"আটলান্টা স্টেডিয়াম", stage:"Round of 16" },
     { date:"2026-07-08", time:"02:00", match:"ডাব্লিউ৮৫ বনাম ডাব্লিউ৮৭", venue:"বিসি প্লেস ভ্যাঙ্কুভার", stage:"Round of 16" },
-    // কোয়ার্টার-ফাইনাল
     { date:"2026-07-10", time:"02:00", match:"ডাব্লিউ৮৯ বনাম ডাব্লিউ৯০", venue:"বোস্টন স্টেডিয়াম", stage:"Quarterfinals" },
     { date:"2026-07-11", time:"01:00", match:"ডাব্লিউ৯৩ বনাম ডাব্লিউ৯৪", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Quarterfinals" },
     { date:"2026-07-12", time:"03:00", match:"ডাব্লিউ৯১ বনাম ডাব্লিউ৯২", venue:"মিয়ামি স্টেডিয়াম", stage:"Quarterfinals" },
     { date:"2026-07-12", time:"07:00", match:"ডাব্লিউ৯৫ বনাম ডাব্লিউ৯৬", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Quarterfinals" },
-    // সেমি-ফাইনাল
     { date:"2026-07-15", time:"01:00", match:"ডাব্লিউ৯৭ বনাম ডাব্লিউ৯৮", venue:"ডালাস স্টেডিয়াম", stage:"Semifinals" },
     { date:"2026-07-16", time:"01:00", match:"ডাব্লিউ৯৯ বনাম ডাব্লিউ১০০", venue:"আটলান্টা স্টেডিয়াম", stage:"Semifinals" },
-    // ৩য় স্থান
     { date:"2026-07-19", time:"03:00", match:"আরইউ১০১ বনাম আরইউ১০২", venue:"মিয়ামি স্টেডিয়াম", stage:"3rd Place" },
-    // ফাইনাল
     { date:"2026-07-20", time:"01:00", match:"ডাব্লিউ১০১ বনাম ডাব্লিউ১০২", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Final" }
   ];
 
-  // ================= সমস্ত দলের তালিকা তৈরি =================
   function getAllTeams() {
     const teams = new Set();
     fixturesRaw.forEach(fixture => {
@@ -401,23 +450,21 @@
     return d.toLocaleDateString("bn-BD", { weekday:"short", month:"short", day:"numeric" }).toUpperCase();
   }
 
-  // ম্যাচ লাইভ কিনা চেক করে (ম্যাচ শুরু থেকে 105 মিনিট পর্যন্ত)
   function isMatchLive(matchDateTime) {
     const now = new Date();
-    const matchEndTime = new Date(matchDateTime.getTime() + 105 * 60000); // 105 minutes
+    const matchEndTime = new Date(matchDateTime.getTime() + 105 * 60000);
     return (matchDateTime <= now && now <= matchEndTime);
   }
 
-  let currentState = { now: new Date(), selectedStage: "Group Stage", showGroups: false, selectedTeam: "" };
+  let currentState = { now: new Date(), selectedStage: "Group Stage", showGroups: false, selectedTeam: "", dropdownOpen: false };
   let intervalId = null;
 
   function setStage(stage) { currentState.selectedStage = stage; renderApp(); }
   function toggleGroups() { currentState.showGroups = !currentState.showGroups; renderApp(); }
-  function setTeam(team) { 
-    currentState.selectedTeam = team; 
-    renderApp(); 
-  }
+  function setTeam(team) { currentState.selectedTeam = team; renderApp(); }
   function clearTeamFilter() { currentState.selectedTeam = ""; renderApp(); }
+  function toggleDropdown() { currentState.dropdownOpen = !currentState.dropdownOpen; renderApp(); }
+  function closeDropdown() { currentState.dropdownOpen = false; renderApp(); }
   
   function getNextMatch(fixturesWithDT) { 
     return fixturesWithDT.filter(f => f.dt > currentState.now).sort((a,b) => a.dt - b.dt)[0] || null; 
@@ -430,15 +477,14 @@
   function renderApp() {
     const root = document.getElementById("root");
     if (!root) return;
+    
     const enriched = fixturesRaw.map(f => ({ ...f, dt: parseMatchDateTime(f.date, f.time) }));
     const liveMatch = getLiveMatch(enriched);
     const nextMatch = getNextMatch(enriched);
     const cd = nextMatch ? formatCountdown(nextMatch.dt - currentState.now) : null;
     
-    // ফিল্টার প্রয়োগ: স্টেজ অনুযায়ী এবং দল অনুযায়ী
     let stageMatches = fixturesRaw.filter(f => f.stage === currentState.selectedStage);
     
-    // দল ফিল্টার
     if (currentState.selectedTeam && currentState.selectedTeam !== "") {
       stageMatches = stageMatches.filter(f => {
         if (f.match && f.match.includes(" vs ")) {
@@ -451,7 +497,6 @@
     const byDate = {};
     stageMatches.forEach(f => { byDate[f.date] = byDate[f.date] || []; byDate[f.date].push(f); });
     
-    // গ্রুপ প্যানেল
     let groupsPanelHtml = "";
     if (currentState.showGroups) {
       groupsPanelHtml = `<div class="groups-grid">${Object.entries(groupsData).map(([gBn, teams]) => `
@@ -462,12 +507,11 @@
       `).join('')}</div>`;
     }
     
-    // দল নির্বাচনের ড্রপডাউন HTML
     const allTeams = getAllTeams();
     const teamOptionsHtml = allTeams.map(team => {
       const teamBn = countryBn[team] || team;
-      const selectedAttr = currentState.selectedTeam === team ? 'selected' : '';
-      return `<option value="${team}" ${selectedAttr}>${getFlag(team)} ${teamBn}</option>`;
+      const isSelected = currentState.selectedTeam === team;
+      return `<div class="team-option ${isSelected ? 'selected' : ''}" data-team="${team}">${getFlag(team)} ${teamBn}</div>`;
     }).join('');
     
     let fixturesHtml = "";
@@ -517,7 +561,6 @@
       }).join('');
     }
     
-    // লাইভ ম্যাচের জন্য HTML
     let liveMatchHtml = "";
     if (liveMatch) {
       const liveMatchFormatted = liveMatch.match.includes(" vs ") && !liveMatch.match.includes("বনাম") ? formatMatchWithBn(liveMatch.match) : liveMatch.match;
@@ -530,7 +573,6 @@
       </div>`;
     }
     
-    // পরবর্তী ম্যাচের জন্য HTML (লাইভ থাকলে নিচে দেখাবে)
     let nextMatchHtml = "";
     if (nextMatch && !liveMatch) {
       const nextMatchFormatted = nextMatch.match.includes(" vs ") && !nextMatch.match.includes("বনাম") ? formatMatchWithBn(nextMatch.match) : nextMatch.match;
@@ -549,7 +591,6 @@
     } else if (!liveMatch && !nextMatch) {
       nextMatchHtml = `<div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px; text-align: center; color: #FFD700; font-size: 18px;">🏆 প্রতিযোগিতা সমাপ্ত!</div>`;
     } else if (liveMatch && nextMatch && cd) {
-      // লাইভ থাকলে নিচে পরবর্তী ম্যাচের কাউন্টডাউন দেখাবে
       const nextMatchFormatted = nextMatch.match.includes(" vs ") && !nextMatch.match.includes("বনাম") ? formatMatchWithBn(nextMatch.match) : nextMatch.match;
       const timeObjNext = formatTime12(nextMatch.time);
       nextMatchHtml = `<div style="background: linear-gradient(135deg, #1a3a5c 0%, #0e2a4a 50%, #1a3a5c 100%); border-top: 2px solid #FFD700; border-bottom: 2px solid #FFD700; padding: 16px 16px; text-align: center;">
@@ -565,38 +606,92 @@
       </div>`;
     }
     
+    const dropdownPanelClass = currentState.dropdownOpen ? "show" : "";
+    const selectedTeamDisplay = currentState.selectedTeam ? `<span class="selected-team-badge">${getFlag(currentState.selectedTeam)} ${countryBn[currentState.selectedTeam] || currentState.selectedTeam} ✖</span>` : "";
+    
     const fullHtml = `<div style="min-height: 100vh;">${liveMatchHtml}${nextMatchHtml}<div style="background: rgba(4,18,38,0.96); padding: 14px 16px; text-align: center; border-bottom: 1px solid rgba(197,160,40,0.15);">
       <div style="font-size: 8px; letter-spacing: 3px; color: #c5a028;">ফিফা বিশ্বকাপ ২০২৬ · কানাডা · মেক্সিকো · মার্কিন যুক্তরাষ্ট্র</div>
       <h1 style="font-size: clamp(16px, 5vw, 24px); margin: 4px 0; color: #fff; line-height: 1.2;">🇧🇩 সম্পূর্ণ সূচি — বাংলাদেশ সময়</h1>
       <div style="font-size: 9px; color: #2e5570;">সময় বিএসটি (ইউটিসি+৬) · ১০৪ ম্যাচ · ৪৮ দল</div>
       <div class="filter-buttons-wrapper">
         <button id="toggleGroupsBtn" class="group-tag-btn">📋 ${currentState.showGroups ? "▲ গ্রুপ লুকান" : "▼ সব গ্রুপ দেখুন"}</button>
-        <select id="teamFilterSelect" class="team-filter-dropdown">
-          <option value="">🔽 সব দল দেখুন</option>
-          ${teamOptionsHtml}
-        </select>
-        ${currentState.selectedTeam ? `<button id="clearFilterBtn" class="clear-filter-btn">✖ সরান</button>` : ''}
+        <div class="team-filter-container">
+          <button id="teamFilterBtn" class="team-filter-btn ${currentState.dropdownOpen ? 'active' : ''}">🏆 দল নির্বাচন করুন 🔽</button>
+          <div id="teamDropdownPanel" class="team-dropdown-panel ${dropdownPanelClass}">
+            <input type="text" id="teamSearchInput" placeholder="🔍 দল খুঁজুন..." autocomplete="off">
+            <div id="teamList" class="team-list">${teamOptionsHtml}</div>
+            <button id="closeDropdownBtn" class="close-dropdown-btn">✖ বন্ধ করুন</button>
+          </div>
+        </div>
+        ${currentState.selectedTeam ? `<button id="clearFilterBtn" class="clear-filter-btn">✖ ফিল্টার সরান</button>` : ''}
       </div>
       <div id="groupsPanel" style="margin-top: 8px;">${groupsPanelHtml}</div>
       <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 12px;">${stageListEn.map((s, idx) => `<button data-stage="${s}" class="stage-btn ${currentState.selectedStage === s ? 'active' : ''}">${stageListBn[idx]}</button>`).join('')}</div>
     </div>
-    <div style="background: rgba(10,30,58,0.6); padding: 6px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; align-items: center;"><span style="font-size: 10px; font-weight: bold; color: #c5a028;">${stageListBn[stageListEn.indexOf(currentState.selectedStage)]}</span><span style="font-size: 10px; color: rgba(255,255,255,0.3);">— ${stageMatches.length} ম্যাচ</span>${currentState.selectedTeam ? `<span style="font-size: 10px; color: #c5a028; margin-left: auto;">🔍 ${getFlag(currentState.selectedTeam)} ${countryBn[currentState.selectedTeam] || currentState.selectedTeam}</span>` : ''}</div>
+    <div style="background: rgba(10,30,58,0.6); padding: 6px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+      <span style="font-size: 10px; font-weight: bold; color: #c5a028;">${stageListBn[stageListEn.indexOf(currentState.selectedStage)]}</span>
+      <span style="font-size: 10px; color: rgba(255,255,255,0.3);">— ${stageMatches.length} ম্যাচ</span>
+      ${selectedTeamDisplay}
+    </div>
     <div class="fixture-container">${fixturesHtml}</div>
-    <div style="border-top: 1px solid rgba(197,160,40,0.1); padding: 20px; text-align: center; font-size: 12px; color: #FFD700;"><b>MADE BY SOUAD<b></div>
+    <div style="border-top: 1px solid rgba(197,160,40,0.1); padding: 20px; text-align: center; font-size: 9px; color: #1e3a54;">MADE BY SOUAD</div>
     </div>`;
+    
     root.innerHTML = fullHtml;
     
+    // ইভেন্ট লিসেনার
     document.getElementById("toggleGroupsBtn")?.addEventListener("click", toggleGroups);
-    const teamSelect = document.getElementById("teamFilterSelect");
-    if (teamSelect) {
-      teamSelect.value = currentState.selectedTeam;
-      teamSelect.addEventListener("change", (e) => setTeam(e.target.value));
-    }
+    document.getElementById("teamFilterBtn")?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleDropdown();
+    });
+    document.getElementById("closeDropdownBtn")?.addEventListener("click", closeDropdown);
     document.getElementById("clearFilterBtn")?.addEventListener("click", clearTeamFilter);
+    
+    // সার্চ ফাংশনালিটি
+    const searchInput = document.getElementById("teamSearchInput");
+    if (searchInput) {
+      searchInput.addEventListener("input", (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const teamOptions = document.querySelectorAll(".team-option");
+        teamOptions.forEach(option => {
+          const teamName = option.getAttribute("data-team") || "";
+          const teamBn = countryBn[teamName] || teamName;
+          if (teamName.toLowerCase().includes(searchTerm) || teamBn.toLowerCase().includes(searchTerm)) {
+            option.style.display = "flex";
+          } else {
+            option.style.display = "none";
+          }
+        });
+      });
+    }
+    
+    // টিম সিলেক্ট
+    document.querySelectorAll(".team-option").forEach(opt => {
+      opt.addEventListener("click", (e) => {
+        const team = opt.getAttribute("data-team");
+        if (team) {
+          setTeam(team);
+          closeDropdown();
+        }
+      });
+    });
+    
     document.querySelectorAll("[data-stage]").forEach(btn => btn.addEventListener("click", (e) => { 
       const stage = btn.getAttribute("data-stage"); 
       if(stage) setStage(stage); 
     }));
+    
+    // বাইরে ক্লিক করলে ড্রপডাউন বন্ধ
+    setTimeout(() => {
+      document.addEventListener("click", function closeOnClickOutside(e) {
+        const container = document.querySelector(".team-filter-container");
+        if (container && !container.contains(e.target) && currentState.dropdownOpen) {
+          closeDropdown();
+          document.removeEventListener("click", closeOnClickOutside);
+        }
+      });
+    }, 100);
   }
   
   function init() { renderApp(); intervalId = setInterval(() => { currentState.now = new Date(); renderApp(); }, 1000); }
