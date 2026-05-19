@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <title>WORLD CUP 26 </title>
   <link href="https://fonts.maateen.me/nitor-bangla/font.css" rel="stylesheet">
+  <!-- Favicon - Replace the href value with your actual PNG file path or URL -->
+  <link rel="icon" type="1.png" href="favicon.png">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -213,6 +215,24 @@
       align-items: center;
       gap: 6px;
       margin-left: 8px;
+      cursor: pointer;
+    }
+    .selected-team-badge:hover {
+      background: #e0c870;
+    }
+    .selected-team-badge .remove-icon {
+      font-weight: bold;
+      font-size: 14px;
+    }
+    /* Footer style - 10px bold golden text */
+    .footer-text {
+      border-top: 1px solid rgba(197,160,40,0.1);
+      padding: 20px;
+      text-align: center;
+      font-size: 10px;
+      font-weight: bold;
+      color: #c5a028;
+      letter-spacing: 1px;
     }
   </style>
 </head>
@@ -607,7 +627,7 @@
     }
     
     const dropdownPanelClass = currentState.dropdownOpen ? "show" : "";
-    const selectedTeamDisplay = currentState.selectedTeam ? `<span class="selected-team-badge">${getFlag(currentState.selectedTeam)} ${countryBn[currentState.selectedTeam] || currentState.selectedTeam} ✖</span>` : "";
+    const selectedTeamDisplay = currentState.selectedTeam ? `<span id="selectedTeamBadge" class="selected-team-badge">${getFlag(currentState.selectedTeam)} ${countryBn[currentState.selectedTeam] || currentState.selectedTeam} <span class="remove-icon">✖</span></span>` : "";
     
     const fullHtml = `<div style="min-height: 100vh;">${liveMatchHtml}${nextMatchHtml}<div style="background: rgba(4,18,38,0.96); padding: 14px 16px; text-align: center; border-bottom: 1px solid rgba(197,160,40,0.15);">
       <div style="font-size: 8px; letter-spacing: 3px; color: #c5a028;">ফিফা বিশ্বকাপ ২০২৬ · কানাডা · মেক্সিকো · মার্কিন যুক্তরাষ্ট্র</div>
@@ -634,7 +654,7 @@
       ${selectedTeamDisplay}
     </div>
     <div class="fixture-container">${fixturesHtml}</div>
-    <div style="border-top: 1px solid rgba(197,160,40,0.1); padding: 20px; text-align: center; font-size: 9px; color: #1e3a54;">MADE BY SOUAD</div>
+    <div class="footer-text">MADE BY SOUAD</div>
     </div>`;
     
     root.innerHTML = fullHtml;
@@ -648,7 +668,14 @@
     document.getElementById("closeDropdownBtn")?.addEventListener("click", closeDropdown);
     document.getElementById("clearFilterBtn")?.addEventListener("click", clearTeamFilter);
     
-    // সার্চ ফাংশনালিটি
+    const selectedTeamBadge = document.getElementById("selectedTeamBadge");
+    if (selectedTeamBadge) {
+      selectedTeamBadge.addEventListener("click", (e) => {
+        e.stopPropagation();
+        clearTeamFilter();
+      });
+    }
+    
     const searchInput = document.getElementById("teamSearchInput");
     if (searchInput) {
       searchInput.addEventListener("input", (e) => {
@@ -666,7 +693,6 @@
       });
     }
     
-    // টিম সিলেক্ট
     document.querySelectorAll(".team-option").forEach(opt => {
       opt.addEventListener("click", (e) => {
         const team = opt.getAttribute("data-team");
@@ -682,7 +708,6 @@
       if(stage) setStage(stage); 
     }));
     
-    // বাইরে ক্লিক করলে ড্রপডাউন বন্ধ
     setTimeout(() => {
       document.addEventListener("click", function closeOnClickOutside(e) {
         const container = document.querySelector(".team-filter-container");
