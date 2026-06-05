@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>WORLD CUP 26 </title>
+  <title>WORLD CUP 26</title>
   <link href="https://fonts.maateen.me/nitor-bangla/font.css" rel="stylesheet">
   <!-- Favicon - Replace the href value with your actual PNG file path or URL -->
-<link rel="icon" type="image/png" href="12.png"> 
+  <link rel="icon" type="image/png" href="12.png"> 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -61,94 +61,6 @@
       align-items: center;
       gap: 6px;
     }
-    .team-filter-container {
-      position: relative;
-      display: inline-block;
-      margin-bottom: 12px;
-      margin-left: 8px;
-    }
-    .team-filter-btn {
-      background: rgba(197,160,40,0.1);
-      border: 1px solid rgba(197,160,40,0.4);
-      color: #e0c870;
-      border-radius: 24px;
-      padding: 6px 16px;
-      font-size: 12px;
-      font-weight: 500;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: 'Nitor Bangla', 'Segoe UI', sans-serif;
-    }
-    .team-filter-btn.active {
-      background: rgba(197,160,40,0.3);
-      border-color: #c5a028;
-    }
-    .team-dropdown-panel {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      margin-top: 8px;
-      background: #0a1e30;
-      border: 1px solid #c5a028;
-      border-radius: 16px;
-      padding: 12px;
-      min-width: 220px;
-      max-height: 350px;
-      overflow-y: auto;
-      z-index: 1000;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-      display: none;
-    }
-    .team-dropdown-panel.show {
-      display: block;
-    }
-    .team-dropdown-panel input {
-      width: 100%;
-      padding: 8px 12px;
-      margin-bottom: 10px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(197,160,40,0.4);
-      border-radius: 20px;
-      color: #e0c870;
-      font-size: 12px;
-      font-family: 'Nitor Bangla', 'Segoe UI', sans-serif;
-    }
-    .team-dropdown-panel input::placeholder {
-      color: #5a7a9a;
-    }
-    .team-list {
-      max-height: 250px;
-      overflow-y: auto;
-    }
-    .team-option {
-      padding: 8px 12px;
-      cursor: pointer;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.2s;
-    }
-    .team-option:hover {
-      background: rgba(197,160,40,0.2);
-    }
-    .team-option.selected {
-      background: rgba(197,160,40,0.3);
-      color: #c5a028;
-    }
-    .close-dropdown-btn {
-      background: rgba(255,255,255,0.1);
-      border: none;
-      color: #e0c870;
-      padding: 4px 8px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 10px;
-      margin-top: 8px;
-      width: 100%;
-    }
     .flag-img { width: 18px; height: 14px; border-radius: 2px; vertical-align: middle; margin-right: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
     .team-name { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
     .group-card { background: rgba(255,255,255,0.03); border-radius: 8px; padding: 10px 12px; }
@@ -168,7 +80,6 @@
     @media (max-width: 480px) {
       .team-name { white-space: normal; word-break: keep-all; }
       .time-badge { min-width: 60px; padding: 4px 6px; }
-      .team-dropdown-panel { min-width: 200px; right: 0; left: auto; }
     }
     .countdown-box {
       background: rgba(0,0,0,0.5);
@@ -188,41 +99,12 @@
       margin-top: 12px;
       align-items: center;
     }
-    .clear-filter-btn {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid #c5a028;
-      color: #c5a028;
-      border-radius: 24px;
-      padding: 6px 12px;
-      font-size: 10px;
-      cursor: pointer;
-      margin-left: 4px;
-    }
     .live-pulse {
       animation: pulse 1.5s ease-in-out infinite;
     }
     @keyframes pulse {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.6; }
-    }
-    .selected-team-badge {
-      background: #c5a028;
-      color: #041226;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 11px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-left: 8px;
-      cursor: pointer;
-    }
-    .selected-team-badge:hover {
-      background: #e0c870;
-    }
-    .selected-team-badge .remove-icon {
-      font-weight: bold;
-      font-size: 14px;
     }
     /* Footer style - 10px bold golden text */
     .footer-text {
@@ -430,20 +312,6 @@
     { date:"2026-07-20", time:"01:00", match:"ডাব্লিউ১০১ বনাম ডাব্লিউ১০২", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Final" }
   ];
 
-  function getAllTeams() {
-    const teams = new Set();
-    fixturesRaw.forEach(fixture => {
-      if (fixture.match && fixture.match.includes(" vs ")) {
-        const parts = fixture.match.split(" vs ");
-        if (parts.length === 2) {
-          teams.add(parts[0].trim());
-          teams.add(parts[1].trim());
-        }
-      }
-    });
-    return Array.from(teams).sort();
-  }
-
   function parseMatchDateTime(dateStr, timeStr) {
     const [h, m] = timeStr.split(":").map(Number);
     const [y, mo, d] = dateStr.split("-").map(Number);
@@ -476,15 +344,11 @@
     return (matchDateTime <= now && now <= matchEndTime);
   }
 
-  let currentState = { now: new Date(), selectedStage: "Group Stage", showGroups: false, selectedTeam: "", dropdownOpen: false };
+  let currentState = { now: new Date(), selectedStage: "Group Stage", showGroups: false };
   let intervalId = null;
 
   function setStage(stage) { currentState.selectedStage = stage; renderApp(); }
   function toggleGroups() { currentState.showGroups = !currentState.showGroups; renderApp(); }
-  function setTeam(team) { currentState.selectedTeam = team; renderApp(); }
-  function clearTeamFilter() { currentState.selectedTeam = ""; renderApp(); }
-  function toggleDropdown() { currentState.dropdownOpen = !currentState.dropdownOpen; renderApp(); }
-  function closeDropdown() { currentState.dropdownOpen = false; renderApp(); }
   
   function getNextMatch(fixturesWithDT) { 
     return fixturesWithDT.filter(f => f.dt > currentState.now).sort((a,b) => a.dt - b.dt)[0] || null; 
@@ -503,16 +367,8 @@
     const nextMatch = getNextMatch(enriched);
     const cd = nextMatch ? formatCountdown(nextMatch.dt - currentState.now) : null;
     
+    // Directly use all stage matches without any team filtering
     let stageMatches = fixturesRaw.filter(f => f.stage === currentState.selectedStage);
-    
-    if (currentState.selectedTeam && currentState.selectedTeam !== "") {
-      stageMatches = stageMatches.filter(f => {
-        if (f.match && f.match.includes(" vs ")) {
-          return f.match.includes(currentState.selectedTeam);
-        }
-        return false;
-      });
-    }
     
     const byDate = {};
     stageMatches.forEach(f => { byDate[f.date] = byDate[f.date] || []; byDate[f.date].push(f); });
@@ -527,20 +383,9 @@
       `).join('')}</div>`;
     }
     
-    const allTeams = getAllTeams();
-    const teamOptionsHtml = allTeams.map(team => {
-      const teamBn = countryBn[team] || team;
-      const isSelected = currentState.selectedTeam === team;
-      return `<div class="team-option ${isSelected ? 'selected' : ''}" data-team="${team}">${getFlag(team)} ${teamBn}</div>`;
-    }).join('');
-    
     let fixturesHtml = "";
     if (Object.keys(byDate).length === 0) {
       let noMatchMsg = "🚫 কোন ম্যাচ পাওয়া যায়নি";
-      if (currentState.selectedTeam) {
-        const teamBn = countryBn[currentState.selectedTeam] || currentState.selectedTeam;
-        noMatchMsg = `🚫 "${teamBn}" দলের জন্য কোন ম্যাচ খুঁজে পাওয়া যায়নি`;
-      }
       fixturesHtml = `<div style="text-align:center; color:#2a4a6a; padding:40px 0;">${noMatchMsg}</div>`;
     } else {
       fixturesHtml = Object.entries(byDate).map(([date, matches]) => {
@@ -626,24 +471,12 @@
       </div>`;
     }
     
-    const dropdownPanelClass = currentState.dropdownOpen ? "show" : "";
-    const selectedTeamDisplay = currentState.selectedTeam ? `<span id="selectedTeamBadge" class="selected-team-badge">${getFlag(currentState.selectedTeam)} ${countryBn[currentState.selectedTeam] || currentState.selectedTeam} <span class="remove-icon">✖</span></span>` : "";
-    
     const fullHtml = `<div style="min-height: 100vh;">${liveMatchHtml}${nextMatchHtml}<div style="background: rgba(4,18,38,0.96); padding: 14px 16px; text-align: center; border-bottom: 1px solid rgba(197,160,40,0.15);">
       <div style="font-size: 8px; letter-spacing: 3px; color: #c5a028;">ফিফা বিশ্বকাপ ২০২৬ · কানাডা · মেক্সিকো · মার্কিন যুক্তরাষ্ট্র</div>
       <h1 style="font-size: clamp(16px, 5vw, 24px); margin: 4px 0; color: #fff; line-height: 1.2;">🇧🇩 সম্পূর্ণ সূচি — বাংলাদেশ সময়</h1>
       <div style="font-size: 9px; color: #2e5570;">সময় বিএসটি (ইউটিসি+৬) · ১০৪ ম্যাচ · ৪৮ দল</div>
       <div class="filter-buttons-wrapper">
         <button id="toggleGroupsBtn" class="group-tag-btn">📋 ${currentState.showGroups ? "▲ গ্রুপ লুকান" : "▼ সব গ্রুপ দেখুন"}</button>
-        <div class="team-filter-container">
-          <button id="teamFilterBtn" class="team-filter-btn ${currentState.dropdownOpen ? 'active' : ''}">🏆 দল নির্বাচন করুন 🔽</button>
-          <div id="teamDropdownPanel" class="team-dropdown-panel ${dropdownPanelClass}">
-            <input type="text" id="teamSearchInput" placeholder="🔍 দল খুঁজুন..." autocomplete="off">
-            <div id="teamList" class="team-list">${teamOptionsHtml}</div>
-            <button id="closeDropdownBtn" class="close-dropdown-btn">✖ বন্ধ করুন</button>
-          </div>
-        </div>
-        ${currentState.selectedTeam ? `<button id="clearFilterBtn" class="clear-filter-btn">✖ ফিল্টার সরান</button>` : ''}
       </div>
       <div id="groupsPanel" style="margin-top: 8px;">${groupsPanelHtml}</div>
       <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 12px;">${stageListEn.map((s, idx) => `<button data-stage="${s}" class="stage-btn ${currentState.selectedStage === s ? 'active' : ''}">${stageListBn[idx]}</button>`).join('')}</div>
@@ -651,7 +484,6 @@
     <div style="background: rgba(10,30,58,0.6); padding: 6px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
       <span style="font-size: 10px; font-weight: bold; color: #c5a028;">${stageListBn[stageListEn.indexOf(currentState.selectedStage)]}</span>
       <span style="font-size: 10px; color: rgba(255,255,255,0.3);">— ${stageMatches.length} ম্যাচ</span>
-      ${selectedTeamDisplay}
     </div>
     <div class="fixture-container">${fixturesHtml}</div>
     <div class="footer-text">MADE BY SOUAD</div>
@@ -659,64 +491,13 @@
     
     root.innerHTML = fullHtml;
     
-    // ইভেন্ট লিসেনার
+    // Event listeners for remaining features (group toggle and stage buttons)
     document.getElementById("toggleGroupsBtn")?.addEventListener("click", toggleGroups);
-    document.getElementById("teamFilterBtn")?.addEventListener("click", (e) => {
-      e.stopPropagation();
-      toggleDropdown();
-    });
-    document.getElementById("closeDropdownBtn")?.addEventListener("click", closeDropdown);
-    document.getElementById("clearFilterBtn")?.addEventListener("click", clearTeamFilter);
-    
-    const selectedTeamBadge = document.getElementById("selectedTeamBadge");
-    if (selectedTeamBadge) {
-      selectedTeamBadge.addEventListener("click", (e) => {
-        e.stopPropagation();
-        clearTeamFilter();
-      });
-    }
-    
-    const searchInput = document.getElementById("teamSearchInput");
-    if (searchInput) {
-      searchInput.addEventListener("input", (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        const teamOptions = document.querySelectorAll(".team-option");
-        teamOptions.forEach(option => {
-          const teamName = option.getAttribute("data-team") || "";
-          const teamBn = countryBn[teamName] || teamName;
-          if (teamName.toLowerCase().includes(searchTerm) || teamBn.toLowerCase().includes(searchTerm)) {
-            option.style.display = "flex";
-          } else {
-            option.style.display = "none";
-          }
-        });
-      });
-    }
-    
-    document.querySelectorAll(".team-option").forEach(opt => {
-      opt.addEventListener("click", (e) => {
-        const team = opt.getAttribute("data-team");
-        if (team) {
-          setTeam(team);
-          closeDropdown();
-        }
-      });
-    });
     
     document.querySelectorAll("[data-stage]").forEach(btn => btn.addEventListener("click", (e) => { 
       const stage = btn.getAttribute("data-stage"); 
       if(stage) setStage(stage); 
     }));
-    
-    setTimeout(() => {
-      document.addEventListener("click", function closeOnClickOutside(e) {
-        const container = document.querySelector(".team-filter-container");
-        if (container && !container.contains(e.target) && currentState.dropdownOpen) {
-          closeDropdown();
-          document.removeEventListener("click", closeOnClickOutside);
-        }
-      });
-    }, 100);
   }
   
   function init() { renderApp(); intervalId = setInterval(() => { currentState.now = new Date(); renderApp(); }, 1000); }
