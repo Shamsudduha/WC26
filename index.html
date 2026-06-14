@@ -61,7 +61,32 @@
       align-items: center;
       gap: 6px;
     }
-      .footer-text {
+    .watch-live-btn {
+      background: #ff0000;
+      border: 1px solid #FFD700;
+      color: #FFD700;
+      border-radius: 24px;
+      padding: 6px 20px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    .watch-live-btn:hover {
+      transform: scale(1.05);
+      background: #cc0000;
+      box-shadow: 0 0 15px rgba(255,0,0,0.5);
+    }
+    .watch-live-btn:active {
+      transform: scale(0.96);
+    }
+    .footer-text {
       border-top: 1px solid rgba(197,160,40,0.1);
       padding: 20px;
       text-align: center;
@@ -73,18 +98,6 @@
       flex-direction: column;
       align-items: center;
       gap: 6px;
-    }
-    .watch-live-small {
-      font-size: 8px;
-      font-weight: normal;
-      color: #e0c870;
-      background: rgba(0,0,0,0.3);
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 20px;
-      letter-spacing: 0.5px;
-      border: 0.5px solid rgba(197,160,40,0.4);
-      text-transform: uppercase;
     }
     .flag-img { width: 18px; height: 14px; border-radius: 2px; vertical-align: middle; margin-right: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
     .team-name { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
@@ -120,7 +133,7 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 8px;
+      gap: 12px;
       margin-top: 12px;
       align-items: center;
     }
@@ -130,16 +143,6 @@
     @keyframes pulse {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.6; }
-    }
-    /* Footer style - 10px bold golden text */
-    .footer-text {
-      border-top: 1px solid rgba(197,160,40,0.1);
-      padding: 20px;
-      text-align: center;
-      font-size: 10px;
-      font-weight: bold;
-      color: #c5a028;
-      letter-spacing: 1px;
     }
   </style>
 </head>
@@ -369,6 +372,22 @@
     return (matchDateTime <= now && now <= matchEndTime);
   }
 
+  // Function to remove old/past matches
+  function removeOldMatches(fixtures, currentTime) {
+    return fixtures.filter(fixture => {
+      const matchDateTime = parseMatchDateTime(fixture.date, fixture.time);
+      const matchEndTime = new Date(matchDateTime.getTime() + 105 * 60000);
+      const twoHoursAfterEnd = new Date(matchEndTime.getTime() + 120 * 60000);
+      return twoHoursAfterEnd > currentTime;
+    });
+  }
+
+  // Function to open both live streaming links
+  function openLiveStreams() {
+    window.open('https://livekhela.tv/', '_blank');
+    window.open('https://kickbd.com/', '_blank');
+  }
+
   let currentState = { now: new Date(), selectedStage: "Group Stage", showGroups: false };
   let intervalId = null;
 
@@ -387,13 +406,16 @@
     const root = document.getElementById("root");
     if (!root) return;
     
-    const enriched = fixturesRaw.map(f => ({ ...f, dt: parseMatchDateTime(f.date, f.time) }));
+    // Apply old match removal
+    const activeFixtures = removeOldMatches(fixturesRaw, currentState.now);
+    
+    const enriched = activeFixtures.map(f => ({ ...f, dt: parseMatchDateTime(f.date, f.time) }));
     const liveMatch = getLiveMatch(enriched);
     const nextMatch = getNextMatch(enriched);
     const cd = nextMatch ? formatCountdown(nextMatch.dt - currentState.now) : null;
     
-    // Directly use all stage matches without any team filtering
-    let stageMatches = fixturesRaw.filter(f => f.stage === currentState.selectedStage);
+    // Filter matches by selected stage
+    let stageMatches = activeFixtures.filter(f => f.stage === currentState.selectedStage);
     
     const byDate = {};
     stageMatches.forEach(f => { byDate[f.date] = byDate[f.date] || []; byDate[f.date].push(f); });
@@ -500,6 +522,7 @@
      
       <div class="filter-buttons-wrapper">
         <button id="toggleGroupsBtn" class="group-tag-btn">📋 ${currentState.showGroups ? "▲ গ্রুপ লুকান" : "▼ সব গ্রুপ দেখুন"}</button>
+        <button id="watchLiveBtn" class="watch-live-btn">🔴 লাইভ দেখুন</button>
       </div>
       <div id="groupsPanel" style="margin-top: 8px;">${groupsPanelHtml}</div>
       <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 12px;">${stageListEn.map((s, idx) => `<button data-stage="${s}" class="stage-btn ${currentState.selectedStage === s ? 'active' : ''}">${stageListBn[idx]}</button>`).join('')}</div>
@@ -514,8 +537,9 @@
     
     root.innerHTML = fullHtml;
     
-    // Event listeners for remaining features (group toggle and stage buttons)
+    // Event listeners
     document.getElementById("toggleGroupsBtn")?.addEventListener("click", toggleGroups);
+    document.getElementById("watchLiveBtn")?.addEventListener("click", openLiveStreams);
     
     document.querySelectorAll("[data-stage]").forEach(btn => btn.addEventListener("click", (e) => { 
       const stage = btn.getAttribute("data-stage"); 
@@ -526,9 +550,6 @@
   function init() { renderApp(); intervalId = setInterval(() => { currentState.now = new Date(); renderApp(); }, 1000); }
   init();
 </script>
-         <div class="footer-text">
-      <a href="https://bd257.github.io/live/" target="_blank" class="watch-live-small">watch live</a>
-    </div>
     
 </body>
 </html>
