@@ -372,13 +372,13 @@
     return (matchDateTime <= now && now <= matchEndTime);
   }
 
-  // Function to remove old/past matches
+  // FIXED: Remove old matches immediately after they end (match time + 105 minutes)
   function removeOldMatches(fixtures, currentTime) {
     return fixtures.filter(fixture => {
       const matchDateTime = parseMatchDateTime(fixture.date, fixture.time);
-      const matchEndTime = new Date(matchDateTime.getTime() + 105 * 60000);
-      const twoHoursAfterEnd = new Date(matchEndTime.getTime() + 120 * 60000);
-      return twoHoursAfterEnd > currentTime;
+      const matchEndTime = new Date(matchDateTime.getTime() + 105 * 60000); // Match + 105 minutes
+      // Keep the match if it hasn't ended yet (including live matches)
+      return matchEndTime > currentTime;
     });
   }
 
@@ -406,7 +406,7 @@
     const root = document.getElementById("root");
     if (!root) return;
     
-    // Apply old match removal
+    // Apply old match removal - matches disappear immediately after they end
     const activeFixtures = removeOldMatches(fixturesRaw, currentState.now);
     
     const enriched = activeFixtures.map(f => ({ ...f, dt: parseMatchDateTime(f.date, f.time) }));
@@ -414,7 +414,7 @@
     const nextMatch = getNextMatch(enriched);
     const cd = nextMatch ? formatCountdown(nextMatch.dt - currentState.now) : null;
     
-    // Filter matches by selected stage
+    // Filter matches by selected stage from active fixtures only
     let stageMatches = activeFixtures.filter(f => f.stage === currentState.selectedStage);
     
     const byDate = {};
