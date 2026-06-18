@@ -371,9 +371,11 @@
     { date:"2026-07-20", time:"01:00", match:"ডাব্লিউ১০১ বনাম ডাব্লিউ১০২", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Final" }
   ];
 
+  // FIXED: Parse match time correctly for Bangladesh time (UTC+6)
   function parseMatchDateTime(dateStr, timeStr) {
     const [h, m] = timeStr.split(":").map(Number);
     const [y, mo, d] = dateStr.split("-").map(Number);
+    // Create date in Bangladesh time (UTC+6)
     return new Date(Date.UTC(y, mo-1, d, h-6, m));
   }
 
@@ -403,12 +405,11 @@
     return (matchDateTime <= now && now <= matchEndTime);
   }
 
-  // FIXED: Remove old matches immediately after they end (match time + 105 minutes)
+  // Remove old matches immediately after they end (match time + 105 minutes)
   function removeOldMatches(fixtures, currentTime) {
     return fixtures.filter(fixture => {
       const matchDateTime = parseMatchDateTime(fixture.date, fixture.time);
-      const matchEndTime = new Date(matchDateTime.getTime() + 105 * 60000); // Match + 105 minutes
-      // Keep the match if it hasn't ended yet (including live matches)
+      const matchEndTime = new Date(matchDateTime.getTime() + 105 * 60000);
       return matchEndTime > currentTime;
     });
   }
