@@ -66,17 +66,17 @@
       border: 1px solid #FFD700;
       color: #FFD700;
       border-radius: 24px;
-      padding: 6px 20px;
-      font-size: 12px;
+      padding: 6px 16px;
+      font-size: 11px;
       font-weight: bold;
       cursor: pointer;
-      margin-bottom: 12px;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       text-decoration: none;
       transition: all 0.2s ease;
       animation: pulse 1.5s ease-in-out infinite;
+      white-space: nowrap;
     }
     .watch-live-btn:hover {
       transform: scale(1.05);
@@ -84,6 +84,30 @@
       box-shadow: 0 0 15px rgba(255,0,0,0.5);
     }
     .watch-live-btn:active {
+      transform: scale(0.96);
+    }
+    .watch-live-btn-alt {
+      background: #1a3a6a;
+      border: 1px solid #4a8af4;
+      color: #8ab8ff;
+      border-radius: 24px;
+      padding: 6px 16px;
+      font-size: 11px;
+      font-weight: bold;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .watch-live-btn-alt:hover {
+      transform: scale(1.05);
+      background: #2a4a7a;
+      box-shadow: 0 0 15px rgba(74, 138, 244, 0.3);
+    }
+    .watch-live-btn-alt:active {
       transform: scale(0.96);
     }
     .footer-text {
@@ -133,9 +157,16 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
       margin-top: 12px;
       align-items: center;
+    }
+    .live-buttons-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
     }
     .live-pulse {
       animation: pulse 1.5s ease-in-out infinite;
@@ -382,9 +413,9 @@
     });
   }
 
-  // Function to open live streaming link
-  function openLiveStreams() {
-    window.open('https://livekhela.movielinkbd.li/', '_blank');
+  // Function to open live streaming links
+  function openLiveStream(url) {
+    window.open(url, '_blank');
   }
 
   let currentState = { now: new Date(), selectedStage: "Group Stage", showGroups: false };
@@ -521,7 +552,11 @@
      
       <div class="filter-buttons-wrapper">
         <button id="toggleGroupsBtn" class="group-tag-btn">📋 ${currentState.showGroups ? "▲ গ্রুপ লুকান" : "▼ সব গ্রুপ দেখুন"}</button>
-        <button id="watchLiveBtn" class="watch-live-btn">🔴 লাইভ দেখুন</button>
+      </div>
+      <div class="live-buttons-wrapper">
+        <button class="watch-live-btn" data-url="https://livekhela.movielinkbd.li/">🔴 স্ট্রিম ১</button>
+        <button class="watch-live-btn-alt" data-url="https://kickbd.org/">📺 স্ট্রিম ২</button>
+        <button class="watch-live-btn-alt" data-url="https://tvprobd.vercel.app/">📡 স্ট্রিম ৩</button>
       </div>
       <div id="groupsPanel" style="margin-top: 8px;">${groupsPanelHtml}</div>
       <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 12px;">${stageListEn.map((s, idx) => `<button data-stage="${s}" class="stage-btn ${currentState.selectedStage === s ? 'active' : ''}">${stageListBn[idx]}</button>`).join('')}</div>
@@ -538,7 +573,13 @@
     
     // Event listeners
     document.getElementById("toggleGroupsBtn")?.addEventListener("click", toggleGroups);
-    document.getElementById("watchLiveBtn")?.addEventListener("click", openLiveStreams);
+    
+    document.querySelectorAll("[data-url]").forEach(btn => {
+      btn.addEventListener("click", function(e) {
+        const url = this.getAttribute("data-url");
+        if (url) openLiveStream(url);
+      });
+    });
     
     document.querySelectorAll("[data-stage]").forEach(btn => btn.addEventListener("click", (e) => { 
       const stage = btn.getAttribute("data-stage"); 
