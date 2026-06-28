@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>WORLD CUP 26</title>
+  <title>WORLD CUP 26 - Round of 32</title>
   <link href="https://fonts.maateen.me/nitor-bangla/font.css" rel="stylesheet">
-  <!-- Favicon - Replace the href value with your actual PNG file path or URL -->
   <link rel="icon" type="image/png" href="12.png"> 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -194,7 +193,8 @@
     "France": "ফ্রান্স", "Senegal": "সেনেগাল", "Iraq": "ইরাক", "Norway": "নরওয়ে",
     "Argentina": "আর্জেন্টিনা", "Algeria": "আলজেরিয়া", "Austria": "অস্ট্রিয়া", "Jordan": "জর্ডান",
     "Portugal": "পর্তুগাল", "Congo DR": "কঙ্গো", "Uzbekistan": "উজবেকিস্তান", "Colombia": "কলম্বিয়া",
-    "England": "ইংল্যান্ড", "Croatia": "ক্রোয়েশিয়া", "Ghana": "ঘানা", "Panama": "পানামা"
+    "England": "ইংল্যান্ড", "Croatia": "ক্রোয়েশিয়া", "Ghana": "ঘানা", "Panama": "পানামা",
+    "DR Congo": "ডিআর কঙ্গো"
   };
 
   // ================= ফ্লাগ ম্যাপ =================
@@ -210,7 +210,8 @@
     "France":"fr", "Senegal":"sn", "Iraq":"iq", "Norway":"no",
     "Argentina":"ar", "Algeria":"dz", "Austria":"at", "Jordan":"jo",
     "Portugal":"pt", "Congo DR":"cd", "Uzbekistan":"uz", "Colombia":"co",
-    "England":"gb-eng", "Croatia":"hr", "Ghana":"gh", "Panama":"pa"
+    "England":"gb-eng", "Croatia":"hr", "Ghana":"gh", "Panama":"pa",
+    "DR Congo":"cd"
   };
 
   function getFlag(country){
@@ -265,96 +266,23 @@
   const stageListEn = ["Group Stage","Round of 32","Round of 16","Quarterfinals","Semifinals","3rd Place","Final"];
 
   const fixturesRaw = [
-    { date:"2026-06-12", time:"01:00", group:"A", match:"Mexico vs South Africa", venue:"মেক্সিকো সিটি স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-12", time:"08:00", group:"A", match:"Korea Republic vs Czechia", venue:"গুয়াদালাজারা স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-13", time:"01:00", group:"B", match:"Canada vs Bosnia and Herzegovina", venue:"টরন্টো স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-13", time:"07:00", group:"D", match:"USA vs Paraguay", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-14", time:"01:00", group:"B", match:"Qatar vs Switzerland", venue:"সান ফ্রান্সিসকো বে এরিয়া স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-14", time:"04:00", group:"C", match:"Brazil vs Morocco", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-14", time:"07:00", group:"C", match:"Haiti vs Scotland", venue:"বোস্টন স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-14", time:"10:00", group:"D", match:"Australia vs Türkiye", venue:"বিসি প্লেস ভ্যাঙ্কুভার", stage:"Group Stage" },
-    { date:"2026-06-14", time:"23:00", group:"E", match:"Germany vs Curaçao", venue:"হিউস্টন স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-15", time:"02:00", group:"F", match:"Netherlands vs Japan", venue:"ডালাস স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-15", time:"05:00", group:"E", match:"Côte d'Ivoire vs Ecuador", venue:"ফিলাডেলফিয়া স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-15", time:"08:00", group:"F", match:"Sweden vs Tunisia", venue:"মন্টেররে স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-15", time:"22:00", group:"H", match:"Spain vs Cabo Verde", venue:"আটলান্টা স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-16", time:"01:00", group:"G", match:"Belgium vs Egypt", venue:"সিয়াটল স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-16", time:"04:00", group:"H", match:"Saudi Arabia vs Uruguay", venue:"মিয়ামি স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-16", time:"07:00", group:"G", match:"IR Iran vs New Zealand", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-17", time:"01:00", group:"I", match:"France vs Senegal", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-17", time:"04:00", group:"I", match:"Iraq vs Norway", venue:"বোস্টন স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-17", time:"07:00", group:"J", match:"Argentina vs Algeria", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-17", time:"10:00", group:"J", match:"Austria vs Jordan", venue:"সান ফ্রান্সিসকো বে এরিয়া স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-17", time:"23:00", group:"K", match:"Portugal vs Congo DR", venue:"হিউস্টন স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-18", time:"02:00", group:"L", match:"England vs Croatia", venue:"ডালাস স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-18", time:"05:00", group:"L", match:"Ghana vs Panama", venue:"টরন্টো স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-18", time:"08:00", group:"K", match:"Uzbekistan vs Colombia", venue:"মেক্সিকো সিটি স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-18", time:"22:00", group:"A", match:"Czechia vs South Africa", venue:"আটলান্টা স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-19", time:"01:00", group:"B", match:"Switzerland vs Bosnia and Herzegovina", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-19", time:"04:00", group:"B", match:"Canada vs Qatar", venue:"বিসি প্লেস ভ্যাঙ্কুভার", stage:"Group Stage" },
-    { date:"2026-06-19", time:"07:00", group:"A", match:"Mexico vs Korea Republic", venue:"গুয়াদালাজারা স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-20", time:"01:00", group:"D", match:"USA vs Australia", venue:"সিয়াটল স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-20", time:"04:00", group:"C", match:"Scotland vs Morocco", venue:"বোস্টন স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-20", time:"06:30", group:"C", match:"Brazil vs Haiti", venue:"ফিলাডেলফিয়া স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-20", time:"09:00", group:"D", match:"Türkiye vs Paraguay", venue:"সান ফ্রান্সিসকো বে এরিয়া স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-20", time:"23:00", group:"F", match:"Netherlands vs Sweden", venue:"হিউস্টন স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-21", time:"02:00", group:"E", match:"Germany vs Côte d'Ivoire", venue:"টরন্টো স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-21", time:"06:00", group:"E", match:"Ecuador vs Curaçao", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-21", time:"10:00", group:"F", match:"Tunisia vs Japan", venue:"মন্টেররে স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-21", time:"22:00", group:"H", match:"Spain vs Saudi Arabia", venue:"আটলান্টা স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-22", time:"01:00", group:"G", match:"Belgium vs IR Iran", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-22", time:"04:00", group:"H", match:"Uruguay vs Cabo Verde", venue:"মিয়ামি স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-22", time:"07:00", group:"G", match:"New Zealand vs Egypt", venue:"বিসি প্লেস ভ্যাঙ্কুভার", stage:"Group Stage" },
-    { date:"2026-06-22", time:"23:00", group:"J", match:"Argentina vs Austria", venue:"ডালাস স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-23", time:"03:00", group:"I", match:"France vs Iraq", venue:"ফিলাডেলফিয়া স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-23", time:"06:00", group:"I", match:"Norway vs Senegal", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-23", time:"09:00", group:"J", match:"Jordan vs Algeria", venue:"সান ফ্রান্সিসকো বে এরিয়া স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-23", time:"23:00", group:"K", match:"Portugal vs Uzbekistan", venue:"হিউস্টন স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-24", time:"02:00", group:"L", match:"England vs Ghana", venue:"বোস্টন স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-24", time:"05:00", group:"L", match:"Panama vs Croatia", venue:"টরন্টো স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-24", time:"08:00", group:"K", match:"Colombia vs Congo DR", venue:"গুয়াদালাজারা স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-25", time:"01:00", group:"B", match:"Switzerland vs Canada", venue:"বিসি প্লেস ভ্যাঙ্কুভার", stage:"Group Stage" },
-    { date:"2026-06-25", time:"01:00", group:"B", match:"Bosnia and Herzegovina vs Qatar", venue:"সিয়াটল স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-25", time:"04:00", group:"C", match:"Scotland vs Brazil", venue:"মিয়ামি স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-25", time:"04:00", group:"C", match:"Morocco vs Haiti", venue:"আটলান্টা স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-25", time:"07:00", group:"A", match:"Czechia vs Mexico", venue:"মেক্সিকো সিটি স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-25", time:"07:00", group:"A", match:"South Africa vs Korea Republic", venue:"মন্টেররে স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-26", time:"02:00", group:"E", match:"Curaçao vs Côte d'Ivoire", venue:"ফিলাডেলফিয়া স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-26", time:"02:00", group:"E", match:"Ecuador vs Germany", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-26", time:"05:00", group:"F", match:"Japan vs Sweden", venue:"ডালাস স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-26", time:"05:00", group:"F", match:"Tunisia vs Netherlands", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-26", time:"08:00", group:"D", match:"Türkiye vs USA", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-26", time:"08:00", group:"D", match:"Paraguay vs Australia", venue:"সান ফ্রান্সিসকো বে এরিয়া স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-27", time:"01:00", group:"I", match:"Norway vs France", venue:"বোস্টন স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-27", time:"01:00", group:"I", match:"Senegal vs Iraq", venue:"টরন্টো স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-27", time:"06:00", group:"H", match:"Cabo Verde vs Saudi Arabia", venue:"হিউস্টন স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-27", time:"06:00", group:"H", match:"Uruguay vs Spain", venue:"গুয়াদালাজারা স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-27", time:"09:00", group:"G", match:"Egypt vs IR Iran", venue:"সিয়াটল স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-27", time:"09:00", group:"G", match:"New Zealand vs Belgium", venue:"বিসি প্লেস ভ্যাঙ্কুভার", stage:"Group Stage" },
-    { date:"2026-06-28", time:"03:00", group:"L", match:"Panama vs England", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-28", time:"03:00", group:"L", match:"Croatia vs Ghana", venue:"ফিলাডেলফিয়া স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-28", time:"05:30", group:"K", match:"Colombia vs Portugal", venue:"মিয়ামি স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-28", time:"05:30", group:"K", match:"Congo DR vs Uzbekistan", venue:"আটলান্টা স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-28", time:"08:00", group:"J", match:"Algeria vs Austria", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-28", time:"08:00", group:"J", match:"Jordan vs Argentina", venue:"ডালাস স্টেডিয়াম", stage:"Group Stage" },
-    
-    // === ROUND OF 32 - COMPLETELY UPDATED WITH CONFIRMED TEAMS ===
+    // === ROUND OF 32 - UPDATED WITH YOUR SPECIFICATIONS ===
     { date:"2026-06-29", time:"01:00", match:"South Africa vs Canada", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Round of 32" },
     { date:"2026-06-29", time:"23:00", match:"Brazil vs Japan", venue:"হিউস্টন স্টেডিয়াম", stage:"Round of 32" },
     { date:"2026-06-30", time:"02:30", match:"Germany vs Paraguay", venue:"বোস্টন স্টেডিয়াম", stage:"Round of 32" },
     { date:"2026-06-30", time:"07:00", match:"Netherlands vs Morocco", venue:"মন্টেররে স্টেডিয়াম", stage:"Round of 32" },
     { date:"2026-06-30", time:"23:00", match:"Côte d'Ivoire vs Norway", venue:"ডালাস স্টেডিয়াম", stage:"Round of 32" },
     { date:"2026-07-01", time:"03:00", match:"France vs Sweden", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-01", time:"07:00", match:"Mexico vs TBD", venue:"মেক্সিকো সিটি স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-01", time:"22:00", match:"TBD vs TBD", venue:"আটলান্টা স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-02", time:"02:00", match:"Belgium vs TBD", venue:"সিয়াটল স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-01", time:"07:00", match:"Mexico vs Ecuador", venue:"মেক্সিকো সিটি স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-01", time:"22:00", match:"England vs DR Congo", venue:"আটলান্টা স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-02", time:"02:00", match:"Belgium vs Senegal", venue:"সিয়াটল স্টেডিয়াম", stage:"Round of 32" },
     { date:"2026-07-02", time:"06:00", match:"USA vs Bosnia and Herzegovina", venue:"সান ফ্রান্সিসকো বে এরিয়া স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-03", time:"01:00", match:"Spain vs TBD", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-03", time:"05:00", match:"TBD vs TBD", venue:"টরন্টো স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-03", time:"09:00", match:"Switzerland vs TBD", venue:"বিসি প্লেস ভ্যাঙ্কুভার", stage:"Round of 32" },
+    { date:"2026-07-03", time:"01:00", match:"Spain vs Austria", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-03", time:"05:00", match:"Portugal vs Croatia", venue:"টরন্টো স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-03", time:"09:00", match:"Switzerland vs Algeria", venue:"বিসি প্লেস ভ্যাঙ্কুভার", stage:"Round of 32" },
     { date:"2026-07-04", time:"00:00", match:"Australia vs Egypt", venue:"ডালাস স্টেডিয়াম", stage:"Round of 32" },
     { date:"2026-07-04", time:"04:00", match:"Argentina vs Cabo Verde", venue:"মিয়ামি স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-04", time:"07:30", match:"TBD vs TBD", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-04", time:"07:30", match:"Colombia vs Ghana", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Round of 32" },
     
     // === ROUND OF 16 ===
     { date:"2026-07-04", time:"23:00", match:"ডাব্লিউ৭৩ বনাম ডাব্লিউ৭৫", venue:"হিউস্টন স্টেডিয়াম", stage:"Round of 16" },
@@ -383,11 +311,10 @@
     { date:"2026-07-20", time:"01:00", match:"ডাব্লিউ১০১ বনাম ডাব্লিউ১০২", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Final" }
   ];
 
-  // FIXED: Parse match time correctly for Bangladesh time (UTC+6)
+  // Parse match time correctly for Bangladesh time (UTC+6)
   function parseMatchDateTime(dateStr, timeStr) {
     const [h, m] = timeStr.split(":").map(Number);
     const [y, mo, d] = dateStr.split("-").map(Number);
-    // Create date in Bangladesh time (UTC+6)
     return new Date(Date.UTC(y, mo-1, d, h-6, m));
   }
 
@@ -431,7 +358,7 @@
     window.open(url, '_blank');
   }
 
-  let currentState = { now: new Date(), selectedStage: "Group Stage", showGroups: false };
+  let currentState = { now: new Date(), selectedStage: "Round of 32", showGroups: false };
   let intervalId = null;
 
   function setStage(stage) { currentState.selectedStage = stage; renderApp(); }
@@ -485,8 +412,6 @@
           const isPast = mDT < currentState.now && !isMatchLive(mDT);
           const isThisLive = isMatchLive(mDT);
           const isNextFlag = nextMatch && nextMatch.match === m.match && nextMatch.date === m.date && nextMatch.time === m.time;
-          const groupBn = m.group ? groupNamesBn[m.group] : null;
-          const groupCol = groupBn ? groupColors[groupBn] : (isNextFlag ? "#c5a028" : "#2a4a6a");
           let matchWithFlags = m.match;
           if (m.match && m.match.includes(" vs ") && !m.match.includes("বনাম")) {
             matchWithFlags = formatMatchWithBn(m.match);
@@ -496,7 +421,6 @@
             matchWithFlags = formatMatchWithBn(m.match);
           }
           const timeObj = formatTime12(m.time);
-          const groupDisplay = groupBn ? `<div style="width: 30px; height: 30px; border-radius: 50%; background: ${groupColors[groupBn]}; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #fff;">${groupBn}</div>` : `<div style="width: 30px;"></div>`;
           
           let statusBadge = "";
           if (isThisLive) {
@@ -505,10 +429,9 @@
             statusBadge = `<span style="font-size: 9px; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 25px;">সমাপ্ত</span>`;
           }
           
-          return `<div style="background: ${isThisLive ? 'rgba(255,0,0,0.15)' : (isNextFlag ? 'rgba(197,160,40,0.12)' : isPast ? 'rgba(255,255,255,0.015)' : 'rgba(255,255,255,0.04)')}; border-left: 3px solid ${isThisLive ? '#ff0000' : groupCol}; border-radius: 12px; padding: 12px; margin-bottom: 10px; position: relative; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          return `<div style="background: ${isThisLive ? 'rgba(255,0,0,0.15)' : (isNextFlag ? 'rgba(197,160,40,0.12)' : isPast ? 'rgba(255,255,255,0.015)' : 'rgba(255,255,255,0.04)')}; border-left: 3px solid ${isThisLive ? '#ff0000' : (isNextFlag ? '#c5a028' : '#2a4a6a')}; border-radius: 12px; padding: 12px; margin-bottom: 10px; position: relative; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
             ${isNextFlag && !isThisLive ? `<div style="position: absolute; top: -9px; right: 10px; background: #c5a028; color: #041226; font-size: 8px; font-weight: bold; padding: 2px 12px; border-radius: 40px;">পরবর্তী</div>` : ''}
             <div class="time-badge"><div><span class="time-hour">${timeObj.hour}:${timeObj.minute}</span><span class="time-ampm">${timeObj.ampm}</span></div><div class="time-label">বিএসটি</div></div>
-            ${groupDisplay}
             <div style="flex: 1; min-width: 150px;"><div style="font-size: 14px; font-weight: 600; color: ${isPast ? '#809cb0' : '#fdf6e3'}; line-height: 1.4;">${matchWithFlags} ${statusBadge}</div><div style="font-size: 10px; color: #6f8faa; margin-top: 5px;">📍 ${m.venue}</div></div>
           </div>`;
         }).join('');
@@ -562,7 +485,6 @@
     }
     
     const fullHtml = `<div style="min-height: 100vh;">${liveMatchHtml}${nextMatchHtml}<div style="background: rgba(4,18,38,0.96); padding: 14px 16px; text-align: center; border-bottom: 1px solid rgba(197,160,40,0.15);">
-     
       <div class="filter-buttons-wrapper">
         <button id="toggleGroupsBtn" class="group-tag-btn">📋 ${currentState.showGroups ? "▲ গ্রুপ লুকান" : "▼ সব গ্রুপ দেখুন"}</button>
       </div>
