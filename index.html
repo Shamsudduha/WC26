@@ -155,10 +155,19 @@
       gap: 8px;
       flex-wrap: wrap;
     }
+    .penalty-info {
+      font-size: 9px;
+      color: #ffaa44;
+      background: rgba(0,0,0,0.3);
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-left: 4px;
+    }
     @media (max-width: 480px) {
       .team-name { white-space: normal; word-break: keep-all; }
       .time-badge { min-width: 60px; padding: 4px 6px; }
       .score-badge { font-size: 12px; padding: 2px 6px; min-width: 25px; }
+      .penalty-info { font-size: 7px; padding: 1px 5px; }
     }
     .countdown-box {
       background: rgba(0,0,0,0.5);
@@ -202,7 +211,7 @@
   const countryBn = {
     "Mexico": "মেক্সিকো", "South Africa": "দক্ষিণ আফ্রিকা", "Korea Republic": "দক্ষিণ কোরিয়া", "Czech Republic": "চেকিয়া",
     "Canada": "কানাডা", "Bosnia and Herzegovina": "বসনিয়া", "Qatar": "কাতার", "Switzerland": "সুইজারল্যান্ড",
-    "Brazil": "ব্রাজিল", "Morocco": "মরক্কো", "Haiti": "হাইতি", "Scotland": "স্কটল্যান্ড",
+    "Brazil": "브라질", "Morocco": "মরক্কো", "Haiti": "হাইতি", "Scotland": "স্কটল্যান্ড",
     "USA": "মার্কিন যুক্তরাষ্ট্র", "Paraguay": "প্যারাগুয়ে", "Australia": "অস্ট্রেলিয়া", "Türkiye": "তুরস্ক", "Turkey": "তুরস্ক",
     "Germany": "জার্মানি", "Curaçao": "কুরাসাও", "Côte d'Ivoire": "আইভরি কোস্ট", "Ivory Coast": "আইভরি কোস্ট", "Ecuador": "ইকুয়েডর",
     "Netherlands": "নেদারল্যান্ডস", "Japan": "জাপান", "Sweden": "সুইডেন", "Tunisia": "তিউনিসিয়া",
@@ -212,7 +221,7 @@
     "Argentina": "আর্জেন্টিনা", "Algeria": "আলজেরিয়া", "Austria": "অস্ট্রিয়া", "Jordan": "জর্ডান",
     "Portugal": "পর্তুগাল", "Congo DR": "কঙ্গো", "Uzbekistan": "উজবেকিস্তান", "Colombia": "কলম্বিয়া",
     "England": "ইংল্যান্ড", "Croatia": "ক্রোয়েশিয়া", "Ghana": "ঘানা", "Panama": "পানামা",
-    "DR Congo": "ডিআর কঙ্গো"
+    "DR Congo": "ডিআর কঙ্গो", "Cabo Verde": "কেপ ভার্দে"
   };
 
   // ================= ফ্লাগ ম্যাপ =================
@@ -229,7 +238,7 @@
     "Argentina":"ar", "Algeria":"dz", "Austria":"at", "Jordan":"jo",
     "Portugal":"pt", "Congo DR":"cd", "Uzbekistan":"uz", "Colombia":"co",
     "England":"gb-eng", "Croatia":"hr", "Ghana":"gh", "Panama":"pa",
-    "DR Congo":"cd"
+    "DR Congo":"cd", "Cabo Verde":"cv"
   };
 
   function getFlag(country){
@@ -254,7 +263,7 @@
     return matchStr;
   }
 
-  function formatMatchWithScore(matchStr, score1, score2) {
+  function formatMatchWithScore(matchStr, score1, score2, penalty) {
     if(!matchStr) return "";
     if(matchStr.includes(" vs ")){
       const parts = matchStr.split(" vs ");
@@ -263,7 +272,8 @@
         const right = parts[1].trim();
         const leftBn = countryBn[left] || left;
         const rightBn = countryBn[right] || right;
-        return `<span class="team-name">${getFlag(left)} ${leftBn}</span> <span class="score-badge">${score1}</span> <b>বনাম</b> <span class="score-badge">${score2}</span> <span class="team-name">${getFlag(right)} ${rightBn}</span>`;
+        let penaltyHtml = penalty ? `<span class="penalty-info">(পেনাল্টি: ${penalty})</span>` : '';
+        return `<span class="team-name">${getFlag(left)} ${leftBn}</span> <span class="score-badge">${score1}</span> <b>বনাম</b> <span class="score-badge">${score2}</span> <span class="team-name">${getFlag(right)} ${rightBn}</span> ${penaltyHtml}`;
       }
     }
     return matchStr;
@@ -376,33 +386,33 @@
     { date:"2026-06-28", time:"08:00", match:"Algeria vs Austria", score1:"৩", score2:"৩", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-28", time:"08:00", match:"Jordan vs Argentina", score1:"১", score2:"৩", venue:"ডালাস স্টেডিয়াম", stage:"Group Stage" },
     
-    // === রাউন্ড অফ ৩২ ===
-    { date:"2026-06-29", time:"01:00", match:"South Africa vs Canada", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-06-29", time:"23:00", match:"Brazil vs Japan", venue:"হিউস্টন স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-06-30", time:"02:30", match:"Germany vs Paraguay", venue:"বোস্টন স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-06-30", time:"07:00", match:"Netherlands vs Morocco", venue:"মন্টেররে স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-06-30", time:"23:00", match:"Ivory Coast vs Norway", venue:"ডালাস স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-01", time:"03:00", match:"France vs Sweden", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-01", time:"07:00", match:"Mexico vs Ecuador", venue:"মেক্সিকো সিটি স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-01", time:"22:00", match:"England vs DR Congo", venue:"আটলান্টা স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-02", time:"02:00", match:"Belgium vs Senegal", venue:"সিয়াটল স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-02", time:"06:00", match:"USA vs Bosnia and Herzegovina", venue:"সান ফ্রান্সিসকো বে এরিয়া স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-03", time:"01:00", match:"Spain vs Austria", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-03", time:"05:00", match:"Portugal vs Croatia", venue:"টরন্টো স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-03", time:"09:00", match:"Switzerland vs Algeria", venue:"বিসি প্লেস ভ্যাঙ্কুভার", stage:"Round of 32" },
-    { date:"2026-07-04", time:"00:00", match:"Australia vs Egypt", venue:"ডালাস স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-04", time:"04:00", match:"Argentina vs Cape Verde Islands", venue:"মিয়ামি স্টেডিয়াম", stage:"Round of 32" },
-    { date:"2026-07-04", time:"07:30", match:"Colombia vs Ghana", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Round of 32" },
+    // === রাউন্ড অফ ৩২ - সমস্ত ফলাফল সহ ===
+    { date:"2026-06-28", time:"01:00", match:"South Africa vs Canada", score1:"০", score2:"১", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-06-29", time:"23:00", match:"Brazil vs Japan", score1:"২", score2:"১", venue:"হিউস্টন স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-06-30", time:"02:30", match:"Germany vs Paraguay", score1:"১", score2:"১", penalty:"৪-৩", venue:"বোস্টন স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-06-30", time:"07:00", match:"Netherlands vs Morocco", score1:"১", score2:"১", penalty:"২-৩", venue:"মন্টেররে স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-06-30", time:"23:00", match:"Ivory Coast vs Norway", score1:"১", score2:"২", venue:"ডালাস স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-01", time:"03:00", match:"France vs Sweden", score1:"৩", score2:"০", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-01", time:"07:00", match:"Mexico vs Ecuador", score1:"২", score2:"০", venue:"মেক্সিকো সিটি স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-01", time:"22:00", match:"England vs Congo DR", score1:"২", score2:"১", venue:"আটলান্টা স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-02", time:"02:00", match:"Belgium vs Senegal", score1:"৩", score2:"২", venue:"সিয়াটল স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-02", time:"06:00", match:"USA vs Bosnia and Herzegovina", score1:"২", score2:"০", venue:"সান ফ্রান্সিসকো বে এরিয়া স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-03", time:"01:00", match:"Spain vs Austria", score1:"৩", score2:"০", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-03", time:"05:00", match:"Portugal vs Croatia", score1:"২", score2:"১", venue:"টরন্টো স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-03", time:"09:00", match:"Switzerland vs Algeria", score1:"২", score2:"০", venue:"বিসি প্লেস ভ্যাঙ্কুভার", stage:"Round of 32" },
+    { date:"2026-07-04", time:"00:00", match:"Australia vs Egypt", score1:"১", score2:"১", penalty:"২-৪", venue:"ডালাস স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-04", time:"04:00", match:"Argentina vs Cabo Verde", score1:"৩", score2:"২", venue:"মিয়ামি স্টেডিয়াম", stage:"Round of 32" },
+    { date:"2026-07-04", time:"07:30", match:"Colombia vs Ghana", score1:"১", score2:"০", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Round of 32" },
     
-    // === রাউন্ড অফ ১৬ ===
+    // === রাউন্ড অফ ১৬ - আপডেটেড ===
     { date:"2026-07-04", time:"23:00", match:"Canada vs Morocco", venue:"হিউস্টন স্টেডিয়াম — হিউস্টন, টেক্সাস", stage:"Round of 16" },
     { date:"2026-07-05", time:"03:00", match:"Paraguay vs France", venue:"ফিলাডেলফিয়া স্টেডিয়াম — ফিলাডেলফিয়া, পেনসিলভানিয়া", stage:"Round of 16" },
     { date:"2026-07-06", time:"02:00", match:"Brazil vs Norway", venue:"নিউ ইয়র্ক নিউ জার্সি স্টেডিয়াম — ইস্ট রাদারফোর্ড", stage:"Round of 16" },
     { date:"2026-07-06", time:"06:00", match:"Mexico vs England", venue:"মেক্সিকো সিটি স্টেডিয়াম — মেক্সিকো সিটি, মেক্সিকো", stage:"Round of 16" },
     { date:"2026-07-07", time:"01:00", match:"Portugal vs Spain", venue:"ডালাস স্টেডিয়াম — আরলিংটন, টেক্সাস", stage:"Round of 16" },
     { date:"2026-07-07", time:"06:00", match:"USA vs Belgium", venue:"সিয়াটল স্টেডিয়াম — সিয়াটল, ওয়াশিংটন", stage:"Round of 16" },
-    { date:"2026-07-08", time:"02:00", match:"Switzerland vs TBD", venue:"আটলান্টা স্টেডিয়াম — আটলান্টা, জর্জিয়া", stage:"Round of 16" },
-    { date:"2026-07-07", time:"22:00", match:"TBD vs TBD", venue:"বিসি প্লেস — ভ্যাঙ্কুভার, কানাডা", stage:"Round of 16" },
+    { date:"2026-07-07", time:"22:00", match:"Switzerland vs Colombia", venue:"বিসি প্লেস — ভ্যাঙ্কুভার, কানাডা", stage:"Round of 16" },
+    { date:"2026-07-08", time:"02:00", match:"Argentina vs Egypt", venue:"আটলান্টা স্টেডিয়াম — আটলান্টা, জর্জিয়া", stage:"Round of 16" },
     
     // === কোয়ার্টার-ফাইনাল ===
     { date:"2026-07-10", time:"02:00", match:"W89 vs W90", venue:"বোস্টন স্টেডিয়াম", stage:"Quarterfinals" },
@@ -457,8 +467,8 @@
   // Modified: Keep ALL group stage matches, only remove future knockout matches after they end
   function removeOldMatches(fixtures, currentTime) {
     return fixtures.filter(fixture => {
-      // Always keep group stage matches
-      if (fixture.stage === "Group Stage") {
+      // Always keep group stage and round of 32 matches
+      if (fixture.stage === "Group Stage" || fixture.stage === "Round of 32") {
         return true;
       }
       // For knockout stages, remove after 105 minutes
@@ -531,11 +541,10 @@
     const root = document.getElementById("root");
     if (!root) return;
     
-    // Apply old match removal - group stage matches are ALWAYS kept
+    // Apply old match removal - group stage and round of 32 matches are ALWAYS kept
     const activeFixtures = removeOldMatches(fixturesRaw, currentState.now);
     
-    // Auto-detect the active stage - but only if user hasn't manually changed it
-    // We'll check if the selected stage has any matches, if not, switch to detected
+    // Auto-detect the active stage
     const hasMatchesInSelected = activeFixtures.some(f => f.stage === currentState.selectedStage);
     if (!hasMatchesInSelected) {
       const detectedStage = getActiveStage(activeFixtures, currentState.now);
@@ -580,10 +589,10 @@
           const isNextFlag = nextMatch && nextMatch.match === m.match && nextMatch.date === m.date && nextMatch.time === m.time;
           
           let matchWithFlags = m.match;
-          // Check if it's a group stage match with scores
-          if (m.stage === "Group Stage" && m.score1 !== undefined && m.score2 !== undefined) {
+          // Check if it's a group stage or round of 32 match with scores
+          if ((m.stage === "Group Stage" || m.stage === "Round of 32") && m.score1 !== undefined && m.score2 !== undefined) {
             if (m.match && m.match.includes(" vs ")) {
-              matchWithFlags = formatMatchWithScore(m.match, m.score1, m.score2);
+              matchWithFlags = formatMatchWithScore(m.match, m.score1, m.score2, m.penalty);
             } else {
               matchWithFlags = m.match;
             }
@@ -615,8 +624,8 @@
     let liveMatchHtml = "";
     if (liveMatch) {
       let liveMatchFormatted = liveMatch.match;
-      if (liveMatch.stage === "Group Stage" && liveMatch.score1 !== undefined && liveMatch.score2 !== undefined) {
-        liveMatchFormatted = formatMatchWithScore(liveMatch.match, liveMatch.score1, liveMatch.score2);
+      if ((liveMatch.stage === "Group Stage" || liveMatch.stage === "Round of 32") && liveMatch.score1 !== undefined && liveMatch.score2 !== undefined) {
+        liveMatchFormatted = formatMatchWithScore(liveMatch.match, liveMatch.score1, liveMatch.score2, liveMatch.penalty);
       } else if (liveMatch.match.includes(" vs ") && !liveMatch.match.includes("বনাম") && !liveMatch.match.includes("TBD") && !liveMatch.match.includes("Winner")) {
         liveMatchFormatted = formatMatchWithBn(liveMatch.match);
       }
@@ -632,8 +641,8 @@
     let nextMatchHtml = "";
     if (nextMatch && !liveMatch) {
       let nextMatchFormatted = nextMatch.match;
-      if (nextMatch.stage === "Group Stage" && nextMatch.score1 !== undefined && nextMatch.score2 !== undefined) {
-        nextMatchFormatted = formatMatchWithScore(nextMatch.match, nextMatch.score1, nextMatch.score2);
+      if ((nextMatch.stage === "Group Stage" || nextMatch.stage === "Round of 32") && nextMatch.score1 !== undefined && nextMatch.score2 !== undefined) {
+        nextMatchFormatted = formatMatchWithScore(nextMatch.match, nextMatch.score1, nextMatch.score2, nextMatch.penalty);
       } else if (nextMatch.match.includes(" vs ") && !nextMatch.match.includes("বনাম") && !nextMatch.match.includes("TBD") && !nextMatch.match.includes("Winner")) {
         nextMatchFormatted = formatMatchWithBn(nextMatch.match);
       }
@@ -653,8 +662,8 @@
       nextMatchHtml = `<div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px; text-align: center; color: #FFD700; font-size: 18px;">🏆 প্রতিযোগিতা সমাপ্ত!</div>`;
     } else if (liveMatch && nextMatch && cd) {
       let nextMatchFormatted = nextMatch.match;
-      if (nextMatch.stage === "Group Stage" && nextMatch.score1 !== undefined && nextMatch.score2 !== undefined) {
-        nextMatchFormatted = formatMatchWithScore(nextMatch.match, nextMatch.score1, nextMatch.score2);
+      if ((nextMatch.stage === "Group Stage" || nextMatch.stage === "Round of 32") && nextMatch.score1 !== undefined && nextMatch.score2 !== undefined) {
+        nextMatchFormatted = formatMatchWithScore(nextMatch.match, nextMatch.score1, nextMatch.score2, nextMatch.penalty);
       } else if (nextMatch.match.includes(" vs ") && !nextMatch.match.includes("বনাম") && !nextMatch.match.includes("TBD") && !nextMatch.match.includes("Winner")) {
         nextMatchFormatted = formatMatchWithBn(nextMatch.match);
       }
