@@ -28,7 +28,17 @@
       margin-bottom: 18px;
       text-align: left;
     }
-    @media (max-width: 480px) { .groups-grid { grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); } }
+    .points-table-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+      text-align: left;
+    }
+    @media (max-width: 480px) { 
+      .groups-grid { grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); }
+      .points-table-grid { grid-template-columns: 1fr; }
+    }
     .stage-btn {
       background: rgba(255,255,255,0.04);
       border: 1px solid #18304a;
@@ -59,6 +69,13 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+    }
+    .group-tag-btn.active {
+      background: #c5a028;
+      color: #041226;
+      border-color: #c5a028;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(197,160,40,0.3);
     }
     .watch-live-btn {
       background: #ff0000;
@@ -127,6 +144,97 @@
     .group-card { background: rgba(255,255,255,0.03); border-radius: 8px; padding: 10px 12px; }
     .group-team { font-size: 11px; color: #cddead; padding: 4px 0; display: flex; align-items: center; gap: 8px; }
     .group-team img { width: 20px; height: 15px; border-radius: 2px; }
+    .points-card {
+      background: rgba(255,255,255,0.03);
+      border-radius: 8px;
+      padding: 10px 12px;
+      border-left: 3px solid #c5a028;
+      overflow-x: auto;
+    }
+    .points-card .group-title {
+      font-size: 13px;
+      font-weight: bold;
+      color: #c5a028;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .points-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10px;
+      min-width: 320px;
+    }
+    .points-table th {
+      color: #7a9abf;
+      font-weight: bold;
+      font-size: 8px;
+      padding: 3px 2px;
+      text-align: center;
+      border-bottom: 1px solid rgba(197,160,40,0.3);
+      white-space: nowrap;
+    }
+    .points-table td {
+      padding: 3px 2px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      white-space: nowrap;
+    }
+    .points-table .team-cell {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+      text-align: left;
+    }
+    .points-table .team-cell img {
+      width: 16px;
+      height: 12px;
+      border-radius: 2px;
+    }
+    .points-table .pts-cell {
+      font-weight: bold;
+      color: #FFD700;
+    }
+    .points-table .gd-positive {
+      color: #4CAF50;
+    }
+    .points-table .gd-negative {
+      color: #f44336;
+    }
+    .points-table .gd-zero {
+      color: #7a9abf;
+    }
+    .last5-cell {
+      display: flex;
+      gap: 3px;
+      justify-content: center;
+      align-items: center;
+    }
+    .last5-cell .result-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: bold;
+      line-height: 1;
+    }
+    .result-win {
+      background: #2e7d32;
+      color: #fff;
+    }
+    .result-draw {
+      background: #f9a825;
+      color: #000;
+    }
+    .result-loss {
+      background: #c62828;
+      color: #fff;
+    }
     b { color: #c5a028; font-weight: 500; margin: 0 2px; }
     .time-badge {
       background: rgba(0,0,0,0.5);
@@ -162,12 +270,48 @@
       padding: 2px 8px;
       border-radius: 12px;
       margin-left: 4px;
+      display: inline-block;
+      white-space: nowrap;
     }
     @media (max-width: 480px) {
       .team-name { white-space: normal; word-break: keep-all; }
       .time-badge { min-width: 60px; padding: 4px 6px; }
       .score-badge { font-size: 12px; padding: 2px 6px; min-width: 25px; }
-      .penalty-info { font-size: 7px; padding: 1px 5px; }
+      .penalty-info { 
+        font-size: 7px; 
+        padding: 1px 5px;
+        display: block;
+        margin-left: 0;
+        margin-top: 2px;
+        text-align: center;
+        width: 100%;
+        white-space: normal;
+      }
+      .match-result {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .points-table {
+        font-size: 8px;
+        min-width: 280px;
+      }
+      .points-table th {
+        font-size: 6px;
+        padding: 2px 1px;
+      }
+      .points-table td {
+        padding: 2px 1px;
+      }
+      .points-table .team-cell img {
+        width: 12px;
+        height: 9px;
+      }
+      .last5-cell .result-icon {
+        width: 12px;
+        height: 12px;
+        font-size: 6px;
+      }
     }
     .countdown-box {
       background: rgba(0,0,0,0.5);
@@ -209,7 +353,7 @@
 <script>
   // ================= দেশের নাম বাংলায় =================
   const countryBn = {
-    "Mexico": "মেক্সিকো", "South Africa": "দক্ষিণ আফ্রিকা", "Korea Republic": "দক্ষিণ কোরিয়া", "Czech Republic": "চেকিয়া",
+    "Mexico": "মেক্সিকো", "South Africa": "দক্ষিণ আফ্রিকা", "Korea Republic": "দক্ষিণ কোরিয়া", "Czechia": "চেকিয়া",
     "Canada": "কানাডা", "Bosnia and Herzegovina": "বসনিয়া", "Qatar": "কাতার", "Switzerland": "সুইজারল্যান্ড",
     "Brazil": "ব্রাজিল", "Morocco": "মরক্কো", "Haiti": "হাইতি", "Scotland": "স্কটল্যান্ড",
     "USA": "মার্কিন যুক্তরাষ্ট্র", "Paraguay": "প্যারাগুয়ে", "Australia": "অস্ট্রেলিয়া", "Türkiye": "তুরস্ক", "Turkey": "তুরস্ক",
@@ -221,12 +365,12 @@
     "Argentina": "আর্জেন্টিনা", "Algeria": "আলজেরিয়া", "Austria": "অস্ট্রিয়া", "Jordan": "জর্ডান",
     "Portugal": "পর্তুগাল", "Congo DR": "কঙ্গো", "Uzbekistan": "উজবেকিস্তান", "Colombia": "কলম্বিয়া",
     "England": "ইংল্যান্ড", "Croatia": "ক্রোয়েশিয়া", "Ghana": "ঘানা", "Panama": "পানামা",
-    "DR Congo": "ডিআর কঙ্গो", "Cabo Verde": "কেপ ভার্দে"
+    "DR Congo": "ডিআর কঙ্গো", "Cabo Verde": "কেপ ভার্দে", "Czech Republic": "চেকিয়া"
   };
 
   // ================= ফ্লাগ ম্যাপ =================
   const flagMap = {
-    "Mexico":"mx", "South Africa":"za", "Korea Republic":"kr", "Czech Republic":"cz",
+    "Mexico":"mx", "South Africa":"za", "Korea Republic":"kr", "Czechia":"cz", "Czech Republic":"cz",
     "Canada":"ca", "Bosnia and Herzegovina":"ba", "Qatar":"qa", "Switzerland":"ch",
     "Brazil":"br", "Morocco":"ma", "Haiti":"ht", "Scotland":"gb-sct",
     "USA":"us", "Paraguay":"py", "Australia":"au", "Türkiye":"tr", "Turkey":"tr",
@@ -245,6 +389,12 @@
     const code = flagMap[country];
     if(!code) return "🏳️";
     return `<img src="https://flagcdn.com/24x18/${code}.png" class="flag-img" alt="${country} flag" loading="lazy">`;
+  }
+
+  function getFlagSmall(country){
+    const code = flagMap[country];
+    if(!code) return "🏳️";
+    return `<img src="https://flagcdn.com/24x18/${code}.png" alt="${country} flag" loading="lazy">`;
   }
 
   function formatMatchWithBn(matchStr){
@@ -272,12 +422,89 @@
         const right = parts[1].trim();
         const leftBn = countryBn[left] || left;
         const rightBn = countryBn[right] || right;
-        let penaltyHtml = penalty ? `<span class="penalty-info">(পেনাল্টি: ${penalty})</span>` : '';
+        let penaltyHtml = penalty ? `<span class="penalty-info">পেনাল্টি: ${penalty}</span>` : '';
         return `<span class="team-name">${getFlag(left)} ${leftBn}</span> <span class="score-badge">${score1}</span> <b>বনাম</b> <span class="score-badge">${score2}</span> <span class="team-name">${getFlag(right)} ${rightBn}</span> ${penaltyHtml}`;
       }
     }
     return matchStr;
   }
+
+  // ================= গ্রুপ পয়েন্ট টেবিল ডাটা =================
+  // Last 5 results: W=win, D=draw, L=loss
+  const pointsData = {
+    "এ": [
+      { team: "Mexico", mp: 3, w: 3, d: 0, l: 0, gf: 6, ga: 0, gd: 6, pts: 9, last5: ["W","W","W"] },
+      { team: "South Africa", mp: 3, w: 1, d: 1, l: 1, gf: 2, ga: 3, gd: -1, pts: 4, last5: ["L","D","W"] },
+      { team: "Korea Republic", mp: 3, w: 1, d: 0, l: 2, gf: 2, ga: 3, gd: -1, pts: 3, last5: ["L","W","L"] },
+      { team: "Czechia", mp: 3, w: 0, d: 1, l: 2, gf: 2, ga: 6, gd: -4, pts: 1, last5: ["D","L","L"] }
+    ],
+    "বি": [
+      { team: "Switzerland", mp: 3, w: 2, d: 1, l: 0, gf: 7, ga: 3, gd: 4, pts: 7, last5: ["D","W","W"] },
+      { team: "Canada", mp: 3, w: 1, d: 1, l: 1, gf: 8, ga: 3, gd: 5, pts: 4, last5: ["D","W","L"] },
+      { team: "Bosnia and Herzegovina", mp: 3, w: 1, d: 1, l: 1, gf: 5, ga: 6, gd: -1, pts: 4, last5: ["D","L","W"] },
+      { team: "Qatar", mp: 3, w: 0, d: 1, l: 2, gf: 2, ga: 10, gd: -8, pts: 1, last5: ["D","L","L"] }
+    ],
+    "সি": [
+      { team: "Brazil", mp: 3, w: 2, d: 1, l: 0, gf: 7, ga: 1, gd: 6, pts: 7, last5: ["D","W","W"] },
+      { team: "Morocco", mp: 3, w: 2, d: 1, l: 0, gf: 6, ga: 3, gd: 3, pts: 7, last5: ["D","W","W"] },
+      { team: "Scotland", mp: 3, w: 1, d: 0, l: 2, gf: 1, ga: 4, gd: -3, pts: 3, last5: ["L","L","W"] },
+      { team: "Haiti", mp: 3, w: 0, d: 0, l: 3, gf: 2, ga: 8, gd: -6, pts: 0, last5: ["L","L","L"] }
+    ],
+    "ডি": [
+      { team: "USA", mp: 3, w: 2, d: 0, l: 1, gf: 8, ga: 4, gd: 4, pts: 6, last5: ["W","L","W"] },
+      { team: "Australia", mp: 3, w: 1, d: 1, l: 1, gf: 2, ga: 2, gd: 0, pts: 4, last5: ["W","D","L"] },
+      { team: "Paraguay", mp: 3, w: 1, d: 1, l: 1, gf: 2, ga: 4, gd: -2, pts: 4, last5: ["L","D","W"] },
+      { team: "Türkiye", mp: 3, w: 1, d: 0, l: 2, gf: 3, ga: 5, gd: -2, pts: 3, last5: ["L","W","L"] }
+    ],
+    "ই": [
+      { team: "Germany", mp: 3, w: 2, d: 0, l: 1, gf: 10, ga: 4, gd: 6, pts: 6, last5: ["W","L","W"] },
+      { team: "Ivory Coast", mp: 3, w: 2, d: 0, l: 1, gf: 4, ga: 2, gd: 2, pts: 6, last5: ["W","L","W"] },
+      { team: "Ecuador", mp: 3, w: 1, d: 1, l: 1, gf: 2, ga: 2, gd: 0, pts: 4, last5: ["L","D","W"] },
+      { team: "Curaçao", mp: 3, w: 0, d: 1, l: 2, gf: 1, ga: 9, gd: -8, pts: 1, last5: ["D","L","L"] }
+    ],
+    "এফ": [
+      { team: "Netherlands", mp: 3, w: 2, d: 1, l: 0, gf: 10, ga: 4, gd: 6, pts: 7, last5: ["D","W","W"] },
+      { team: "Japan", mp: 3, w: 1, d: 2, l: 0, gf: 7, ga: 3, gd: 4, pts: 5, last5: ["D","D","W"] },
+      { team: "Sweden", mp: 3, w: 1, d: 1, l: 1, gf: 7, ga: 7, gd: 0, pts: 4, last5: ["W","L","D"] },
+      { team: "Tunisia", mp: 3, w: 0, d: 0, l: 3, gf: 2, ga: 12, gd: -10, pts: 0, last5: ["L","L","L"] }
+    ],
+    "জি": [
+      { team: "Belgium", mp: 3, w: 1, d: 2, l: 0, gf: 6, ga: 2, gd: 4, pts: 5, last5: ["D","D","W"] },
+      { team: "Egypt", mp: 3, w: 1, d: 2, l: 0, gf: 5, ga: 3, gd: 1, pts: 5, last5: ["D","D","W"] },
+      { team: "Iran", mp: 3, w: 0, d: 3, l: 0, gf: 3, ga: 3, gd: 0, pts: 3, last5: ["D","D","D"] },
+      { team: "New Zealand", mp: 3, w: 0, d: 1, l: 2, gf: 4, ga: 10, gd: -6, pts: 1, last5: ["D","L","L"] }
+    ],
+    "এইচ": [
+      { team: "Spain", mp: 3, w: 2, d: 1, l: 0, gf: 5, ga: 0, gd: 5, pts: 7, last5: ["D","W","W"] },
+      { team: "Cape Verde Islands", mp: 3, w: 0, d: 3, l: 0, gf: 2, ga: 2, gd: 0, pts: 3, last5: ["D","D","D"] },
+      { team: "Uruguay", mp: 3, w: 0, d: 2, l: 1, gf: 3, ga: 4, gd: -1, pts: 2, last5: ["D","L","D"] },
+      { team: "Saudi Arabia", mp: 3, w: 0, d: 2, l: 1, gf: 1, ga: 5, gd: -4, pts: 2, last5: ["D","L","D"] }
+    ],
+    "আই": [
+      { team: "France", mp: 3, w: 3, d: 0, l: 0, gf: 10, ga: 2, gd: 8, pts: 9, last5: ["W","W","W"] },
+      { team: "Norway", mp: 3, w: 2, d: 0, l: 1, gf: 8, ga: 7, gd: 1, pts: 6, last5: ["W","L","W"] },
+      { team: "Senegal", mp: 3, w: 1, d: 0, l: 2, gf: 8, ga: 6, gd: 2, pts: 3, last5: ["L","W","L"] },
+      { team: "Iraq", mp: 3, w: 0, d: 0, l: 3, gf: 1, ga: 12, gd: -11, pts: 0, last5: ["L","L","L"] }
+    ],
+    "জে": [
+      { team: "Argentina", mp: 3, w: 3, d: 0, l: 0, gf: 8, ga: 1, gd: 7, pts: 9, last5: ["W","W","W"] },
+      { team: "Austria", mp: 3, w: 1, d: 1, l: 1, gf: 6, ga: 6, gd: 0, pts: 4, last5: ["W","L","D"] },
+      { team: "Algeria", mp: 3, w: 1, d: 1, l: 1, gf: 5, ga: 7, gd: -2, pts: 4, last5: ["L","D","W"] },
+      { team: "Jordan", mp: 3, w: 0, d: 0, l: 3, gf: 3, ga: 8, gd: -5, pts: 0, last5: ["L","L","L"] }
+    ],
+    "কে": [
+      { team: "Colombia", mp: 3, w: 2, d: 1, l: 0, gf: 4, ga: 1, gd: 3, pts: 7, last5: ["D","W","W"] },
+      { team: "Portugal", mp: 3, w: 1, d: 2, l: 0, gf: 6, ga: 1, gd: 5, pts: 5, last5: ["D","W","D"] },
+      { team: "DR Congo", mp: 3, w: 1, d: 1, l: 1, gf: 4, ga: 3, gd: 1, pts: 4, last5: ["W","L","D"] },
+      { team: "Uzbekistan", mp: 3, w: 0, d: 0, l: 3, gf: 2, ga: 11, gd: -9, pts: 0, last5: ["L","L","L"] }
+    ],
+    "এল": [
+      { team: "England", mp: 3, w: 2, d: 1, l: 0, gf: 6, ga: 2, gd: 4, pts: 7, last5: ["W","D","W"] },
+      { team: "Croatia", mp: 3, w: 2, d: 0, l: 1, gf: 5, ga: 5, gd: 0, pts: 6, last5: ["W","L","W"] },
+      { team: "Ghana", mp: 3, w: 1, d: 1, l: 1, gf: 2, ga: 2, gd: 0, pts: 4, last5: ["W","D","L"] },
+      { team: "Panama", mp: 3, w: 0, d: 0, l: 3, gf: 0, ga: 4, gd: -4, pts: 0, last5: ["L","L","L"] }
+    ]
+  };
 
   const groupNamesBn = {
     "A": "এ", "B": "বি", "C": "সি", "D": "ডি", "E": "ই", "F": "এফ",
@@ -285,7 +512,7 @@
   };
 
   const groupsData = {
-    "এ": ["Mexico", "South Africa", "Korea Republic", "Czech Republic"],
+    "এ": ["Mexico", "South Africa", "Korea Republic", "Czechia"],
     "বি": ["Canada", "Bosnia and Herzegovina", "Qatar", "Switzerland"],
     "সি": ["Brazil", "Morocco", "Haiti", "Scotland"],
     "ডি": ["USA", "Paraguay", "Australia", "Türkiye"],
@@ -314,7 +541,7 @@
   const fixturesRaw = [
     // === গ্রুপ পর্ব - ৭২ টি ম্যাচের ফলাফল ===
     { date:"2026-06-12", time:"01:00", match:"Mexico vs South Africa", score1:"২", score2:"০", venue:"মেক্সিকো সিটি স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-12", time:"08:00", match:"Korea Republic vs Czech Republic", score1:"২", score2:"১", venue:"এস্তাদিও গুয়াদালাজারা", stage:"Group Stage" },
+    { date:"2026-06-12", time:"08:00", match:"Korea Republic vs Czechia", score1:"২", score2:"১", venue:"এস্তাদিও গুয়াদালাজারা", stage:"Group Stage" },
     { date:"2026-06-13", time:"01:00", match:"Canada vs Bosnia and Herzegovina", score1:"১", score2:"১", venue:"টরন্টো স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-13", time:"07:00", match:"USA vs Paraguay", score1:"৪", score2:"১", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-14", time:"01:00", match:"Qatar vs Switzerland", score1:"১", score2:"১", venue:"সান ফ্রান্সিসকো বে এরিয়া স্টেডিয়াম", stage:"Group Stage" },
@@ -337,7 +564,7 @@
     { date:"2026-06-18", time:"02:00", match:"England vs Croatia", score1:"৪", score2:"২", venue:"ডালাস স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-18", time:"05:00", match:"Ghana vs Panama", score1:"১", score2:"০", venue:"টরন্টো স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-18", time:"08:00", match:"Uzbekistan vs Colombia", score1:"১", score2:"৩", venue:"মেক্সিকো সিটি স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-18", time:"22:00", match:"Czech Republic vs South Africa", score1:"১", score2:"১", venue:"আটলান্টা স্টেডিয়াম", stage:"Group Stage" },
+    { date:"2026-06-18", time:"22:00", match:"Czechia vs South Africa", score1:"১", score2:"১", venue:"আটলান্টা স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-19", time:"01:00", match:"Switzerland vs Bosnia and Herzegovina", score1:"৪", score2:"১", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-19", time:"04:00", match:"Canada vs Qatar", score1:"৬", score2:"০", venue:"বিসি প্লেস", stage:"Group Stage" },
     { date:"2026-06-19", time:"07:00", match:"Mexico vs Korea Republic", score1:"১", score2:"০", venue:"এস্তাদিও গুয়াদালাজারা", stage:"Group Stage" },
@@ -365,7 +592,7 @@
     { date:"2026-06-25", time:"01:00", match:"Bosnia and Herzegovina vs Qatar", score1:"৩", score2:"১", venue:"সিয়াটল স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-25", time:"04:00", match:"Morocco vs Haiti", score1:"৪", score2:"২", venue:"আটলান্টা স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-25", time:"04:00", match:"Scotland vs Brazil", score1:"০", score2:"৩", venue:"মিয়ামি স্টেডিয়াম", stage:"Group Stage" },
-    { date:"2026-06-25", time:"07:00", match:"Czech Republic vs Mexico", score1:"০", score2:"৩", venue:"মেক্সিকো সিটি স্টেডিয়াম", stage:"Group Stage" },
+    { date:"2026-06-25", time:"07:00", match:"Czechia vs Mexico", score1:"০", score2:"৩", venue:"মেক্সিকো সিটি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-25", time:"07:00", match:"South Africa vs Korea Republic", score1:"১", score2:"০", venue:"এস্তাদিও মন্টেররে", stage:"Group Stage" },
     { date:"2026-06-26", time:"02:00", match:"Ecuador vs Germany", score1:"২", score2:"১", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Group Stage" },
     { date:"2026-06-26", time:"02:00", match:"Curaçao vs Ivory Coast", score1:"০", score2:"২", venue:"ফিলাডেলফিয়া স্টেডিয়াম", stage:"Group Stage" },
@@ -515,7 +742,8 @@
   let currentState = { 
     now: new Date(), 
     selectedStage: "Group Stage", 
-    showGroups: false 
+    showGroups: false,
+    showPoints: false
   };
   let intervalId = null;
 
@@ -526,7 +754,14 @@
   
   function toggleGroups() { 
     currentState.showGroups = !currentState.showGroups; 
+    if (currentState.showGroups) currentState.showPoints = false;
     renderApp(); 
+  }
+  
+  function togglePoints() {
+    currentState.showPoints = !currentState.showPoints;
+    if (currentState.showPoints) currentState.showGroups = false;
+    renderApp();
   }
   
   function getNextMatch(fixturesWithDT) { 
@@ -573,6 +808,73 @@
           ${teams.map(team => `<div class="group-team">${getFlag(team)} ${countryBn[team] || team}</div>`).join('')}
         </div>
       `).join('')}</div>`;
+    }
+    
+    // Points Table HTML - New Design with Last 5
+    let pointsPanelHtml = "";
+    if (currentState.showPoints) {
+      pointsPanelHtml = `<div class="points-table-grid">${Object.entries(pointsData).map(([gBn, teams]) => {
+        // Sort teams by points (descending), then goal difference
+        const sortedTeams = [...teams].sort((a, b) => {
+          if (b.pts !== a.pts) return b.pts - a.pts;
+          if (b.gd !== a.gd) return b.gd - a.gd;
+          return b.gf - a.gf;
+        });
+        
+        return `
+        <div class="points-card" style="border-left-color: ${groupColors[gBn]};">
+          <div class="group-title" style="color: ${groupColors[gBn]};">গ্রুপ ${gBn}</div>
+          <table class="points-table">
+            <thead>
+              <tr>
+                <th style="text-align:left;">দল</th>
+                <th>ম্যাচ</th>
+                <th>জ</th>
+                <th>ড</th>
+                <th>হা</th>
+                <th>গো</th>
+                <th>গবি</th>
+                <th>গপা</th>
+                <th>প</th>
+                <th>শেষ ৫</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${sortedTeams.map((t, index) => {
+                const gdClass = t.gd > 0 ? 'gd-positive' : (t.gd < 0 ? 'gd-negative' : 'gd-zero');
+                const rankBadge = index === 0 ? '🥇' : (index === 1 ? '🥈' : (index === 2 ? '🥉' : ''));
+                
+                // Generate Last 5 icons
+                const last5Icons = t.last5.map(result => {
+                  if (result === 'W') return `<span class="result-icon result-win">✓</span>`;
+                  if (result === 'D') return `<span class="result-icon result-draw">-</span>`;
+                  return `<span class="result-icon result-loss">✗</span>`;
+                }).join('');
+                
+                return `
+                <tr>
+                  <td style="text-align:left;">
+                    <span class="team-cell">
+                      ${rankBadge} ${getFlagSmall(t.team)} ${countryBn[t.team] || t.team}
+                    </span>
+                  </td>
+                  <td>${t.mp}</td>
+                  <td>${t.w}</td>
+                  <td>${t.d}</td>
+                  <td>${t.l}</td>
+                  <td>${t.gf}</td>
+                  <td>${t.ga}</td>
+                  <td class="${gdClass}">${t.gd > 0 ? '+' + t.gd : t.gd}</td>
+                  <td class="pts-cell">${t.pts}</td>
+                  <td><div class="last5-cell">${last5Icons}</div></td>
+                </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+        `;
+      }).join('')}</div>`;
     }
     
     let fixturesHtml = "";
@@ -683,7 +985,8 @@
     
     const fullHtml = `<div style="min-height: 100vh;">${liveMatchHtml}${nextMatchHtml}<div style="background: rgba(4,18,38,0.96); padding: 14px 16px; text-align: center; border-bottom: 1px solid rgba(197,160,40,0.15);">
       <div class="filter-buttons-wrapper">
-        <button id="toggleGroupsBtn" class="group-tag-btn">📋 ${currentState.showGroups ? "▲ গ্রুপ লুকান" : "▼ সব গ্রুপ দেখুন"}</button>
+        <button id="toggleGroupsBtn" class="group-tag-btn ${currentState.showGroups ? 'active' : ''}">📋 ${currentState.showGroups ? "▲ গ্রুপ লুকান" : "▼ সব গ্রুপ দেখুন"}</button>
+        <button id="togglePointsBtn" class="group-tag-btn ${currentState.showPoints ? 'active' : ''}">📊 ${currentState.showPoints ? "▲ পয়েন্ট টেবিল লুকান" : "পয়েন্ট টেবিল"}</button>
       </div>
       <div class="live-buttons-wrapper">
         <button class="watch-live-btn" data-url="https://livekhela.movielinkbd.li/">🔴 স্ট্রিম ১</button>
@@ -691,6 +994,7 @@
         <button class="watch-live-btn-alt" data-url="https://tvprobd.vercel.app/">📡 স্ট্রিম ৩</button>
       </div>
       <div id="groupsPanel" style="margin-top: 8px;">${groupsPanelHtml}</div>
+      <div id="pointsPanel" style="margin-top: 8px;">${pointsPanelHtml}</div>
       <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 12px;">${stageListEn.map((s, idx) => `<button data-stage="${s}" class="stage-btn ${currentState.selectedStage === s ? 'active' : ''}">${stageListBn[idx]}</button>`).join('')}</div>
     </div>
     <div style="background: rgba(10,30,58,0.6); padding: 6px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
@@ -705,6 +1009,7 @@
     
     // Event listeners
     document.getElementById("toggleGroupsBtn")?.addEventListener("click", toggleGroups);
+    document.getElementById("togglePointsBtn")?.addEventListener("click", togglePoints);
     
     document.querySelectorAll("[data-url]").forEach(btn => {
       btn.addEventListener("click", function(e) {
