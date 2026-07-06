@@ -273,6 +273,17 @@
       display: inline-block;
       white-space: nowrap;
     }
+    .red-card-info {
+      font-size: 8px;
+      color: #ff4444;
+      background: rgba(255,0,0,0.15);
+      padding: 1px 6px;
+      border-radius: 10px;
+      margin-left: 4px;
+      display: inline-block;
+      white-space: nowrap;
+      border: 1px solid rgba(255,0,0,0.3);
+    }
     @media (max-width: 480px) {
       .team-name { white-space: normal; word-break: keep-all; }
       .time-badge { min-width: 60px; padding: 4px 6px; }
@@ -286,6 +297,14 @@
         text-align: center;
         width: 100%;
         white-space: normal;
+      }
+      .red-card-info {
+        font-size: 6px;
+        padding: 1px 4px;
+        display: block;
+        margin-left: 0;
+        margin-top: 2px;
+        text-align: center;
       }
       .match-result {
         flex-direction: row;
@@ -413,7 +432,7 @@
     return matchStr;
   }
 
-  function formatMatchWithScore(matchStr, score1, score2, penalty) {
+  function formatMatchWithScore(matchStr, score1, score2, penalty, redCard) {
     if(!matchStr) return "";
     if(matchStr.includes(" vs ")){
       const parts = matchStr.split(" vs ");
@@ -423,14 +442,14 @@
         const leftBn = countryBn[left] || left;
         const rightBn = countryBn[right] || right;
         let penaltyHtml = penalty ? `<span class="penalty-info">পেনাল্টি: ${penalty}</span>` : '';
-        return `<span class="team-name">${getFlag(left)} ${leftBn}</span> <span class="score-badge">${score1}</span> <b>বনাম</b> <span class="score-badge">${score2}</span> <span class="team-name">${getFlag(right)} ${rightBn}</span> ${penaltyHtml}`;
+        let redCardHtml = redCard ? `<span class="red-card-info">🟥 লাল কার্ড</span>` : '';
+        return `<span class="team-name">${getFlag(left)} ${leftBn}</span> <span class="score-badge">${score1}</span> <b>বনাম</b> <span class="score-badge">${score2}</span> <span class="team-name">${getFlag(right)} ${rightBn}</span> ${penaltyHtml} ${redCardHtml}`;
       }
     }
     return matchStr;
   }
 
   // ================= গ্রুপ পয়েন্ট টেবিল ডাটা =================
-  // Last 5 results: W=win, D=draw, L=loss
   const pointsData = {
     "এ": [
       { team: "Mexico", mp: 3, w: 3, d: 0, l: 0, gf: 6, ga: 0, gd: 6, pts: 9, last5: ["W","W","W"] },
@@ -631,21 +650,21 @@
     { date:"2026-07-04", time:"04:00", match:"Argentina vs Cabo Verde", score1:"৩", score2:"২", venue:"মিয়ামি স্টেডিয়াম", stage:"Round of 32" },
     { date:"2026-07-04", time:"07:30", match:"Colombia vs Ghana", score1:"১", score2:"০", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Round of 32" },
     
-    // === রাউন্ড অফ ১৬ - আপডেটেড ===
-    { date:"2026-07-04", time:"23:00", match:"Canada vs Morocco", venue:"হিউস্টন স্টেডিয়াম — হিউস্টন, টেক্সাস", stage:"Round of 16" },
-    { date:"2026-07-05", time:"03:00", match:"Paraguay vs France", venue:"ফিলাডেলফিয়া স্টেডিয়াম — ফিলাডেলফিয়া, পেনসিলভানিয়া", stage:"Round of 16" },
-    { date:"2026-07-06", time:"02:00", match:"Brazil vs Norway", venue:"নিউ ইয়র্ক নিউ জার্সি স্টেডিয়াম — ইস্ট রাদারফোর্ড", stage:"Round of 16" },
-    { date:"2026-07-06", time:"06:00", match:"Mexico vs England", venue:"মেক্সিকো সিটি স্টেডিয়াম — মেক্সিকো সিটি, মেক্সিকো", stage:"Round of 16" },
+    // === রাউন্ড অফ ১৬ - সম্পূর্ণ আপডেটেড ===
+    { date:"2026-07-04", time:"23:00", match:"Canada vs Morocco", score1:"০", score2:"৩", venue:"হিউস্টন স্টেডিয়াম — হিউস্টন, টেক্সাস", stage:"Round of 16" },
+    { date:"2026-07-05", time:"03:00", match:"Paraguay vs France", score1:"০", score2:"১", venue:"ফিলাডেলফিয়া স্টেডিয়াম — ফিলাডেলফিয়া, পেনসিলভানিয়া", stage:"Round of 16" },
+    { date:"2026-07-06", time:"02:00", match:"Brazil vs Norway", score1:"১", score2:"২", venue:"নিউ ইয়র্ক নিউ জার্সি স্টেডিয়াম — ইস্ট রাদারফোর্ড", stage:"Round of 16" },
+    { date:"2026-07-06", time:"06:00", match:"Mexico vs England", score1:"২", score2:"৩", redCard: true, venue:"মেক্সিকো সিটি স্টেডিয়াম — মেক্সিকো সিটি, মেক্সিকো", stage:"Round of 16" },
     { date:"2026-07-07", time:"01:00", match:"Portugal vs Spain", venue:"ডালাস স্টেডিয়াম — আরলিংটন, টেক্সাস", stage:"Round of 16" },
     { date:"2026-07-07", time:"06:00", match:"USA vs Belgium", venue:"সিয়াটল স্টেডিয়াম — সিয়াটল, ওয়াশিংটন", stage:"Round of 16" },
-    { date:"2026-07-07", time:"22:00", match:"Switzerland vs Colombia", venue:"বিসি প্লেস — ভ্যাঙ্কুভার, কানাডা", stage:"Round of 16" },
-    { date:"2026-07-08", time:"02:00", match:"Argentina vs Egypt", venue:"আটলান্টা স্টেডিয়াম — আটলান্টা, জর্জিয়া", stage:"Round of 16" },
+    { date:"2026-07-07", time:"22:00", match:"Argentina vs Egypt", venue:"আটলান্টা স্টেডিয়াম — আটলান্টা, জর্জিয়া", stage:"Round of 16" },
+    { date:"2026-07-08", time:"02:00", match:"Switzerland vs Colombia", venue:"বিসি প্লেস — ভ্যাঙ্কুভার, কানাডা", stage:"Round of 16" },
     
-    // === কোয়ার্টার-ফাইনাল ===
-    { date:"2026-07-10", time:"02:00", match:"W89 vs W90", venue:"বোস্টন স্টেডিয়াম", stage:"Quarterfinals" },
-    { date:"2026-07-11", time:"01:00", match:"W93 vs W94", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Quarterfinals" },
-    { date:"2026-07-12", time:"03:00", match:"W91 vs W92", venue:"মিয়ামি স্টেডিয়াম", stage:"Quarterfinals" },
-    { date:"2026-07-12", time:"07:00", match:"W95 vs W96", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Quarterfinals" },
+    // === কোয়ার্টার-ফাইনাল - আপডেটেড ===
+    { date:"2026-07-10", time:"02:00", match:"France vs Morocco", venue:"বোস্টন স্টেডিয়াম", stage:"Quarterfinals" },
+    { date:"2026-07-11", time:"01:00", match:"TBD vs TBD", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Quarterfinals" },
+    { date:"2026-07-12", time:"03:00", match:"Norway vs England", venue:"মিয়ামি স্টেডিয়াম", stage:"Quarterfinals" },
+    { date:"2026-07-12", time:"07:00", match:"TBD vs TBD", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Quarterfinals" },
     
     // === সেমি-ফাইনাল ===
     { date:"2026-07-15", time:"01:00", match:"W97 vs W98", venue:"ডালাস স্টেডিয়াম", stage:"Semifinals" },
@@ -691,14 +710,25 @@
     return (matchDateTime <= now && now <= matchEndTime);
   }
 
-  // Modified: Keep ALL group stage matches, only remove future knockout matches after they end
+  // Modified: Keep ALL group stage and round of 32 matches, and completed round of 16 matches
   function removeOldMatches(fixtures, currentTime) {
     return fixtures.filter(fixture => {
       // Always keep group stage and round of 32 matches
       if (fixture.stage === "Group Stage" || fixture.stage === "Round of 32") {
         return true;
       }
-      // For knockout stages, remove after 105 minutes
+      // For round of 16, keep completed matches (with scores) and upcoming matches
+      if (fixture.stage === "Round of 16") {
+        // If it has scores, it's completed - keep it
+        if (fixture.score1 !== undefined && fixture.score2 !== undefined) {
+          return true;
+        }
+        // If no scores, check if it's still upcoming (not passed 105 minutes)
+        const matchDateTime = parseMatchDateTime(fixture.date, fixture.time);
+        const matchEndTime = new Date(matchDateTime.getTime() + 105 * 60000);
+        return matchEndTime > currentTime;
+      }
+      // For knockout stages (Quarterfinals, Semifinals, etc.), remove after 105 minutes
       const matchDateTime = parseMatchDateTime(fixture.date, fixture.time);
       const matchEndTime = new Date(matchDateTime.getTime() + 105 * 60000);
       return matchEndTime > currentTime;
@@ -776,7 +806,7 @@
     const root = document.getElementById("root");
     if (!root) return;
     
-    // Apply old match removal - group stage and round of 32 matches are ALWAYS kept
+    // Apply old match removal
     const activeFixtures = removeOldMatches(fixturesRaw, currentState.now);
     
     // Auto-detect the active stage
@@ -810,11 +840,10 @@
       `).join('')}</div>`;
     }
     
-    // Points Table HTML - New Design with Last 5
+    // Points Table HTML
     let pointsPanelHtml = "";
     if (currentState.showPoints) {
       pointsPanelHtml = `<div class="points-table-grid">${Object.entries(pointsData).map(([gBn, teams]) => {
-        // Sort teams by points (descending), then goal difference
         const sortedTeams = [...teams].sort((a, b) => {
           if (b.pts !== a.pts) return b.pts - a.pts;
           if (b.gd !== a.gd) return b.gd - a.gd;
@@ -844,7 +873,6 @@
                 const gdClass = t.gd > 0 ? 'gd-positive' : (t.gd < 0 ? 'gd-negative' : 'gd-zero');
                 const rankBadge = index === 0 ? '🥇' : (index === 1 ? '🥈' : (index === 2 ? '🥉' : ''));
                 
-                // Generate Last 5 icons
                 const last5Icons = t.last5.map(result => {
                   if (result === 'W') return `<span class="result-icon result-win">✓</span>`;
                   if (result === 'D') return `<span class="result-icon result-draw">-</span>`;
@@ -891,10 +919,10 @@
           const isNextFlag = nextMatch && nextMatch.match === m.match && nextMatch.date === m.date && nextMatch.time === m.time;
           
           let matchWithFlags = m.match;
-          // Check if it's a group stage or round of 32 match with scores
-          if ((m.stage === "Group Stage" || m.stage === "Round of 32") && m.score1 !== undefined && m.score2 !== undefined) {
+          // Check if it's a match with scores
+          if (m.score1 !== undefined && m.score2 !== undefined) {
             if (m.match && m.match.includes(" vs ")) {
-              matchWithFlags = formatMatchWithScore(m.match, m.score1, m.score2, m.penalty);
+              matchWithFlags = formatMatchWithScore(m.match, m.score1, m.score2, m.penalty, m.redCard);
             } else {
               matchWithFlags = m.match;
             }
@@ -912,6 +940,7 @@
           if (isThisLive) {
             statusBadge = `<span style="background: #ff0000; color: white; font-size: 8px; font-weight: bold; padding: 2px 8px; border-radius: 20px; margin-left: 8px;" class="live-pulse">🔴 লাইভ</span>`;
           }
+          // "সম্পূর্ণ" badge removed - no status badge for completed matches
           
           return `<div style="background: ${isThisLive ? 'rgba(255,0,0,0.15)' : (isNextFlag ? 'rgba(197,160,40,0.12)' : isPast ? 'rgba(255,255,255,0.015)' : 'rgba(255,255,255,0.04)')}; border-left: 3px solid ${isThisLive ? '#ff0000' : (isNextFlag ? '#c5a028' : '#2a4a6a')}; border-radius: 12px; padding: 12px; margin-bottom: 10px; position: relative; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
             ${isNextFlag && !isThisLive ? `<div style="position: absolute; top: -9px; right: 10px; background: #c5a028; color: #041226; font-size: 8px; font-weight: bold; padding: 2px 12px; border-radius: 40px;">পরবর্তী</div>` : ''}
@@ -926,8 +955,8 @@
     let liveMatchHtml = "";
     if (liveMatch) {
       let liveMatchFormatted = liveMatch.match;
-      if ((liveMatch.stage === "Group Stage" || liveMatch.stage === "Round of 32") && liveMatch.score1 !== undefined && liveMatch.score2 !== undefined) {
-        liveMatchFormatted = formatMatchWithScore(liveMatch.match, liveMatch.score1, liveMatch.score2, liveMatch.penalty);
+      if (liveMatch.score1 !== undefined && liveMatch.score2 !== undefined) {
+        liveMatchFormatted = formatMatchWithScore(liveMatch.match, liveMatch.score1, liveMatch.score2, liveMatch.penalty, liveMatch.redCard);
       } else if (liveMatch.match.includes(" vs ") && !liveMatch.match.includes("বনাম") && !liveMatch.match.includes("TBD") && !liveMatch.match.includes("Winner")) {
         liveMatchFormatted = formatMatchWithBn(liveMatch.match);
       }
@@ -943,8 +972,8 @@
     let nextMatchHtml = "";
     if (nextMatch && !liveMatch) {
       let nextMatchFormatted = nextMatch.match;
-      if ((nextMatch.stage === "Group Stage" || nextMatch.stage === "Round of 32") && nextMatch.score1 !== undefined && nextMatch.score2 !== undefined) {
-        nextMatchFormatted = formatMatchWithScore(nextMatch.match, nextMatch.score1, nextMatch.score2, nextMatch.penalty);
+      if (nextMatch.score1 !== undefined && nextMatch.score2 !== undefined) {
+        nextMatchFormatted = formatMatchWithScore(nextMatch.match, nextMatch.score1, nextMatch.score2, nextMatch.penalty, nextMatch.redCard);
       } else if (nextMatch.match.includes(" vs ") && !nextMatch.match.includes("বনাম") && !nextMatch.match.includes("TBD") && !nextMatch.match.includes("Winner")) {
         nextMatchFormatted = formatMatchWithBn(nextMatch.match);
       }
@@ -964,8 +993,8 @@
       nextMatchHtml = `<div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px; text-align: center; color: #FFD700; font-size: 18px;">🏆 প্রতিযোগিতা সমাপ্ত!</div>`;
     } else if (liveMatch && nextMatch && cd) {
       let nextMatchFormatted = nextMatch.match;
-      if ((nextMatch.stage === "Group Stage" || nextMatch.stage === "Round of 32") && nextMatch.score1 !== undefined && nextMatch.score2 !== undefined) {
-        nextMatchFormatted = formatMatchWithScore(nextMatch.match, nextMatch.score1, nextMatch.score2, nextMatch.penalty);
+      if (nextMatch.score1 !== undefined && nextMatch.score2 !== undefined) {
+        nextMatchFormatted = formatMatchWithScore(nextMatch.match, nextMatch.score1, nextMatch.score2, nextMatch.penalty, nextMatch.redCard);
       } else if (nextMatch.match.includes(" vs ") && !nextMatch.match.includes("বনাম") && !nextMatch.match.includes("TBD") && !nextMatch.match.includes("Winner")) {
         nextMatchFormatted = formatMatchWithBn(nextMatch.match);
       }
