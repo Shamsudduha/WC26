@@ -640,15 +640,15 @@
     { date:"2026-07-07", time:"22:00", match:"Argentina vs Egypt", score1:"৩", score2:"২", venue:"আটলান্টা স্টেডিয়াম — আটলান্টা, জর্জিয়া", stage:"Round of 16" },
     { date:"2026-07-08", time:"02:00", match:"Switzerland vs Colombia", score1:"০", score2:"০", penalty:"৪-৩", venue:"বিসি প্লেস — ভ্যাঙ্কুভার, কানাডা", stage:"Round of 16" },
     
-    // === কোয়ার্টার-ফাইনাল - আপডেটেড ===
-    { date:"2026-07-10", time:"02:00", match:"France vs Morocco", venue:"বোস্টন স্টেডিয়াম", stage:"Quarterfinals" },
-    { date:"2026-07-11", time:"01:00", match:"Spain vs Belgium", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Quarterfinals" },
-    { date:"2026-07-12", time:"03:00", match:"Norway vs England", venue:"মিয়ামি স্টেডিয়াম", stage:"Quarterfinals" },
-    { date:"2026-07-12", time:"07:00", match:"Argentina vs Switzerland", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Quarterfinals" },
+    // === কোয়ার্টার-ফাইনাল - সম্পূর্ণ আপডেটেড ===
+    { date:"2026-07-10", time:"02:00", match:"France vs Morocco", score1:"২", score2:"০", venue:"বোস্টন স্টেডিয়াম", stage:"Quarterfinals" },
+    { date:"2026-07-11", time:"01:00", match:"Spain vs Belgium", score1:"২", score2:"১", venue:"লস অ্যাঞ্জেলেস স্টেডিয়াম", stage:"Quarterfinals" },
+    { date:"2026-07-12", time:"03:00", match:"Norway vs England", score1:"১", score2:"২", venue:"মিয়ামি স্টেডিয়াম", stage:"Quarterfinals" },
+    { date:"2026-07-12", time:"07:00", match:"Argentina vs Switzerland", score1:"৩", score2:"১", venue:"কানসাস সিটি স্টেডিয়াম", stage:"Quarterfinals" },
     
-    // === সেমি-ফাইনাল ===
-    { date:"2026-07-15", time:"01:00", match:"W97 vs W98", venue:"ডালাস স্টেডিয়াম", stage:"Semifinals" },
-    { date:"2026-07-16", time:"01:00", match:"W99 vs W100", venue:"আটলান্টা স্টেডিয়াম", stage:"Semifinals" },
+    // === সেমি-ফাইনাল - আপডেটেড ===
+    { date:"2026-07-15", time:"01:00", match:"France vs Spain", venue:"ডালাস স্টেডিয়াম", stage:"Semifinals" },
+    { date:"2026-07-16", time:"01:00", match:"England vs Argentina", venue:"আটলান্টা স্টেডিয়াম", stage:"Semifinals" },
     
     // === ৩য় স্থান ===
     { date:"2026-07-19", time:"03:00", match:"RU101 vs RU102", venue:"মিয়ামি স্টেডিয়াম", stage:"3rd Place" },
@@ -690,7 +690,7 @@
     return (matchDateTime <= now && now <= matchEndTime);
   }
 
-  // Modified: Keep ALL group stage and round of 32 matches, and completed round of 16 matches
+  // Modified: Keep ALL group stage and round of 32 matches, and completed knockout matches
   function removeOldMatches(fixtures, currentTime) {
     return fixtures.filter(fixture => {
       // Always keep group stage and round of 32 matches
@@ -699,16 +699,23 @@
       }
       // For round of 16, keep completed matches (with scores) and upcoming matches
       if (fixture.stage === "Round of 16") {
-        // If it has scores, it's completed - keep it
         if (fixture.score1 !== undefined && fixture.score2 !== undefined) {
           return true;
         }
-        // If no scores, check if it's still upcoming (not passed 105 minutes)
         const matchDateTime = parseMatchDateTime(fixture.date, fixture.time);
         const matchEndTime = new Date(matchDateTime.getTime() + 105 * 60000);
         return matchEndTime > currentTime;
       }
-      // For knockout stages (Quarterfinals, Semifinals, etc.), remove after 105 minutes
+      // For Quarterfinals, keep completed matches (with scores) and upcoming matches
+      if (fixture.stage === "Quarterfinals") {
+        if (fixture.score1 !== undefined && fixture.score2 !== undefined) {
+          return true;
+        }
+        const matchDateTime = parseMatchDateTime(fixture.date, fixture.time);
+        const matchEndTime = new Date(matchDateTime.getTime() + 105 * 60000);
+        return matchEndTime > currentTime;
+      }
+      // For Semifinals, 3rd Place, Final - keep if not passed 105 minutes
       const matchDateTime = parseMatchDateTime(fixture.date, fixture.time);
       const matchEndTime = new Date(matchDateTime.getTime() + 105 * 60000);
       return matchEndTime > currentTime;
