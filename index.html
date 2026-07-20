@@ -22,7 +22,7 @@
     button { transition: all 0.2s ease; font-family: 'Nitor Bangla', 'Segoe UI', sans-serif; cursor: pointer; }
     button:active { transform: scale(0.96); opacity: 0.8; }
     
-    /* Celebration Animation */
+    /* Celebration Animation - Optimized for mobile */
     .confetti-container {
       position: fixed;
       top: 0;
@@ -39,37 +39,40 @@
       height: 10px;
       top: -10px;
       animation: confettiFall linear forwards;
+      will-change: transform, opacity;
     }
     @keyframes confettiFall {
       0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
-      100% { transform: translateY(110vh) rotate(720deg) scale(0.5); opacity: 0; }
+      100% { transform: translateY(110vh) rotate(720deg) scale(0.3); opacity: 0; }
     }
     
-    /* Fireworks effect */
+    /* Fireworks effect - Optimized */
     .firework {
       position: fixed;
       pointer-events: none;
       z-index: 9998;
       border-radius: 50%;
       animation: fireworkBurst 1.5s ease-out forwards;
+      will-change: transform, opacity;
     }
     @keyframes fireworkBurst {
       0% { transform: scale(0); opacity: 1; }
       100% { transform: scale(4); opacity: 0; }
     }
     
-    /* Sparkle stars */
+    /* Sparkle stars - Optimized */
     .sparkle {
       position: fixed;
       pointer-events: none;
       z-index: 9997;
       font-size: 20px;
       animation: sparkleFloat 3s ease-in-out forwards;
+      will-change: transform, opacity;
     }
     @keyframes sparkleFloat {
       0% { transform: translateY(0) scale(0) rotate(0deg); opacity: 1; }
-      50% { transform: translateY(-100px) scale(1.5) rotate(180deg); opacity: 1; }
-      100% { transform: translateY(-200px) scale(0) rotate(360deg); opacity: 0; }
+      50% { transform: translateY(-80px) scale(1.3) rotate(180deg); opacity: 1; }
+      100% { transform: translateY(-160px) scale(0) rotate(360deg); opacity: 0; }
     }
     
     /* Glowing trophy pulse */
@@ -519,6 +522,26 @@
       justify-content: center;
       margin-top: 12px;
     }
+    /* Reduced motion for mobile */
+    @media (max-width: 768px) {
+      .celebration-banner .trophy-icon {
+        font-size: 40px;
+      }
+      .celebration-banner .champion-team {
+        font-size: clamp(22px, 4vw, 32px);
+      }
+      .confetti {
+        width: 6px;
+        height: 6px;
+      }
+      .sparkle {
+        font-size: 14px;
+      }
+      .firework {
+        width: 4px;
+        height: 4px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -905,22 +928,25 @@
     return fixturesWithDT.filter(f => isMatchLive(f.dt)).sort((a,b) => a.dt - b.dt)[0] || null;
   }
 
-  // ================= Confetti Celebration =================
+  // ================= Confetti Celebration - Optimized for Mobile =================
   function launchConfetti() {
     const container = document.getElementById('confettiContainer');
     if (!container) return;
     
-    const colors = ['#FFD700', '#FF6B35', '#44BBA4', '#E94F37', '#3BCEAC', '#FF006E', '#8338EC', '#FB5607', '#FFD700', '#FFD700', '#FF0000', '#FF4444', '#00FF00', '#00CCFF'];
-    const shapes = ['■', '●', '▲', '★', '♦', '♥', '✦'];
+    // Reduce number of confetti on mobile for better performance
+    const isMobile = window.innerWidth <= 768;
+    const count = isMobile ? 120 : 250;
+    const colors = ['#FFD700', '#FF6B35', '#44BBA4', '#E94F37', '#3BCEAC', '#FF006E', '#8338EC', '#FB5607', '#FFD700', '#FF0000', '#00FF00', '#00CCFF'];
+    const shapes = ['■', '●', '▲', '★', '♦', '♥'];
     
-    for (let i = 0; i < 300; i++) {
+    for (let i = 0; i < count; i++) {
       const confetti = document.createElement('div');
       confetti.className = 'confetti';
       const color = colors[Math.floor(Math.random() * colors.length)];
-      const size = Math.random() * 10 + 4;
+      const size = isMobile ? Math.random() * 6 + 3 : Math.random() * 10 + 4;
       const left = Math.random() * 100;
       const duration = Math.random() * 3 + 2;
-      const delay = Math.random() * 4;
+      const delay = Math.random() * 3;
       const shape = shapes[Math.floor(Math.random() * shapes.length)];
       
       confetti.style.cssText = `
@@ -943,20 +969,22 @@
     
     setTimeout(() => {
       container.innerHTML = '';
-    }, 7000);
+    }, 6000);
   }
 
   function launchFirework() {
     const container = document.getElementById('confettiContainer');
     if (!container) return;
     
+    const isMobile = window.innerWidth <= 768;
+    const count = isMobile ? 15 : 30;
     const colors = ['#FFD700', '#FF0000', '#00FF00', '#FF6B35', '#44BBA4', '#FF006E', '#8338EC', '#FB5607'];
     
-    for (let burst = 0; burst < 30; burst++) {
+    for (let burst = 0; burst < count; burst++) {
       setTimeout(() => {
         const firework = document.createElement('div');
         firework.className = 'firework';
-        const size = Math.random() * 8 + 4;
+        const size = isMobile ? Math.random() * 4 + 2 : Math.random() * 8 + 4;
         const color = colors[Math.floor(Math.random() * colors.length)];
         const x = Math.random() * 100;
         const y = Math.random() * 60 + 10;
@@ -967,7 +995,7 @@
           width: ${size}px;
           height: ${size}px;
           background: ${color};
-          box-shadow: 0 0 20px ${color}, 0 0 40px ${color};
+          box-shadow: 0 0 ${size*3}px ${color}, 0 0 ${size*6}px ${color};
           animation-duration: ${Math.random() * 1 + 1}s;
         `;
         container.appendChild(firework);
@@ -975,7 +1003,7 @@
         setTimeout(() => {
           firework.remove();
         }, 2000);
-      }, burst * 100);
+      }, burst * (isMobile ? 150 : 100));
     }
   }
 
@@ -983,9 +1011,11 @@
     const container = document.getElementById('confettiContainer');
     if (!container) return;
     
+    const isMobile = window.innerWidth <= 768;
+    const count = isMobile ? 20 : 40;
     const sparkles = ['✨', '⭐', '🌟', '💫'];
     
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < count; i++) {
       setTimeout(() => {
         const sparkle = document.createElement('div');
         sparkle.className = 'sparkle';
@@ -996,7 +1026,7 @@
         sparkle.style.cssText = `
           left: ${x}%;
           top: ${y}%;
-          font-size: ${Math.random() * 20 + 15}px;
+          font-size: ${isMobile ? Math.random() * 12 + 10 : Math.random() * 20 + 15}px;
           animation-duration: ${Math.random() * 2 + 2}s;
         `;
         sparkle.textContent = icon;
@@ -1005,7 +1035,7 @@
         setTimeout(() => {
           sparkle.remove();
         }, 4000);
-      }, i * 80);
+      }, i * (isMobile ? 120 : 80));
     }
   }
 
@@ -1138,15 +1168,12 @@
             statusBadge = `<span style="background: #ff0000; color: white; font-size: 8px; font-weight: bold; padding: 2px 8px; border-radius: 20px; margin-left: 8px;" class="live-pulse">🔴 লাইভ</span>`;
           }
           
-          let finalBadge = "";
-          if (m.stage === "Final") {
-            finalBadge = `<span style="background: #FFD700; color: #041226; font-size: 8px; font-weight: bold; padding: 2px 10px; border-radius: 20px; margin-left: 8px;">🏆 চ্যাম্পিয়ন</span>`;
-          }
+          // Champion badge removed from match result - only showing in banner
           
           return `<div style="background: ${isThisLive ? 'rgba(255,0,0,0.15)' : (isNextFlag ? 'rgba(197,160,40,0.12)' : isPast ? 'rgba(255,255,255,0.015)' : 'rgba(255,255,255,0.04)')}; border-left: 3px solid ${isThisLive ? '#ff0000' : (isNextFlag ? '#c5a028' : '#2a4a6a')}; border-radius: 12px; padding: 12px; margin-bottom: 10px; position: relative; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
             ${isNextFlag && !isThisLive ? `<div style="position: absolute; top: -9px; right: 10px; background: #c5a028; color: #041226; font-size: 8px; font-weight: bold; padding: 2px 12px; border-radius: 40px;">পরবর্তী</div>` : ''}
             <div class="time-badge"><div><span class="time-hour">${timeObj.hour}:${timeObj.minute}</span><span class="time-ampm">${timeObj.ampm}</span></div><div class="time-label">বিএসটি</div></div>
-            <div style="flex: 1; min-width: 150px;"><div style="font-size: 14px; font-weight: 600; color: ${isPast ? '#809cb0' : '#fdf6e3'}; line-height: 1.4;">${matchWithFlags} ${statusBadge} ${finalBadge}</div><div style="font-size: 10px; color: #6f8faa; margin-top: 5px;">📍 ${m.venue}</div></div>
+            <div style="flex: 1; min-width: 150px;"><div style="font-size: 14px; font-weight: 600; color: ${isPast ? '#809cb0' : '#fdf6e3'}; line-height: 1.4;">${matchWithFlags} ${statusBadge}</div><div style="font-size: 10px; color: #6f8faa; margin-top: 5px;">📍 ${m.venue}</div></div>
           </div>`;
         }).join('');
         return `<div style="margin-bottom: 28px;"><div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;"><div style="background: linear-gradient(135deg, #c5a028, #e6cf6e); color: #041226; font-weight: bold; font-size: 10px; padding: 4px 16px; border-radius: 40px;">${dateHeader}</div><div style="flex: 1; height: 1px; background: radial-gradient(circle, rgba(197,160,40,0.4), transparent);"></div></div>${matchesHtml}</div>`;
@@ -1247,33 +1274,44 @@
     
     renderApp(); 
     
+    // Staggered celebration launches with delays for smoother performance
     setTimeout(() => {
       launchConfetti();
       launchFirework();
       launchSparkles();
-    }, 300);
+    }, 400);
     
     setTimeout(() => {
       launchConfetti();
       launchFirework();
-    }, 2000);
+    }, 2200);
     
     setTimeout(() => {
       launchConfetti();
       launchSparkles();
       launchFirework();
-    }, 4000);
+    }, 4200);
     
     setTimeout(() => {
       launchConfetti();
       launchFirework();
-    }, 6000);
+    }, 6200);
     
     intervalId = setInterval(() => { 
       currentState.now = new Date(); 
       renderApp(); 
     }, 1000); 
   }
+  
+  // Handle visibility change to pause/resume animations for better performance
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+      // Page hidden - reduce animations
+    } else {
+      // Page visible - resume
+    }
+  });
+  
   init();
 </script>
     
