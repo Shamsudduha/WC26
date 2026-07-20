@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>বিশ্বকাপ ২০২৬</title>
+  <title>বিশ্বকাপ ২০২৬ - স্পেন চ্যাম্পিয়ন!</title>
   <link href="https://fonts.maateen.me/nitor-bangla/font.css" rel="stylesheet">
   <link rel="icon" type="image/png" href="12.png"> 
   <style>
@@ -14,12 +14,148 @@
       color: #e8d9b0;
       min-height: 100vh;
       -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
     }
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: #041226; }
     ::-webkit-scrollbar-thumb { background: #c5a028; border-radius: 6px; }
-    button { transition: all 0.2s ease; font-family: 'Nitor Bangla', 'Segoe UI', sans-serif; }
+    button { transition: all 0.2s ease; font-family: 'Nitor Bangla', 'Segoe UI', sans-serif; cursor: pointer; }
     button:active { transform: scale(0.96); opacity: 0.8; }
+    
+    /* Celebration Animation */
+    .confetti-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      overflow: hidden;
+    }
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      top: -10px;
+      animation: confettiFall linear forwards;
+    }
+    @keyframes confettiFall {
+      0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg) scale(0.5); opacity: 0; }
+    }
+    
+    /* Fireworks effect */
+    .firework {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      border-radius: 50%;
+      animation: fireworkBurst 1.5s ease-out forwards;
+    }
+    @keyframes fireworkBurst {
+      0% { transform: scale(0); opacity: 1; }
+      100% { transform: scale(4); opacity: 0; }
+    }
+    
+    /* Sparkle stars */
+    .sparkle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9997;
+      font-size: 20px;
+      animation: sparkleFloat 3s ease-in-out forwards;
+    }
+    @keyframes sparkleFloat {
+      0% { transform: translateY(0) scale(0) rotate(0deg); opacity: 1; }
+      50% { transform: translateY(-100px) scale(1.5) rotate(180deg); opacity: 1; }
+      100% { transform: translateY(-200px) scale(0) rotate(360deg); opacity: 0; }
+    }
+    
+    /* Glowing trophy pulse */
+    .trophy-glow {
+      animation: trophyGlow 1.5s ease-in-out infinite;
+    }
+    @keyframes trophyGlow {
+      0%, 100% { filter: drop-shadow(0 0 20px rgba(255,215,0,0.3)); }
+      50% { filter: drop-shadow(0 0 60px rgba(255,215,0,0.9)) drop-shadow(0 0 120px rgba(255,215,0,0.4)); }
+    }
+    
+    .celebration-banner {
+      background: linear-gradient(135deg, #5C0000 0%, #8B0000 50%, #5C0000 100%);
+      padding: 30px 20px;
+      text-align: center;
+      border-bottom: 4px solid #FFD700;
+      animation: glowPulse 2s ease-in-out infinite;
+      position: relative;
+      z-index: 100;
+      overflow: hidden;
+    }
+    .celebration-banner::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,215,0,0.05) 0%, transparent 70%);
+      animation: rotateBg 20s linear infinite;
+    }
+    @keyframes rotateBg {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(139,0,0,0.3); }
+      50% { box-shadow: 0 0 60px rgba(139,0,0,0.6), 0 0 100px rgba(139,0,0,0.3); }
+    }
+    .celebration-banner .trophy-icon {
+      font-size: 60px;
+      display: block;
+      animation: bounce 1.5s ease-in-out infinite;
+      position: relative;
+      z-index: 1;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-20px) scale(1.1); }
+    }
+    .celebration-banner .champion-box {
+      background: rgba(0,0,0,0.4);
+      padding: 12px 30px;
+      border-radius: 16px;
+      display: inline-block;
+      margin-top: 8px;
+      border: 2px solid #FFD700;
+      position: relative;
+      z-index: 1;
+      animation: championPulse 2s ease-in-out infinite;
+    }
+    @keyframes championPulse {
+      0%, 100% { border-color: #FFD700; box-shadow: 0 0 20px rgba(255,215,0,0.2); }
+      50% { border-color: #FFD700; box-shadow: 0 0 40px rgba(255,215,0,0.6); }
+    }
+    .celebration-banner .champion-title {
+      color: #FFD700;
+      font-size: clamp(14px, 2vw, 18px);
+      font-weight: 500;
+    }
+    .celebration-banner .champion-team {
+      color: #FFD700;
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: bold;
+      display: block;
+      margin-top: 4px;
+    }
+    .celebration-banner .footer-text-celeb {
+      color: #FFD700;
+      font-size: clamp(12px, 1.8vw, 16px);
+      margin-top: 10px;
+      opacity: 0.85;
+      position: relative;
+      z-index: 1;
+    }
+    
     .fixture-container { padding: 16px 12px 56px; max-width: 720px; margin: 0 auto; }
     .groups-grid {
       display: grid;
@@ -48,6 +184,7 @@
       font-size: 12px;
       font-weight: 500;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
     .stage-btn.active {
       background: #c5a028;
@@ -55,6 +192,9 @@
       border-color: #c5a028;
       font-weight: bold;
       box-shadow: 0 2px 8px rgba(197,160,40,0.3);
+    }
+    .stage-btn:hover {
+      background: rgba(197,160,40,0.2);
     }
     .group-tag-btn {
       background: rgba(197,160,40,0.1);
@@ -69,6 +209,10 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .group-tag-btn:hover {
+      background: rgba(197,160,40,0.2);
     }
     .group-tag-btn.active {
       background: #c5a028;
@@ -76,55 +220,6 @@
       border-color: #c5a028;
       font-weight: bold;
       box-shadow: 0 2px 8px rgba(197,160,40,0.3);
-    }
-    .watch-live-btn {
-      background: #ff0000;
-      border: 1px solid #FFD700;
-      color: #FFD700;
-      border-radius: 24px;
-      padding: 6px 16px;
-      font-size: 11px;
-      font-weight: bold;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      animation: pulse 1.5s ease-in-out infinite;
-      white-space: nowrap;
-    }
-    .watch-live-btn:hover {
-      transform: scale(1.05);
-      background: #cc0000;
-      box-shadow: 0 0 15px rgba(255,0,0,0.5);
-    }
-    .watch-live-btn:active {
-      transform: scale(0.96);
-    }
-    .watch-live-btn-alt {
-      background: #1a3a6a;
-      border: 1px solid #4a8af4;
-      color: #8ab8ff;
-      border-radius: 24px;
-      padding: 6px 16px;
-      font-size: 11px;
-      font-weight: bold;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      white-space: nowrap;
-    }
-    .watch-live-btn-alt:hover {
-      transform: scale(1.05);
-      background: #2a4a7a;
-      box-shadow: 0 0 15px rgba(74, 138, 244, 0.3);
-    }
-    .watch-live-btn-alt:active {
-      transform: scale(0.96);
     }
     .footer-text {
       border-top: 1px solid rgba(197,160,40,0.1);
@@ -312,6 +407,16 @@
         height: 12px;
         font-size: 6px;
       }
+      .countdown-box {
+        padding: 6px 10px;
+        min-width: 50px;
+      }
+      .countdown-number {
+        font-size: 18px;
+      }
+      .countdown-label {
+        font-size: 7px;
+      }
     }
     .countdown-box {
       background: rgba(0,0,0,0.5);
@@ -331,13 +436,6 @@
       margin-top: 12px;
       align-items: center;
     }
-    .live-buttons-wrapper {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 6px;
-    }
     .live-pulse {
       animation: pulse 1.5s ease-in-out infinite;
     }
@@ -345,10 +443,89 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0.6; }
     }
+    
+    /* Next World Cup Section */
+    .next-worldcup-section {
+      background: linear-gradient(135deg, #043020 0%, #06402B 50%, #043020 100%);
+      border: 1px solid rgba(197,160,40,0.3);
+      border-radius: 16px;
+      padding: 24px 20px;
+      margin: 0 12px 24px;
+      text-align: center;
+      box-shadow: 0 4px 30px rgba(6,64,43,0.4);
+    }
+    .next-worldcup-section h2 {
+      color: #FFD700;
+      font-size: clamp(18px, 3vw, 28px);
+      margin-bottom: 6px;
+    }
+    .next-worldcup-section .hosts {
+      color: #e0c870;
+      font-size: clamp(14px, 2vw, 18px);
+      margin-bottom: 12px;
+    }
+    .next-worldcup-section .hosts span {
+      display: inline-block;
+      margin: 0 4px;
+      font-weight: 500;
+    }
+    .next-worldcup-section .hosts .host-label {
+      display: block;
+      font-size: 11px;
+      color: #7a9abf;
+      margin-top: 4px;
+      font-weight: normal;
+    }
+    .countdown-container {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .countdown-box {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid #FFD700;
+      border-radius: 12px;
+      padding: 8px 12px;
+      min-width: 60px;
+      text-align: center;
+    }
+    .countdown-number {
+      font-size: 22px;
+      font-weight: bold;
+      color: #FFD700;
+      line-height: 1.2;
+    }
+    .countdown-label {
+      font-size: 8px;
+      color: #FFD700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .worldcup-icon {
+      font-size: 32px;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .next-worldcup-section .date-info {
+      color: #7a9abf;
+      font-size: 11px;
+      margin-top: 12px;
+    }
+    .stage-selector {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 12px;
+    }
   </style>
 </head>
 <body>
 <div id="root"></div>
+
+<!-- Confetti Container for Celebration -->
+<div id="confettiContainer" class="confetti-container"></div>
 
 <script>
   // ================= দেশের নাম বাংলায় =================
@@ -534,7 +711,7 @@
   const stageListBn = ["গ্রুপ পর্ব","৩২ দলের পর্ব","১৬ দলের পর্ব","কোয়ার্টার-ফাইনাল","সেমি-ফাইনাল","৩য় স্থান","ফাইনাল"];
   const stageListEn = ["Group Stage","Round of 32","Round of 16","Quarterfinals","Semifinals","3rd Place","Final"];
 
-  // All stages in order for auto-detection
+  // All stages in order
   const stageOrder = ["Group Stage", "Round of 32", "Round of 16", "Quarterfinals", "Semifinals", "3rd Place", "Final"];
 
   const fixturesRaw = [
@@ -651,10 +828,10 @@
     { date:"2026-07-16", time:"01:00", match:"England vs Argentina", score1:"১", score2:"২", venue:"আটলান্টা স্টেডিয়াম", stage:"Semifinals" },
     
     // === ৩য় স্থান - আপডেটেড ===
-    { date:"2026-07-19", time:"03:00", match:"France vs England", venue:"মিয়ামি স্টেডিয়াম", stage:"3rd Place" },
+    { date:"2026-07-19", time:"03:00", match:"England vs France", score1:"৬", score2:"৪", venue:"মিয়ামি স্টেডিয়াম", stage:"3rd Place" },
     
     // === ফাইনাল - আপডেটেড ===
-    { date:"2026-07-20", time:"01:00", match:"Spain vs Argentina", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Final" }
+    { date:"2026-07-20", time:"01:00", match:"Spain vs Argentina", score1:"১", score2:"০", venue:"নিউ ইয়র্ক/নিউ জার্সি স্টেডিয়াম", stage:"Final" }
   ];
 
   // Parse match time correctly for Bangladesh time (UTC+6)
@@ -690,84 +867,14 @@
     return (matchDateTime <= now && now <= matchEndTime);
   }
 
-  // Modified: Keep ALL group stage and round of 32 matches, and completed knockout matches
+  // Keep all matches permanently
   function removeOldMatches(fixtures, currentTime) {
-    return fixtures.filter(fixture => {
-      // Always keep group stage and round of 32 matches
-      if (fixture.stage === "Group Stage" || fixture.stage === "Round of 32") {
-        return true;
-      }
-      // For round of 16, keep completed matches (with scores) and upcoming matches
-      if (fixture.stage === "Round of 16") {
-        if (fixture.score1 !== undefined && fixture.score2 !== undefined) {
-          return true;
-        }
-        const matchDateTime = parseMatchDateTime(fixture.date, fixture.time);
-        const matchEndTime = new Date(matchDateTime.getTime() + 105 * 60000);
-        return matchEndTime > currentTime;
-      }
-      // For Quarterfinals, keep completed matches (with scores)
-      if (fixture.stage === "Quarterfinals") {
-        if (fixture.score1 !== undefined && fixture.score2 !== undefined) {
-          return true;
-        }
-        const matchDateTime = parseMatchDateTime(fixture.date, fixture.time);
-        const matchEndTime = new Date(matchDateTime.getTime() + 105 * 60000);
-        return matchEndTime > currentTime;
-      }
-      // For Semifinals, keep completed matches (with scores)
-      if (fixture.stage === "Semifinals") {
-        if (fixture.score1 !== undefined && fixture.score2 !== undefined) {
-          return true;
-        }
-        const matchDateTime = parseMatchDateTime(fixture.date, fixture.time);
-        const matchEndTime = new Date(matchDateTime.getTime() + 105 * 60000);
-        return matchEndTime > currentTime;
-      }
-      // For 3rd Place and Final - keep if not passed 105 minutes
-      const matchDateTime = parseMatchDateTime(fixture.date, fixture.time);
-      const matchEndTime = new Date(matchDateTime.getTime() + 105 * 60000);
-      return matchEndTime > currentTime;
-    });
-  }
-
-  // Function to open live streaming links
-  function openLiveStream(url) {
-    window.open(url, '_blank');
-  }
-
-  // Function to detect which stage should be active
-  function getActiveStage(fixtures, currentTime) {
-    const enriched = fixtures.map(f => ({ ...f, dt: parseMatchDateTime(f.date, f.time) }));
-    
-    // First check: Is there any live match?
-    const liveMatch = enriched.filter(f => isMatchLive(f.dt)).sort((a,b) => a.dt - b.dt)[0];
-    if (liveMatch) {
-      return liveMatch.stage;
-    }
-    
-    // Second check: Find the next upcoming match
-    const futureMatches = enriched.filter(f => f.dt > currentTime).sort((a,b) => a.dt - b.dt);
-    if (futureMatches.length > 0) {
-      return futureMatches[0].stage;
-    }
-    
-    // If no future matches, find the last stage that has matches (completed tournament)
-    for (let i = stageOrder.length - 1; i >= 0; i--) {
-      const stage = stageOrder[i];
-      const hasMatches = enriched.some(f => f.stage === stage);
-      if (hasMatches) {
-        return stage;
-      }
-    }
-    
-    // Default to Group Stage
-    return "Group Stage";
+    return fixtures;
   }
 
   let currentState = { 
     now: new Date(), 
-    selectedStage: "Group Stage", 
+    selectedStage: "Final", 
     showGroups: false,
     showPoints: false
   };
@@ -798,26 +905,123 @@
     return fixturesWithDT.filter(f => isMatchLive(f.dt)).sort((a,b) => a.dt - b.dt)[0] || null;
   }
 
+  // ================= Confetti Celebration =================
+  function launchConfetti() {
+    const container = document.getElementById('confettiContainer');
+    if (!container) return;
+    
+    const colors = ['#FFD700', '#FF6B35', '#44BBA4', '#E94F37', '#3BCEAC', '#FF006E', '#8338EC', '#FB5607', '#FFD700', '#FFD700', '#FF0000', '#FF4444', '#00FF00', '#00CCFF'];
+    const shapes = ['■', '●', '▲', '★', '♦', '♥', '✦'];
+    
+    for (let i = 0; i < 300; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const size = Math.random() * 10 + 4;
+      const left = Math.random() * 100;
+      const duration = Math.random() * 3 + 2;
+      const delay = Math.random() * 4;
+      const shape = shapes[Math.floor(Math.random() * shapes.length)];
+      
+      confetti.style.cssText = `
+        left: ${left}%;
+        width: ${size}px;
+        height: ${size}px;
+        background: ${color};
+        color: ${color};
+        font-size: ${size}px;
+        border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+        animation-duration: ${duration}s;
+        animation-delay: ${delay}s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      `;
+      confetti.textContent = shape;
+      container.appendChild(confetti);
+    }
+    
+    setTimeout(() => {
+      container.innerHTML = '';
+    }, 7000);
+  }
+
+  function launchFirework() {
+    const container = document.getElementById('confettiContainer');
+    if (!container) return;
+    
+    const colors = ['#FFD700', '#FF0000', '#00FF00', '#FF6B35', '#44BBA4', '#FF006E', '#8338EC', '#FB5607'];
+    
+    for (let burst = 0; burst < 30; burst++) {
+      setTimeout(() => {
+        const firework = document.createElement('div');
+        firework.className = 'firework';
+        const size = Math.random() * 8 + 4;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const x = Math.random() * 100;
+        const y = Math.random() * 60 + 10;
+        
+        firework.style.cssText = `
+          left: ${x}%;
+          top: ${y}%;
+          width: ${size}px;
+          height: ${size}px;
+          background: ${color};
+          box-shadow: 0 0 20px ${color}, 0 0 40px ${color};
+          animation-duration: ${Math.random() * 1 + 1}s;
+        `;
+        container.appendChild(firework);
+        
+        setTimeout(() => {
+          firework.remove();
+        }, 2000);
+      }, burst * 100);
+    }
+  }
+
+  function launchSparkles() {
+    const container = document.getElementById('confettiContainer');
+    if (!container) return;
+    
+    const sparkles = ['✨', '⭐', '🌟', '💫'];
+    
+    for (let i = 0; i < 40; i++) {
+      setTimeout(() => {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        const x = Math.random() * 100;
+        const y = Math.random() * 80 + 10;
+        const icon = sparkles[Math.floor(Math.random() * sparkles.length)];
+        
+        sparkle.style.cssText = `
+          left: ${x}%;
+          top: ${y}%;
+          font-size: ${Math.random() * 20 + 15}px;
+          animation-duration: ${Math.random() * 2 + 2}s;
+        `;
+        sparkle.textContent = icon;
+        container.appendChild(sparkle);
+        
+        setTimeout(() => {
+          sparkle.remove();
+        }, 4000);
+      }, i * 80);
+    }
+  }
+
   function renderApp() {
     const root = document.getElementById("root");
     if (!root) return;
     
-    // Apply old match removal
-    const activeFixtures = removeOldMatches(fixturesRaw, currentState.now);
-    
-    // Auto-detect the active stage
-    const hasMatchesInSelected = activeFixtures.some(f => f.stage === currentState.selectedStage);
-    if (!hasMatchesInSelected) {
-      const detectedStage = getActiveStage(activeFixtures, currentState.now);
-      currentState.selectedStage = detectedStage;
-    }
+    // Keep all matches
+    const activeFixtures = fixturesRaw;
     
     const enriched = activeFixtures.map(f => ({ ...f, dt: parseMatchDateTime(f.date, f.time) }));
     const liveMatch = getLiveMatch(enriched);
     const nextMatch = getNextMatch(enriched);
     const cd = nextMatch ? formatCountdown(nextMatch.dt - currentState.now) : null;
     
-    // Filter matches by selected stage from active fixtures only
+    // Filter matches by selected stage
     let stageMatches = activeFixtures.filter(f => f.stage === currentState.selectedStage);
     
     const byDate = {};
@@ -836,7 +1040,6 @@
       `).join('')}</div>`;
     }
     
-    // Points Table HTML
     let pointsPanelHtml = "";
     if (currentState.showPoints) {
       pointsPanelHtml = `<div class="points-table-grid">${Object.entries(pointsData).map(([gBn, teams]) => {
@@ -903,8 +1106,7 @@
     
     let fixturesHtml = "";
     if (Object.keys(byDate).length === 0) {
-      let noMatchMsg = "🚫 কোন ম্যাচ পাওয়া যায়নি";
-      fixturesHtml = `<div style="text-align:center; color:#2a4a6a; padding:40px 0;">${noMatchMsg}</div>`;
+      fixturesHtml = `<div style="text-align:center; color:#2a4a6a; padding:40px 0;">🚫 কোন ম্যাচ পাওয়া যায়নি</div>`;
     } else {
       fixturesHtml = Object.entries(byDate).map(([date, matches]) => {
         const dateHeader = formatDateHeader(date);
@@ -915,7 +1117,6 @@
           const isNextFlag = nextMatch && nextMatch.match === m.match && nextMatch.date === m.date && nextMatch.time === m.time;
           
           let matchWithFlags = m.match;
-          // Check if it's a match with scores
           if (m.score1 !== undefined && m.score2 !== undefined) {
             if (m.match && m.match.includes(" vs ")) {
               matchWithFlags = formatMatchWithScore(m.match, m.score1, m.score2, m.penalty);
@@ -937,96 +1138,92 @@
             statusBadge = `<span style="background: #ff0000; color: white; font-size: 8px; font-weight: bold; padding: 2px 8px; border-radius: 20px; margin-left: 8px;" class="live-pulse">🔴 লাইভ</span>`;
           }
           
+          let finalBadge = "";
+          if (m.stage === "Final") {
+            finalBadge = `<span style="background: #FFD700; color: #041226; font-size: 8px; font-weight: bold; padding: 2px 10px; border-radius: 20px; margin-left: 8px;">🏆 চ্যাম্পিয়ন</span>`;
+          }
+          
           return `<div style="background: ${isThisLive ? 'rgba(255,0,0,0.15)' : (isNextFlag ? 'rgba(197,160,40,0.12)' : isPast ? 'rgba(255,255,255,0.015)' : 'rgba(255,255,255,0.04)')}; border-left: 3px solid ${isThisLive ? '#ff0000' : (isNextFlag ? '#c5a028' : '#2a4a6a')}; border-radius: 12px; padding: 12px; margin-bottom: 10px; position: relative; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
             ${isNextFlag && !isThisLive ? `<div style="position: absolute; top: -9px; right: 10px; background: #c5a028; color: #041226; font-size: 8px; font-weight: bold; padding: 2px 12px; border-radius: 40px;">পরবর্তী</div>` : ''}
             <div class="time-badge"><div><span class="time-hour">${timeObj.hour}:${timeObj.minute}</span><span class="time-ampm">${timeObj.ampm}</span></div><div class="time-label">বিএসটি</div></div>
-            <div style="flex: 1; min-width: 150px;"><div style="font-size: 14px; font-weight: 600; color: ${isPast ? '#809cb0' : '#fdf6e3'}; line-height: 1.4;">${matchWithFlags} ${statusBadge}</div><div style="font-size: 10px; color: #6f8faa; margin-top: 5px;">📍 ${m.venue}</div></div>
+            <div style="flex: 1; min-width: 150px;"><div style="font-size: 14px; font-weight: 600; color: ${isPast ? '#809cb0' : '#fdf6e3'}; line-height: 1.4;">${matchWithFlags} ${statusBadge} ${finalBadge}</div><div style="font-size: 10px; color: #6f8faa; margin-top: 5px;">📍 ${m.venue}</div></div>
           </div>`;
         }).join('');
         return `<div style="margin-bottom: 28px;"><div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;"><div style="background: linear-gradient(135deg, #c5a028, #e6cf6e); color: #041226; font-weight: bold; font-size: 10px; padding: 4px 16px; border-radius: 40px;">${dateHeader}</div><div style="flex: 1; height: 1px; background: radial-gradient(circle, rgba(197,160,40,0.4), transparent);"></div></div>${matchesHtml}</div>`;
       }).join('');
     }
     
-    let liveMatchHtml = "";
-    if (liveMatch) {
-      let liveMatchFormatted = liveMatch.match;
-      if (liveMatch.score1 !== undefined && liveMatch.score2 !== undefined) {
-        liveMatchFormatted = formatMatchWithScore(liveMatch.match, liveMatch.score1, liveMatch.score2, liveMatch.penalty);
-      } else if (liveMatch.match.includes(" vs ") && !liveMatch.match.includes("বনাম") && !liveMatch.match.includes("TBD") && !liveMatch.match.includes("Winner")) {
-        liveMatchFormatted = formatMatchWithBn(liveMatch.match);
-      }
-      const liveTimeObj = formatTime12(liveMatch.time);
-      liveMatchHtml = `<div style="background: linear-gradient(135deg, #8B0000 0%, #CC0000 50%, #8B0000 100%); border-bottom: 3px solid #FFD700; padding: 20px 16px; text-align: center; margin-bottom: 0;">
-        <div style="font-size: 9px; letter-spacing: 3px; color: #FFD700;">🔴 লাইভ ম্যাচ চলছে</div>
-        <div style="font-size: clamp(14px, 4vw, 20px); font-weight: bold; color: #FFD700; margin-top: 5px;">${liveMatchFormatted}</div>
-        <div style="font-size: 10px; color: #FFD700; margin-bottom: 8px;">${formatDateHeader(liveMatch.date)} · ${liveTimeObj.hour}:${liveTimeObj.minute} ${liveTimeObj.ampm} বিএসটি · 📍 ${liveMatch.venue}</div>
-        <div class="live-pulse" style="display: inline-block; background: #ff0000; color: white; font-size: 10px; font-weight: bold; padding: 4px 16px; border-radius: 30px;">⚽ লাইভ</div>
-      </div>`;
-    }
+    // Calculate 2030 World Cup countdown
+    const worldCup2030 = new Date(2030, 5, 8, 0, 0, 0);
+    const now = new Date();
+    const diffMs = worldCup2030 - now;
+    const cd2030 = formatCountdown(diffMs);
     
-    let nextMatchHtml = "";
-    if (nextMatch && !liveMatch) {
-      let nextMatchFormatted = nextMatch.match;
-      if (nextMatch.score1 !== undefined && nextMatch.score2 !== undefined) {
-        nextMatchFormatted = formatMatchWithScore(nextMatch.match, nextMatch.score1, nextMatch.score2, nextMatch.penalty);
-      } else if (nextMatch.match.includes(" vs ") && !nextMatch.match.includes("বনাম") && !nextMatch.match.includes("TBD") && !nextMatch.match.includes("Winner")) {
-        nextMatchFormatted = formatMatchWithBn(nextMatch.match);
-      }
-      const timeObjNext = formatTime12(nextMatch.time);
-      nextMatchHtml = `<div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px 16px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 8px 32px rgba(0,0,0,0.4);">
-        <div style="font-size: 9px; letter-spacing: 3px; color: #FFD700;">⚽ পরবর্তী ম্যাচ - বাংলাদেশ মান সময়</div>
-        <div style="font-size: clamp(14px, 4vw, 20px); font-weight: bold; color: #FFD700; margin-top: 5px;">${nextMatchFormatted}</div>
-        <div style="font-size: 10px; color: #FFD700; margin-bottom: 12px;">${formatDateHeader(nextMatch.date)} · ${timeObjNext.hour}:${timeObjNext.minute} ${timeObjNext.ampm} বিএসটি · 📍 ${nextMatch.venue}</div>
-        <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
-          <div class="countdown-box"><div class="countdown-number">${pad(cd.d)}</div><div class="countdown-label">দিন</div></div>
-          <div class="countdown-box"><div class="countdown-number">${pad(cd.h)}</div><div class="countdown-label">ঘণ্টা</div></div>
-          <div class="countdown-box"><div class="countdown-number">${pad(cd.m)}</div><div class="countdown-label">মিনিট</div></div>
-          <div class="countdown-box"><div class="countdown-number">${pad(cd.s)}</div><div class="countdown-label">সেকেন্ড</div></div>
+    const celebrationHtml = `
+      <div class="celebration-banner">
+        <span class="trophy-icon trophy-glow">🏆</span>
+        <div class="champion-box">
+          <div class="champion-title">🏅 বিশ্বকাপ ২০২৬-এর আনুষ্ঠানিক চ্যাম্পিয়ন</div>
+          <div class="champion-team">🇪🇸 স্পেন</div>
         </div>
-      </div>`;
-    } else if (!liveMatch && !nextMatch) {
-      nextMatchHtml = `<div style="background: linear-gradient(135deg, #5C1A1B 0%, #8B2A2B 50%, #2D0A0A 100%); border-bottom: 3px solid #FFD700; padding: 20px; text-align: center; color: #FFD700; font-size: 18px;">🏆 প্রতিযোগিতা সমাপ্ত!</div>`;
-    } else if (liveMatch && nextMatch && cd) {
-      let nextMatchFormatted = nextMatch.match;
-      if (nextMatch.score1 !== undefined && nextMatch.score2 !== undefined) {
-        nextMatchFormatted = formatMatchWithScore(nextMatch.match, nextMatch.score1, nextMatch.score2, nextMatch.penalty);
-      } else if (nextMatch.match.includes(" vs ") && !nextMatch.match.includes("বনাম") && !nextMatch.match.includes("TBD") && !nextMatch.match.includes("Winner")) {
-        nextMatchFormatted = formatMatchWithBn(nextMatch.match);
-      }
-      const timeObjNext = formatTime12(nextMatch.time);
-      nextMatchHtml = `<div style="background: linear-gradient(135deg, #1a3a5c 0%, #0e2a4a 50%, #1a3a5c 100%); border-top: 2px solid #FFD700; border-bottom: 2px solid #FFD700; padding: 16px 16px; text-align: center;">
-        <div style="font-size: 9px; letter-spacing: 2px; color: #FFD700;">⏰ পরবর্তী ম্যাচ</div>
-        <div style="font-size: clamp(12px, 3.5vw, 16px); font-weight: bold; color: #FFD700; margin-top: 4px;">${nextMatchFormatted}</div>
-        <div style="font-size: 9px; color: #FFD700; margin-bottom: 8px;">${formatDateHeader(nextMatch.date)} · ${timeObjNext.hour}:${timeObjNext.minute} ${timeObjNext.ampm} বিএসটি</div>
-        <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
-          <div class="countdown-box" style="padding: 4px 8px; min-width: 45px;"><div class="countdown-number" style="font-size: 16px;">${pad(cd.d)}</div><div class="countdown-label">দিন</div></div>
-          <div class="countdown-box" style="padding: 4px 8px; min-width: 45px;"><div class="countdown-number" style="font-size: 16px;">${pad(cd.h)}</div><div class="countdown-label">ঘণ্টা</div></div>
-          <div class="countdown-box" style="padding: 4px 8px; min-width: 45px;"><div class="countdown-number" style="font-size: 16px;">${pad(cd.m)}</div><div class="countdown-label">মিনিট</div></div>
-          <div class="countdown-box" style="padding: 4px 8px; min-width: 45px;"><div class="countdown-number" style="font-size: 16px;">${pad(cd.s)}</div><div class="countdown-label">সেকেন্ড</div></div>
-        </div>
-      </div>`;
-    }
+        <p class="footer-text-celeb">একটি স্মরণীয় বিশ্বকাপের সফল সমাপ্তি। ফুটবলের এই মহোৎসবে আবারও দেখা হবে বিশ্বকাপ ২০৩০-এ।</p>
+      </div>
+    `;
     
-    const fullHtml = `<div style="min-height: 100vh;">${liveMatchHtml}${nextMatchHtml}<div style="background: rgba(4,18,38,0.96); padding: 14px 16px; text-align: center; border-bottom: 1px solid rgba(197,160,40,0.15);">
-      <div class="filter-buttons-wrapper">
-        <button id="toggleGroupsBtn" class="group-tag-btn ${currentState.showGroups ? 'active' : ''}">📋 ${currentState.showGroups ? "▲ গ্রুপ লুকান" : "▼ সব গ্রুপ দেখুন"}</button>
-        <button id="togglePointsBtn" class="group-tag-btn ${currentState.showPoints ? 'active' : ''}">📊 ${currentState.showPoints ? "▲ পয়েন্ট টেবিল লুকান" : "পয়েন্ট টেবিল"}</button>
+    const nextWorldCupHtml = `
+      <div class="next-worldcup-section">
+        <span class="worldcup-icon">🌍</span>
+        <h2>বিশ্বকাপ ২০৩০-এর অপেক্ষায়</h2>
+        <div class="hosts">
+          <span>আয়োজক দেশসমূহ</span>
+          <span class="host-label">🇪🇸 স্পেন • 🇵🇹 পর্তুগাল • 🇲🇦 মরক্কো</span>
+        </div>
+        <div class="countdown-container">
+          <div class="countdown-box">
+            <div class="countdown-number">${pad(cd2030.d)}</div>
+            <div class="countdown-label">দিন</div>
+          </div>
+          <div class="countdown-box">
+            <div class="countdown-number">${pad(cd2030.h)}</div>
+            <div class="countdown-label">ঘণ্টা</div>
+          </div>
+          <div class="countdown-box">
+            <div class="countdown-number">${pad(cd2030.m)}</div>
+            <div class="countdown-label">মিনিট</div>
+          </div>
+          <div class="countdown-box">
+            <div class="countdown-number">${pad(cd2030.s)}</div>
+            <div class="countdown-label">সেকেন্ড</div>
+          </div>
+        </div>
+        <p class="date-info">বিশ্বকাপ ২০৩০ অনুষ্ঠিত হবে: ৮ জুন ২০৩০ – ২১ জুলাই ২০৩০</p>
       </div>
-      <div class="live-buttons-wrapper">
-        <button class="watch-live-btn" data-url="https://livekhela.movielinkbd.li/">🔴 স্ট্রিম ১</button>
-        <button class="watch-live-btn-alt" data-url="https://kickbd.org/">📺 স্ট্রিম ২</button>
-        <button class="watch-live-btn-alt" data-url="https://tvprobd.vercel.app/">📡 স্ট্রিম ৩</button>
+    `;
+    
+    // Get the index of current stage for display
+    const currentStageIndex = stageListEn.indexOf(currentState.selectedStage);
+    const currentStageName = stageListBn[currentStageIndex] || currentState.selectedStage;
+    
+    const fullHtml = `<div style="min-height: 100vh;">
+      ${celebrationHtml}
+      ${nextWorldCupHtml}
+      <div style="background: rgba(4,18,38,0.96); padding: 14px 16px; text-align: center; border-bottom: 1px solid rgba(197,160,40,0.15);">
+        <div class="filter-buttons-wrapper">
+          <button id="toggleGroupsBtn" class="group-tag-btn ${currentState.showGroups ? 'active' : ''}">📋 ${currentState.showGroups ? "▲ গ্রুপ লুকান" : "▼ সব গ্রুপ দেখুন"}</button>
+          <button id="togglePointsBtn" class="group-tag-btn ${currentState.showPoints ? 'active' : ''}">📊 ${currentState.showPoints ? "▲ পয়েন্ট টেবিল লুকান" : "পয়েন্ট টেবিল"}</button>
+        </div>
+        <div id="groupsPanel" style="margin-top: 8px;">${groupsPanelHtml}</div>
+        <div id="pointsPanel" style="margin-top: 8px;">${pointsPanelHtml}</div>
+        <div class="stage-selector">
+          ${stageListEn.map((s, idx) => `<button data-stage="${s}" class="stage-btn ${currentState.selectedStage === s ? 'active' : ''}">${stageListBn[idx]}</button>`).join('')}
+        </div>
       </div>
-      <div id="groupsPanel" style="margin-top: 8px;">${groupsPanelHtml}</div>
-      <div id="pointsPanel" style="margin-top: 8px;">${pointsPanelHtml}</div>
-      <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 12px;">${stageListEn.map((s, idx) => `<button data-stage="${s}" class="stage-btn ${currentState.selectedStage === s ? 'active' : ''}">${stageListBn[idx]}</button>`).join('')}</div>
-    </div>
-    <div style="background: rgba(10,30,58,0.6); padding: 6px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-      <span style="font-size: 10px; font-weight: bold; color: #c5a028;">${stageListBn[stageListEn.indexOf(currentState.selectedStage)]}</span>
-      <span style="font-size: 10px; color: rgba(255,255,255,0.3);">— ${stageMatches.length} টি ম্যাচ</span>
-    </div>
-    <div class="fixture-container">${fixturesHtml}</div>
-    <div class="footer-text">THIS FIXTURE WEBSITE IS MADE BY SOUAD</div>
+      <div style="background: rgba(10,30,58,0.6); padding: 6px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+        <span style="font-size: 10px; font-weight: bold; color: #c5a028;">${currentStageName}</span>
+        <span style="font-size: 10px; color: rgba(255,255,255,0.3);">— ${stageMatches.length} টি ম্যাচ</span>
+      </div>
+      <div class="fixture-container">${fixturesHtml}</div>
+      <div class="footer-text">THIS FIXTURE WEBSITE IS MADE BY SOUAD</div>
     </div>`;
     
     root.innerHTML = fullHtml;
@@ -1035,34 +1232,46 @@
     document.getElementById("toggleGroupsBtn")?.addEventListener("click", toggleGroups);
     document.getElementById("togglePointsBtn")?.addEventListener("click", togglePoints);
     
-    document.querySelectorAll("[data-url]").forEach(btn => {
+    document.querySelectorAll("[data-stage]").forEach(btn => {
       btn.addEventListener("click", function(e) {
-        const url = this.getAttribute("data-url");
-        if (url) openLiveStream(url);
+        const stage = this.getAttribute("data-stage");
+        if (stage) {
+          currentState.selectedStage = stage;
+          renderApp();
+        }
       });
     });
-    
-    document.querySelectorAll("[data-stage]").forEach(btn => btn.addEventListener("click", (e) => { 
-      const stage = btn.getAttribute("data-stage"); 
-      if(stage) setStage(stage); 
-    }));
   }
   
   function init() { 
-    // Set initial stage based on current time
-    const activeFixtures = removeOldMatches(fixturesRaw, new Date());
-    currentState.selectedStage = getActiveStage(activeFixtures, new Date());
+    currentState.selectedStage = "Final";
     
     renderApp(); 
+    
+    setTimeout(() => {
+      launchConfetti();
+      launchFirework();
+      launchSparkles();
+    }, 300);
+    
+    setTimeout(() => {
+      launchConfetti();
+      launchFirework();
+    }, 2000);
+    
+    setTimeout(() => {
+      launchConfetti();
+      launchSparkles();
+      launchFirework();
+    }, 4000);
+    
+    setTimeout(() => {
+      launchConfetti();
+      launchFirework();
+    }, 6000);
+    
     intervalId = setInterval(() => { 
       currentState.now = new Date(); 
-      // Check if current stage still has matches, if not auto-switch
-      const activeFixturesNow = removeOldMatches(fixturesRaw, currentState.now);
-      const hasMatchesInSelected = activeFixturesNow.some(f => f.stage === currentState.selectedStage);
-      if (!hasMatchesInSelected) {
-        const detectedStage = getActiveStage(activeFixturesNow, currentState.now);
-        currentState.selectedStage = detectedStage;
-      }
       renderApp(); 
     }, 1000); 
   }
